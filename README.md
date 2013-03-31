@@ -1,7 +1,7 @@
 OPBE
 ====
 
-Ogame Probabilistic Battle Engine  
+**O**game **P**robabilistic **B**attle **E**ngine  
 live: http://opbe.webnet32.com
 
 ### Introduction
