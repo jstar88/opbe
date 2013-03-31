@@ -1,7 +1,7 @@
 opbe
 ====
 
-Ogame probabilistic battle engine
+Ogame Probabilistic Battle Engine
 
 ### Introduction
 OPBE is the first(and only) battle engine in the world that use Probability theory:  
