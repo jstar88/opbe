@@ -53,6 +53,33 @@ An easy way to display them:
     $playerGroupObj->addPlayer($playerObj);
 ```
 
+#### Fighters
+
+Fighters are the smallest object in the system: it rappresent a group of specific object type able to fight.
+For some reason, opbe need to categorize it in two type extending Fighters:
+* Defense
+* Ship
+
+Don't care about this fact because you should use this automatic code:
+
+```php
+   
+   public function getFighters($id, $count)
+    {
+        global $CombatCaps, $pricelist;
+        $rf = $CombatCaps[$id]['sd'];
+        $shield = $CombatCaps[$id]['shield'];
+        $cost = array($pricelist[$id]['metal'], $pricelist[$id]['crystal']);
+        $power = $CombatCaps[$id]['attack'];
+        if ($id <= 217)
+        {
+            return new Ship($id, $count, $rf, $shield, $cost, $power);
+        }
+        return new Defense($id, $count, $rf, $shield, $cost, $power);
+    }
+   
+```
+
 ---
 
 ### License
