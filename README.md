@@ -119,6 +119,35 @@ PlayerGroup is a group of Player, don't care about the question attacker or defe
     $playerGroup->addPlayer($player);
 ```
 
+#### Battle
+
+Battle is the main class of OPBE.  
+The first argument of constructor is the **attacking** PlayerGroup, instead,   
+the second one is the **defending** PlayerGroup.  
+
+There are two methods needed for you:
+* startBattle(boolean $debug) : start the battle, if $debug == true, informations will be writtem in output.
+* getReport() : return an object usefull to retrive each type of battle informations
+
+
+```php
+    $engine = new Battle($attackingPlayerGroup, $defendingPlayerGroup);
+    $engine->startBattle(false);
+    $info = $engine->getReport();
+```
+
+#### Report
+
+Report is a big container of informations about the battle simulated.  
+In the web interface of OPBE, the instance of Report is injected in templates.   
+
+```php
+    $info = $engine->getReport();
+```
+
+Report contains all the ships status in each round, also have usefull functions to fill templates or update  
+the database after the batte.
+
 ---
 
 ### License
