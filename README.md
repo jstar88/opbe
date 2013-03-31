@@ -1,4 +1,4 @@
-opbe
+OPBE
 ====
 
 Ogame Probabilistic Battle Engine  
