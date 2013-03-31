@@ -42,6 +42,7 @@ each Player have differents Fleets,
 each Fleet have differents Figthers.  
 
 An easy way to display them:
+   
     $fleetObj = new Fleet($idFleet);
     $fleetObj->add($this->getFighters($id, $count));
     
