@@ -1,0 +1,25 @@
+<html>
+<head>
+<style type="text/css">
+@import url(../../public/style.css);
+</style>
+</head>
+<body>
+<center>
+    <?php for ( $_i=1;$_i<=$this->getLastRoundNumber();$_i++){ ?>
+        <?php include('round.html'); ?>
+    <?php } ?>
+    <cite> END OF BATTLE </cite>
+    <?php foreach($this->getResultAttackersFleetOnRound('END') as $_id => $_player) { ?>
+        <?php $st='Attacker'; include('player2.html'); ?>
+    <?php } ?>
+    <?php foreach($this->getResultDefendersFleetOnRound('END') as $_id => $_player) { ?>
+        <?php $st='Defender'; include('player2.html'); ?>
+    <?php } ?>
+    <?php if($this->attackerHasWin()) { include('attackers_win.html');} ?>
+    <?php if($this->defenderHasWin()) { include('defenders_win.html'); } ?>
+    <?php if($this->isAdraw()) { include('draw.html'); } ?>
+    <?php include('details.html'); ?>
+</center>
+</body>
+</html>

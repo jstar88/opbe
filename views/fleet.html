@@ -1,0 +1,17 @@
+<table class="lined widthFull">
+    <caption><?php echo $st; ?> <?php echo $_id; ?><br> <?php echo $_player->getWeaponsTech().'-'.$_player->getShieldsTech().'-'.$_player->getArmourTech(); ?></caption>
+    <thead>
+        <tr>
+            <?php foreach($_fleet as $_shipID => $_ship) { ?>
+                <th><?php echo $resource[$_shipID]; ?></th>
+            <?php } ?>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <?php foreach($_fleet as $_shipID => $_ship) { ?>    
+                <td><?php echo $_ship->getCount(); ?></td>                   
+            <?php } ?>
+        </tr>
+    </tbody>
+</table>

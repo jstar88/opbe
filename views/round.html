@@ -1,0 +1,15 @@
+<font size=4><cite>Round <?php echo $_i ?></cite></font>
+
+<br><br>
+<?php foreach($this->getPresentationAttackersFleetOnRound($_i) as $_id => $_player) { ?>
+    <?php $st='Attacker'; include('player2.html'); ?>
+<?php } ?>
+<br>
+<?php foreach($this->getPresentationDefendersFleetOnRound($_i) as $_id => $_player) { ?>
+    <?php $st='Defender'; include('player2.html'); ?>
+<?php } ?>
+<br>
+<?php include('round_info.html'); ?>
+
+_____________________________________________________
+<br>

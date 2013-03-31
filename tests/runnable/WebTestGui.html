@@ -1,0 +1,45 @@
+<html>
+   <head>  
+   <script type="text/javascript" src="tabber.js"></script>
+      <link rel="stylesheet" type="text/css" href="round.css">
+      
+      <link href="tabber.css" media="all" type="text/css" rel="stylesheet">
+      <title>OPBE</title>
+   </head>
+   <body>
+      <div id="box_trasparente">
+         <div>
+            <font color="blue">Ogame Probabilistic Battle Engine</font><br>
+            Version: beta 4       <br>
+            Simulations done : <?php echo $count ?> <br>
+            <a href="WebTest.php?good=1"><img src="good.png"></a><a href="WebTest.php?bad=1"><img src="bad.png"></a> <?php echo $good ?> | <?php echo $bad ?>
+         </div>
+         <form method="post" action="WebTest.php">
+         <center>
+            <div id="container" >
+             <div id="atab" class="tabber" style="float:left;width:50%;"> 
+                <?php for($_l=1;$_l<3;$_l++) { ?> 
+                    <div class="tabbertab">
+		                <h3>Attacker <?php echo $_l ?></h3>
+                      <?php $type='attacker'; include('player.html'); ?>
+                    </div>  
+                <?php } ?>
+                </div> 
+            </div>
+            <div id="dtab" class="tabber" style="float:left;width:50%;">
+                <?php for($_l=1;$_l<3;$_l++) { ?>
+                    <div class="tabbertab">
+                    <h3>Defender <?php echo $_l ?></h3>
+                    <?php $type='defender'; include('player.html'); ?>
+                    </div>
+                <?php } ?>
+            </div>
+            <div id="go">
+               <input type="button" class="submit" value="reset" onClick="this.form.reset()">
+               <input type="submit" class="submit" value="battle!">
+            </center>
+            Debug password = <input type="text" class="rounded" name="debug" value="">
+         </form>
+      </div>
+   </body>
+</html>   
