@@ -27,7 +27,7 @@ Be sure you had read the *license* with respect for the author.
 
 
 ---
-### Dev guide
+### Implementation developing guide 
 The system organization is like :
 * PlayerGroup
    * Player1
@@ -43,19 +43,19 @@ each Fleet have differents Figthers.
 
 An easy way to display them:
 ```php   
-    $fleetObj = new Fleet($idFleet);
-    $fleetObj->add($this->getFighters($id, $count));
+    $fleet = new Fleet($idFleet);
+    $fleet->add($this->getFighters($id, $count));
     
-    $playerObj = new Player($idPlayer);
-    $playerObj->addFleet($fleetObj);
+    $player = new Player($idPlayer);
+    $player->addFleet($fleet);
     
-    $playerGroupObj = new PlayerGroup();
-    $playerGroupObj->addPlayer($playerObj);
+    $playerGroup = new PlayerGroup();
+    $playerGroup->addPlayer($player);
 ```
 
 #### Fighters
 
-Fighters are the smallest object in the system: it rappresent a group of specific object type able to fight.
+Fighters is the smallest object in the system: it rappresent a group of specific object type able to fight.
 For some reason, opbe need to categorize it in two type extending Fighters:
 * Defense
 * Ship
@@ -63,8 +63,12 @@ For some reason, opbe need to categorize it in two type extending Fighters:
 Don't care about this fact because you should use this automatic code:
 
 ```php
+    $fighters =  $this->getFighters($idFighters, $count);
+```    
+
+```php
    
-   public function getFighters($id, $count)
+   public function getFighters($idFighters, $count)
     {
         global $CombatCaps, $pricelist;
         $rf = $CombatCaps[$id]['sd'];
@@ -78,6 +82,41 @@ Don't care about this fact because you should use this automatic code:
         return new Defense($id, $count, $rf, $shield, $cost, $power);
     }
    
+```
+
+Note that you can assign differents techs to each Fighters, see functions inside this class. 
+
+#### Fleet
+
+Fleet is a group of Fighters and it is extended by a single object 
+* HomeFleet : rappresent the ships and defense in the planet (of owner)
+
+This time you have to manually choose the right class and HomeFleet should have $id = 0;
+
+```php
+    $fleet = new Fleet($idFleet); // $idFleet is a must
+    $fleet = new HomeFleet(0); // 0 is a must
+    $fleet->add($fighters);
+```
+Note that you can assign differents techs to each Fleets, see functions inside this class.   
+In this case, all Fighters contained in a Fleet will take it techs.
+
+#### Player
+
+Player is a group of Fleets, don't care about the question attacker or defender.
+
+```php
+    $player = new Player($idPlayer); // $idPlayer is a must
+    $player->addFleet($fleet);
+```
+
+#### PlayerGroup
+
+PlayerGroup is a group of Player, don't care about the question attacker or defender.
+
+```php
+    $playerGroup = new PlayerGroup();
+    $playerGroup->addPlayer($player);
 ```
 
 ---
