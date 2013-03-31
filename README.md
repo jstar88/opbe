@@ -20,10 +20,36 @@ to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a b
 
 ---
 
-### Quick Start
+### Quick start
 Ok, seems so cool! How i can use it?  
 You can check in **implementations** directory for your game version, read the installation.txt file.  
 Be sure you had read the *license* with respect for the author.
+
+
+---
+### Dev guide
+The system organization is like :
+* PlayerGroup
+   * Player1
+   * Player2
+      * Fleet1
+      * Fleet2
+         * Fighters1
+         * Fighters2
+
+So in a PlayerGroup there are differents Player,  
+each Player have differents Fleets,  
+each Fleet have differents Figthers.  
+
+An easy way to display them:
+    $fleetObj = new Fleet($idFleet);
+    $fleetObj->add($this->getFighters($id, $count));
+    
+    $playerObj = new Player($idPlayer);
+    $playerObj->addFleet($fleetObj);
+    
+    $playerGroupObj = new PlayerGroup();
+    $playerGroupObj->addPlayer($playerObj);
 
 
 ---
