@@ -11,7 +11,7 @@ Also memory and cpu usage are O(1), this means they are COSTANTS and independent
 ---
 
 ### Accuracy
-One of main concept used in this battle engine is the *expected value*: instead calculate each ship case, opbe 
+One of main concept used in this battle engine is the **expected value**: instead calculate each ship case, opbe 
 creates an estimation of their behavior. 
 This estimation is improved analyzing behavior for infinite simulations, so 
 to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a big number, such as 3k.  
@@ -21,7 +21,8 @@ to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a b
 
 ### Quick Start
 Ok, seems so cool! How i can use it?  
-You can check in **implementations** directory for your game version, read the installation.txt file
+You can check in **implementations** directory for your game version, read the installation.txt file.
+Be sure you had read the *license* with respect for the author.
 
 
 ---
