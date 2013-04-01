@@ -1,13 +1,5 @@
 <?php
-/**
- * 
- * 
- * @package   
- * @author Jstar
- * @copyright Jstar
- * @version 2013
- * @access public
- */
+
 class Fighters extends Type
 {
     private $rf;
@@ -72,7 +64,7 @@ class Fighters extends Type
     }
     public function getRfTo(Fighters $other)
     {
-        return $this->rf[$other->getId()];
+        return (isset($this->rf[$other->getId()]))? $this->rf[$other->getId()] : 0 ;
     }
     public function getShield()
     {
