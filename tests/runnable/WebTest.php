@@ -1,13 +1,5 @@
 <?php
-/**
- * 
- * 
- * @package   
- * @author Jstar
- * @copyright Jstar
- * @version 2013
- * @access public
- */
+
 require ("../RunnableTest.php");
 class WebTest extends RunnableTest
 {
@@ -33,17 +25,17 @@ class WebTest extends RunnableTest
                 if ($count > 0 && $id > 0)
                 {
                     $fleetObj->add($this->getFighters($id, $count));
-                    $fleetObj->setTech($tech[$idFleet]['weapons'], $tech[$idFleet]['shields'], $tech[$idFleet]['armour']);
                 }
             }
             if (!$fleetObj->isEmpty())
             {
+                $fleetObj->setTech($tech[$idFleet]['weapons'], $tech[$idFleet]['shields'], $tech[$idFleet]['armour']);
                 $playerObj->addFleet($fleetObj);
             }
         }
         if ($playerObj->isEmpty())
         {
-            header("Location: WebTest.php");
+            die("<meta http-equiv=\"refresh\" content=2;\"WebTest.php\">There should be at least an attacker and defender");
         }
         $playerGroupObj = new PlayerGroup();
         $playerGroupObj->addPlayer($playerObj);

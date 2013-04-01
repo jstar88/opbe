@@ -1,17 +1,9 @@
 <?php
-/**
- * 
- * 
- * @package   
- * @author Jstar
- * @copyright Jstar
- * @version 2013
- * @access public
- */
+
 class Player extends DeepClonable
 {
     private $id;
-    protected $array;
+    protected $array = array();
 
     private $weapons_tech;
     private $shields_tech;
@@ -53,9 +45,9 @@ class Player extends DeepClonable
     {
         return $this->id;
     }
-    public function decrement($idFleet, $idFighters, $count)
+    public function decrement($idFleet,$idFighters,$count)
     {
-        $this->array[$idFleet]->decrement($idFighters, $count);
+        $this->array[$idFleet]->decrement($idFighters,$count);
         if ($this->array[$idFleet]->isEmpty())
         {
             unset($this->array[$idFleet]);
@@ -87,7 +79,7 @@ class Player extends DeepClonable
         if (!ksort($this->array))
         {
             throw new Exception('Unable to order fleets');
-        }
+        }       
     }
     public function getFleet($id)
     {
@@ -133,7 +125,7 @@ class Player extends DeepClonable
         {
             $sc = $fleet->cleanShips();
             $shipsCleaners[$this->getId()] = $sc;
-            if (empty($fleet))
+            if(empty($fleet))
             {
                 unset($this->array[$id]);
             }
@@ -167,14 +159,14 @@ class Player extends DeepClonable
     {
         $defense->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
         $this->order();
-        $fl = current($this->array);
-        if ($fl === false)
+        $fl=current($this->array);
+        if($fl === false)
         {
-            $this->array[$defense->getId()] = $defense;
+             $this->array[$defense->getId()] = $defense;
         }
         else
         {
-            $f->mergeFleet($defense);
+            $f->mergeFleet($defense);        
         }
     }
     public function mergePlayerFleets(Player $player)
