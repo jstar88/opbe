@@ -1,12 +1,12 @@
 <?php
 
 /**
- * 
+ * PhysicShot
  * 
  * @package   
- * @author Jstar
- * @copyright Jstar
- * @version 2013
+ * @author battleengine
+ * @copyright Covolo Nicola
+ * @version 2012
  * @access public
  */
 class PhysicShot
@@ -133,7 +133,7 @@ class PhysicShot
         if($cellsDestroyedInOneShot == 0)
         {
             $this->bouncedDamage = $this->damage * $this->count;  
-            retun;       
+            return;       
         }
         $numeroDiColpiPerDistruggereTuttiGliScudi = $currentCellsCount / $cellsDestroyedInOneShot;
         $this->bouncedDamage = $numeroDiColpiPerDistruggereTuttiGliScudi * $bouncedDamageForOneShot;
