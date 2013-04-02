@@ -112,7 +112,7 @@ if ($_POST)
     $count = file_get_contents('count.txt');
     $count++;
     file_put_contents('count.txt', $count);
-    new WebTest($_POST['debug'] === '581050');
+    new WebTest($_POST['debug'] === 'xxx');
 }
 else
 {
