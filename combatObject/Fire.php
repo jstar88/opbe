@@ -1,13 +1,33 @@
 <?php
-
 /**
- * Fire
+ *  OPBE
+ *  Copyright (C) 2013  Jstar
+ *
+ * This file is part of OPBE.
  * 
- * @package CombatEngine  
- * @author Jstar
- * @copyright Jstar
- * @version 2013
- * @access public 
+ * OPBE is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OPBE is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with OPBE.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package OPBE
+ * @author Jstar <frascafresca@gmail.com>
+ * @copyright 2013 Jstar <frascafresca@gmail.com>
+ * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
+ * @version alpha(2013-2-4)
+ * @link https://github.com/jstar88/opbe
+ *
+ *
+ * Fire
+ *  
  * This class rappresent the fire shotted by attackers to defenders or viceversa.
  * Using probabilistic theory, this class will help you in RF(Rapid Fire) calculation with O(1) time and memory functions.
  * Sometime i think that SpeedSim's RF calculation is bugged, so you can choose if return its result or not setting "SPEEDSIM" constant to true/false.
