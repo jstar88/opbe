@@ -4,7 +4,7 @@ OPBE
 **O**game **P**robabilistic **B**attle **E**ngine  
 live: http://opbe.webnet32.com
 
-### Introduction
+## Introduction
 OPBE is the first(and only) battle engine in the world that use Probability theory:  
 battles is processed very very fast and required few memory resources.  
 Also memory and cpu usage are O(1), this means they are COSTANTS and independent of the ships amount.    
@@ -22,7 +22,7 @@ features:
 
 ---
 
-### Accuracy
+## Accuracy
 One of main concept used in this battle engine is the **expected value**: instead calculate each ship case, opbe 
 creates an estimation of their behavior. 
 This estimation is improved analyzing behavior for infinite simulations, so 
@@ -31,14 +31,14 @@ to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a b
 
 ---
 
-### Quick start
+## Quick start
 Ok, seems so cool! How i can use it?  
 You can check in **implementations** directory for your game version, read the installation.txt file.  
 Be sure you had read the *license* with respect for the author.
 
 
 ---
-### Implementation developing guide 
+## Implementation developing guide 
 The system organization is like :
 * PlayerGroup
    * Player1
@@ -161,7 +161,7 @@ the database after the batte.
 
 ---
 
-### License
+## License
 
 ![license](http://www.gnu.org/graphics/agplv3-155x51.png)  
     
