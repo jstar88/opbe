@@ -125,7 +125,7 @@ class Player extends DeepClonable
         {
             $sc = $fleet->cleanShips();
             $shipsCleaners[$this->getId()] = $sc;
-            if(empty($fleet))
+            if($fleet->isEmpty())
             {
                 unset($this->array[$id]);
             }

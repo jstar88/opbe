@@ -15,6 +15,7 @@ class WebTest extends RunnableTest
     private function buildPlayerGroup($tech, $fleets)
     {
         $playerObj = new Player(1);
+        $playerObj->setTech($tech['weapons'], $tech['shields'], $tech['armour']);
         foreach ($fleets as $idFleet => $fleet)
         {
             $fleetObj = new Fleet($idFleet);
@@ -29,7 +30,6 @@ class WebTest extends RunnableTest
             }
             if (!$fleetObj->isEmpty())
             {
-                $fleetObj->setTech($tech[$idFleet]['weapons'], $tech[$idFleet]['shields'], $tech[$idFleet]['armour']);
                 $playerObj->addFleet($fleetObj);
             }
         }
@@ -87,7 +87,7 @@ if ($_POST)
     $count = file_get_contents('count.txt');
     $count++;
     file_put_contents('count.txt', $count);
-    new WebTest($_POST['debug'] === 'secretxxx');
+    new WebTest($_POST['debug'] === '581050');
 }
 else
 {

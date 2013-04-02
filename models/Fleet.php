@@ -127,7 +127,7 @@ class Fleet extends DeepClonable
             echo "---- exploding $id ----<br>";
             $sc = $defenders->cleanShips();
             $this->count -= $sc->getExplodedShips();
-            if ($defenders->getCount() == 0)
+            if ($defenders->isEmpty())
             {
                 unset($this->array[$id]);
             }

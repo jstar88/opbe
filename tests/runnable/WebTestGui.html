@@ -16,24 +16,34 @@
          </div>
          <form method="post" action="WebTest.php">
          <center>
-            <div id="container" >
-             <div id="atab" class="tabber" style="float:left;width:50%;"> 
-                <?php for($_l=1;$_l<3;$_l++) { ?> 
-                    <div class="tabbertab">
-		                <h3>Attacker <?php echo $_l ?></h3>
-                      <?php $type='attacker'; include('player.html'); ?>
-                    </div>  
-                <?php } ?>
-                </div> 
-            </div>
-            <div id="dtab" class="tabber" style="float:left;width:50%;">
-                <?php for($_l=1;$_l<3;$_l++) { ?>
-                    <div class="tabbertab">
-                    <h3>Defender <?php echo $_l ?></h3>
-                    <?php $type='defender'; include('player.html'); ?>
-                    </div>
-                <?php } ?>
-            </div>
+            <table width= "70%">
+                <tr>
+                    <td align="center" ><?php $type='attacker'; include('techs.html'); ?></td>
+                    <td align="center" ><?php $type='defender'; include('techs.html'); ?></td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <div id="atab" class="tabber"> 
+                        <?php for($_l=1;$_l<3;$_l++) { ?> 
+                            <div class="tabbertab">
+                                <h3>AttFleet <?php echo $_l ?></h3>
+                                <?php $type='attacker'; include('player.html'); ?>
+                            </div>  
+                        <?php } ?>
+                        </div>
+                    </td>
+                    <td align="center">
+                        <div id="dtab" class="tabber">
+                            <?php for($_l=1;$_l<3;$_l++) { ?>
+                            <div class="tabbertab">
+                                <h3>DefFleet <?php echo $_l ?></h3>
+                                <?php $type='defender'; include('player.html'); ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
             <div id="go">
                <input type="button" class="submit" value="reset" onClick="this.form.reset()">
                <input type="submit" class="submit" value="battle!">

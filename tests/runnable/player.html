@@ -1,22 +1,7 @@
 <div id="<?php echo $type ?>_fleet[<?php echo $_l ?>]" >
                <center>
                   <table>
-                     <tr>
-                        <td>Weapons</td>
-                        <td><input type="number" class="rounded" name="<?php echo $type ?>_tech[<?php echo $_l ?>][weapons]" value="0" ></td>
-                     </tr>
-                     <tr>
-                        <td> Shields</td>
-                        <td><input type="number" class="rounded" name="<?php echo $type ?>_tech[<?php echo $_l ?>][shields]" value="0" ></td>
-                     </tr>
-                     <tr>
-                        <td>Armour</td>
-                        <td><input type="number" class="rounded" name="<?php echo $type ?>_tech[<?php echo $_l ?>][armour]" value="0" ></td>
-                     </tr>
-                     <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                     </tr>
+                     
                      <?php for ($i = 202; $i < 216; $i++) { ?>
                         <tr>
                            <td><?php echo $resource[$i]?></td>

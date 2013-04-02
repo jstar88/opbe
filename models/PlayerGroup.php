@@ -93,7 +93,7 @@ class PlayerGroup extends DeepClonable
         {
             $sc = $player->cleanShips();
             $shipsCleaners[] = $sc;
-            if (empty($player))
+            if ($player->isEmpty())
             {
                 unset($this->array[$id]);
             }
