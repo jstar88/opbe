@@ -80,19 +80,19 @@ Don't care about this fact because you should use this automatic code:
 
 ```php
    
-   public function getFighters($idFighters, $count)
+function getFighters($id, $count)
+{
+    global $CombatCaps, $pricelist;
+    $rf = $CombatCaps[$id]['sd'];
+    $shield = $CombatCaps[$id]['shield'];
+    $cost = array($pricelist[$id]['metal'], $pricelist[$id]['crystal']);
+    $power = $CombatCaps[$id]['attack'];
+    if ($id >= SHIP_MIN_ID && $id <= SHIP_MAX_ID)
     {
-        global $CombatCaps, $pricelist;
-        $rf = $CombatCaps[$id]['sd'];
-        $shield = $CombatCaps[$id]['shield'];
-        $cost = array($pricelist[$id]['metal'], $pricelist[$id]['crystal']);
-        $power = $CombatCaps[$id]['attack'];
-        if ($id <= 217)
-        {
-            return new Ship($id, $count, $rf, $shield, $cost, $power);
-        }
-        return new Defense($id, $count, $rf, $shield, $cost, $power);
+        return new Ship($id, $count, $rf, $shield, $cost, $power);
     }
+    return new Defense($id, $count, $rf, $shield, $cost, $power);
+}
    
 ```
 
