@@ -1,5 +1,5 @@
 <table class="lined widthFull">
-    <caption><?php echo $st; ?> <?php echo $_id; ?><br> <?php echo $_player->getWeaponsTech().'-'.$_player->getShieldsTech().'-'.$_player->getArmourTech(); ?></caption>
+    <caption><?php echo $st; ?> <?php echo $_id; ?><br> <?php echo ($_player->getWeaponsTech()*10).'% - '.($_player->getShieldsTech()*10).'% - '.($_player->getArmourTech()*10); ?>%</caption>
     <thead>
         <tr>
             <?php foreach($_fleet as $_shipID => $_ship) { ?>
