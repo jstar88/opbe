@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -27,17 +28,68 @@
  */
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
-        global $pricelist, $CombatCaps, $resource;
-        
-        foreach ($attackers as $fleetID => $attacker)
+    global $pricelist, $CombatCaps;
+
+    // building attackers
+    $attackerGroupObj = new PlayerGroup();
+    foreach ($attackers as $fleetID => $attacker)
+    {
+        $player = $attacker['player'];
+        if ($attackerGroupObj->existPlayer($player['id']))
         {
-                $fleetObj = new Fleet($fleetID);
-                foreach ($attacker['unit'] as $element => $amount)
-                {
-                        $fighters = getFighters($element,$amount);
-                        $fleetObj->add($fighters);
-                }
+            $attackerPlayerObj = $attackerGroupObj->getPlayer($player['id']);
         }
+        else
+        {
+            $attackerPlayerObj = new Player($player['id']);
+            $attackerPlayerObj->setTech($player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+            $attackerGroupObj->addPlayer($attackerPlayerObj);
+        }
+
+        $attackerFleetObj = new Fleet($fleetID);
+        foreach ($attacker['unit'] as $element => $amount)
+        {
+            $fighters = getFighters($element, $amount);
+            $attackerFleetObj->add($fighters);
+        }
+        $attackerPlayerObj->addFleet($attackerFleetObj);
+    }
+
+    // building defenders
+    $defenderGroupObj = new PlayerGroup();
+    foreach ($defenders as $fleetID => $defender)
+    {
+        $player = $attacker['player'];
+        if ($defenderGroupObj->existPlayer($player['id']))
+        {
+            $defenderPlayerObj = $defenderGroupObj->getPlayer($player['id']);
+        }
+        else
+        {
+            $defenderPlayerObj = new Player($player['id']);
+            $defenderPlayerObj->setTech($player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+            $defenderGroupObj->addPlayer($defenderPlayerObj);
+        }
+
+        $defenderFleetObj = getFleet($fleetID);
+        foreach ($defender['unit'] as $element => $amount)
+        {
+            $fighters = getFighters($element, $amount);
+            $defenderFleetObj->add($fighters);
+        }
+        $defenderPlayerObj->addFleet($defenderFleetObj);
+    }
+
+    // start of battle
+
+    $opbe = new Battle($attackerGroupObj, $defenderGroupObj);
+    $opbe->startBattle();
+    $report = $opbe->getReport();
+    
+    //to do: update attackers and defenders array data with the report info.
+    
+    
+
 
 }
 
@@ -48,6 +100,17 @@ function getFighters($id, $count)
     $shield = $CombatCaps[$id]['shield'];
     $cost = array($pricelist[$element]['cost'][901], $pricelist[$element]['cost'][902]);
     $power = $CombatCaps[$id]['attack'];
-    return new Ship($id, $count, $rf, $shield, $cost, $power);
+    if ($id < 300)
+        return new Ship($id, $count, $rf, $shield, $cost, $power);
+    return new Defense($id, $count, $rf, $shield, $cost, $power);
 }
+function getFleet($id)
+{
+    if ($id == 0)
+    {
+        return new HomeFleet(0);
+    }
+    return new Fleet($id);
+}
+
 ?>
