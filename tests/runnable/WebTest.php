@@ -68,7 +68,7 @@ class WebTest extends RunnableTest
     }
 }
 
-if ($_GET['good'])
+if (isset($_GET['good']))
 {
     session_start();
     if (!isset($_SESSION['vote']))
@@ -80,7 +80,7 @@ if ($_GET['good'])
     }
     session_write_close();
 }
-elseif ($_GET['bad'])
+elseif (isset($_GET['bad']))
 {
     session_start();
     if (!isset($_SESSION['vote']))
