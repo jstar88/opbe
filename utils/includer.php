@@ -44,6 +44,5 @@ require (PATH."combatObject/FireManager.php");
 require (PATH."core/Battle.php");
 require (PATH."core/BattleReport.php");
 require (PATH."core/Round.php");
-require (PATH."constants/vars.php");
 require (PATH."constants/battle_constants.php");
 ?>

@@ -43,7 +43,7 @@ require ("../../combatObject/FireManager.php");
 require ("../../core/Battle.php");
 require ("../../core/BattleReport.php");
 require ("../../core/Round.php");
-require ("../../constants/vars.php");
+require ("vars.php");
 require ("../../constants/battle_constants.php");
 
 class RunnableTest

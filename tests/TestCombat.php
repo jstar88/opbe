@@ -41,7 +41,7 @@ include ("..\\combatObject\\FireManager.php");
 include ("..\\core\\Battle.php");
 include ("..\\core\\BattleReport.php");
 include ("..\\core\\Round.php");
-require ("..\\constants\\vars.php");
+require ("runnable\\vars.php");
 require ("..\\constants\\battle_constants.php");
 include ("..\\utils\\Math.php");
 include ("..\\utils\\Number.php");
