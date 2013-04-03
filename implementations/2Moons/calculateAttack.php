@@ -85,10 +85,21 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $opbe = new Battle($attackerGroupObj, $defenderGroupObj);
     $opbe->startBattle();
     $report = $opbe->getReport();
-    
+
     //to do: update attackers and defenders array data with the report info.
-    
-    
+
+    if ($report->defenderHasWin())
+    {
+        $won = "r"; // defender
+    }
+    elseif ($report->attackerHasWin())
+    {
+        $won = "a"; // attacker
+    }
+    else
+    {
+        $won = "w"; // draw
+    }
 
 
 }
