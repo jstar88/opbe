@@ -29,6 +29,37 @@ creates an estimation of their behavior.
 This estimation is improved analyzing behavior for infinite simulations, so 
 to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a big number, such as 3k.  
 
+---
+
+## Performace
+Seems that no one know the O() concept, from wiki:  
+*big O notation is used to classify algorithms by how they respond (e.g., in their processing time or working space requirements) to changes in input size.*   
+There are different possibilities, such as O(n) (linear), O(n^2) (quadratic) etc.
+OPBE is O(1) in both CPU and MEMORY usage:  
+pratically, it say that the computional requirements to solve an algoritm **don't increase** with the input size.  
+It's awesome! You can simulate 20 ships or 20 Tera ships and.. nothing should change. Really, there is a small difference  
+cause the aritmetic operation aren't O(1) for CPU, also a *double* require more space than an *integer*.  
+
+Let's do some test:
+##### Double's limit test 
+Write a lot of 9 in both defender's BC and attacker's BC. Cause double limit, your number will be trunked to *9223372036854775807*.  
+Anyway the battle starts and are calculated as well(some overflow errors maybe).  
+
+    Battle calculated in 2.54 ms.
+    Memory used: 335 KB
+    
+##### Worst case, OPBE max requirements!
+The only think that require a lot of memory in OPBE is the Report, cause it store all ships in each rounds.. this means more  
+rounds = more memory (a draw).  
+Also, the worst case for CPU and memory is to have all types of ships(iteration of them).
+So we set 1'000'000 of ships in each type(defenses only for defender),not a big number just to avoid overflow in calculations.  
+And we got:
+
+    Battle calculated in 144.88 ms.
+    Memory used: 6249 KB
+
+Seems a lot? try a O(n) algorithm and you will crash with insane small amount of ships :)
+
 
 ---
 
