@@ -47,8 +47,8 @@ class WebTest extends RunnableTest
             $fleetObj = new Fleet($idFleet);
             foreach ($fleet as $id => $count)
             {
-                $count = intval($count);
-                $id = intval($id);
+                $count = floor($count);
+                $id = floor($id);
                 if ($count > 0 && $id > 0)
                 {
                     $fleetObj->add($this->getFighters($id, $count));
