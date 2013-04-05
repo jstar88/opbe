@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -30,17 +31,21 @@ class Shuffle extends RunnableTest
 {
     public function getAttachers()
     {
-        return new Fleet(array(
+        $fleet = new Fleet(1,array(
             $this->getFighters(206, 50),
             $this->getFighters(207, 50),
             $this->getFighters(204, 150)));
+        $player = new Player(1, array($fleet));
+        return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        return new Fleet(array(
+        $fleet = new Fleet(2,array(
             $this->getFighters(210, 150),
             $this->getFighters(215, 50),
             $this->getFighters(207, 20)));
+        $player = new Player(2, array($fleet));
+        return new PlayerGroup(array($player));
     }
 }
 new Shuffle();

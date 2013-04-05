@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -30,11 +31,15 @@ class CrusherVsSpy extends RunnableTest
 {
     public function getAttachers()
     {
-        return new Fleet(array($this->getFighters(206, 150)));
+        $fleet = new Fleet(1,array($this->getFighters(206, 150)));
+        $player = new Player(1, array($fleet));
+        return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        return new Fleet(array($this->getFighters(210, 1250)));
+        $fleet = new Fleet(2,array($this->getFighters(210, 1250)));
+        $player = new Player(2, array($fleet));
+        return new PlayerGroup(array($player));
     }
 }
 new CrusherVsSpy();

@@ -174,7 +174,7 @@ EOT;
         $output = ob_get_clean();
         $old = file_get_contents('errors.txt');
         $separate = "---------------------------------";
-        file_put_contents('errors.txt', $old . PHP_EOL . $separate . PHP_EOL . $time . PHP_EOL . $this->br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . $this->br2nl($output));
+        file_put_contents('errors.txt', $old . PHP_EOL . $separate . PHP_EOL . $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)
