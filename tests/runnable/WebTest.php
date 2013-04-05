@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -112,7 +113,7 @@ if ($_POST)
     $count = file_get_contents('count.txt');
     $count++;
     file_put_contents('count.txt', $count);
-    new WebTest($_POST['debug'] === 'xxx');
+    new WebTest($_POST['debug'] === 'debug');
 }
 else
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -48,7 +49,7 @@ require ("../../constants/battle_constants.php");
 
 class RunnableTest
 {
-    public function __construct()
+    public function __construct($debug = false)
     {
         global $resource;
         try
@@ -60,7 +61,7 @@ class RunnableTest
             $micro1 = microtime();
 
             $engine = new Battle($attackers, $defenders);
-            $engine->startBattle($_POST['debug'] === '581050');
+            $engine->startBattle($debug);
 
             $micro1 = microtime() - $micro1;
             $memory1 = memory_get_usage() - $memory1;
@@ -143,23 +144,23 @@ EOT;
         switch ($errno)
         {
             case E_USER_ERROR:
-                $error .= "<b>My ERROR</b> [$errno] $errstr<br />\n";
+                $error .= "ERROR [$errno] $errstr<br />";
                 break;
 
             case E_USER_WARNING:
-                $error .= "<b>My WARNING</b> [$errno] $errstr<br />\n"; 
+                $error .= "WARNING [$errno] $errstr<br />";
                 break;
 
             case E_USER_NOTICE:
-                $error .= "<b>My NOTICE</b> [$errno] $errstr<br />\n"; 
+                $error .= "NOTICE [$errno] $errstr<br />";
                 break;
 
             default:
-                $error .= "Unknown error type: [$errno] $errstr<br />\n";
+                $error .= "Unknown error type: [$errno] $errstr<br />";
                 break;
         }
         $error .= "Error on line $errline in file $errfile";
-        $error .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
+        $error .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />";
         self::save($error);
         /* Don't execute PHP internal error handler */
         return true;
@@ -167,12 +168,18 @@ EOT;
     }
     private static function save($other)
     {
-        $post = '$_POST ='.var_export($_POST);
-        $get = '$_GET ='.var_export($_GET);
+        $time = date('l jS \of F Y h:i:s A');
+        $post = '$_POST =' . var_export($_POST);
+        $get = '$_GET =' . var_export($_GET);
         $output = ob_get_clean();
-        $old=file_get_contents('errors.txt');
-        file_put_contents('errors.txt',$old.PHP_EOL. $other . PHP_EOL . $post . PHP_EOL . $get .PHP_EOL . $output);
+        $old = file_get_contents('errors.txt');
+        $separate = "---------------------------------";
+        file_put_contents('errors.txt', $old . PHP_EOL . $separate . PHP_EOL . $time . PHP_EOL . $this->br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . $this->br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
+    }
+    private static function br2nl($text)
+    {
+        return preg_replace('/<br\\\\s*?\\/??>/i', PHP_EOL, $text);
     }
 }
 
