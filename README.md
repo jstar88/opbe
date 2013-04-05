@@ -37,6 +37,47 @@ Ok, seems so cool! How i can use it?
 You can check in **implementations** directory for your game version, read the installation.txt file.  
 Be sure you had read the *license* with respect for the author.
 
+---
+
+## Making new test cases to share
+Something wrong with OPBE? The fastes way to share the simulation is to make a test case.  
+1. Set your prefered class name,but it must extends **RunnableTest**.  
+2. Override two functions:
+  * *getAttachers()* : return a PlayerGroup that rappresent the attackers
+  * *getDefenders()* : return a PlayerGroup that rappresent the defenders
+3. Instantiate your class inside the file.
+4. Put the file in opbe/test/runnable/
+
+An example:
+
+```php 
+<?php
+require ("../RunnableTest.php");
+class MyTest extends RunnableTest
+{
+    public function getAttachers()
+    {
+        $fleet = new Fleet(1,array(
+            $this->getFighters(206, 50),
+            $this->getFighters(207, 50),
+            $this->getFighters(204, 150)));
+        $player = new Player(1, array($fleet));
+        return new PlayerGroup(array($player));
+    }
+    public function getDefenders()
+    {
+        $fleet = new Fleet(2,array(
+            $this->getFighters(210, 150),
+            $this->getFighters(215, 50),
+            $this->getFighters(207, 20)));
+        $player = new Player(2, array($fleet));
+        return new PlayerGroup(array($player));
+    }
+}
+new MyTest();
+```
+
+?>
 
 ---
 ## Implementation developing guide 
