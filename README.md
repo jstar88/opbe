@@ -42,7 +42,7 @@ Be sure you had read the *license* with respect for the author.
 ## Making new test cases to share
 Something wrong with OPBE? The fastes way to share the simulation is to make a test case.  
 
-1. Set your prefered class name,but it must extends **RunnableTest**.  
+1. Set your prefered class name,but it must extends **RunnableTest**.
 2. Override two functions:
   * *getAttachers()* : return a PlayerGroup that rappresent the attackers
   * *getDefenders()* : return a PlayerGroup that rappresent the defenders
