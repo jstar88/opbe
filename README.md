@@ -41,6 +41,7 @@ It's awesome! You can simulate 20 ships or 20 Tera ships and.. nothing should ch
 cause the aritmetic operation aren't O(1) for CPU, also a *double* require more space than an *integer*.  
 
 Let's do some test:
+
 ##### Double's limit test 
 Write a lot of 9 in both defender's BC and attacker's BC. Cause double limit, your number will be trunked to *9223372036854775807*.  
 Anyway the battle starts and are calculated as well(some overflow errors maybe).  
