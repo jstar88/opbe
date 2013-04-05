@@ -60,7 +60,11 @@ And we got:
     Memory used: 6249 KB
 
 Seems a lot? try a O(n) algorithm and you will crash with insane small amount of ships :)
+Anyway you can decrease a lot the memory usage setting in *constants/battle_constants.php* 
 
+```php 
+    define('ONLY_FIRST_AND_LAST_ROUND',true);
+```
 
 ---
 
