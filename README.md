@@ -77,9 +77,8 @@ class MyTest extends RunnableTest
     }
 }
 new MyTest();
-```
-
 ?>
+```
 
 ---
 ## Implementation developing guide 
