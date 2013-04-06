@@ -201,4 +201,14 @@ class Player extends DeepClonable
             $this->array[$id] = $fleets;
         }
     }
+    public function getTotalCount()
+    {
+        $amount = 0;
+        foreach ($this->array as $id => $fleet)
+        {
+            $amount += $fleet->getTotalCount();
+        }
+        return $amount;
+        
+    }
 }

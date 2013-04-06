@@ -140,6 +140,16 @@ class PlayerGroup extends DeepClonable
         }
         return $merged;
     }
+    public function getTotalCount()
+    {
+        $amount = 0;
+        foreach ($this->array as $id => $player)
+        {
+            $amount += $player->getTotalCount();
+        }
+        return $amount;
+        
+    }
 
 
 }

@@ -101,6 +101,52 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $won = "w"; // draw
     }
 
+    $ROUND = array();
+    $i = 1;
+    for (; $i <= $report->getLastRoundNumber(); $i++)
+    {
+        $attackerGroupObj = $report->getPresentationAttackersFleetOnRound($i);
+        $defenderGroupObj = $report->getPresentationDefendersFleetOnRound($i);
+        $attackAmount = $attackerGroupObj->getTotalCount();
+        $defenseAmount = $defenderGroupObj->getTotalCount();
+        updatePlayers($attackerGroupObj, $attackers);
+        updatePlayers($defenderGroupObj, $defenders);
+        $ROUND[$i - 1] = array(
+            'attackers' => $attackers,
+            'defenders' => $defenders,
+            'attackA' => $attackAmount,
+            'defenseA' => $defenseAmount,
+            'infoA' => $attArray,
+            'infoD' => $defArray);
+
+    }
+
+    $attackerGroupObj = $report->getAfterBattleAttackers();
+    $defenderGroupObj = $report->getAfterBattleDefenders();
+    $attackAmount = $attackerGroupObj->getTotalCount();
+    $defenseAmount = $defenderGroupObj->getTotalCount();
+    updatePlayers($attackerGroupObj, $attackers);
+    updatePlayers($defenderGroupObj, $defenders);
+    $ROUND[$i - 1] = array(
+        'attackers' => $attackers,
+        'defenders' => $defenders,
+        'attackA' => $attackAmount,
+        'defenseA' => $defenseAmount,
+        'infoA' => $attArray,
+        'infoD' => $defArray);
+
+
+    return array(
+        'won' => $won,
+        'debris' => array('attacker' => array(901 => $debAttMet, 902 => $debAttCry), 'defender' => array(901 => $debDefMet, 902 => $debDefCry)),
+        'rw' => $ROUND,
+        'unitLost' => $totalLost);
+
+
+}
+
+function updatePlayers(PlayerGroup $playerGroup, &$players)
+{
 
 }
 
