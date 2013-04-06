@@ -31,7 +31,7 @@ to test opbe accuracy you have to set speedsim(dragosim)'s battles amount to a b
 
 ---
 
-## Performace
+## Performance
 Seems that no one know the O() concept, from wiki:  
 *big O notation is used to classify algorithms by how they respond (e.g., in their processing time or working space requirements) to changes in input size.*   
 There are different possibilities, such as O(n) (linear), O(n^2) (quadratic) etc.
