@@ -26,6 +26,9 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
+define(PATH,ROOT_PATH .'includes/libs/opbe/');
+include(PATH.'utils/includer.php');
+
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
     global $pricelist, $CombatCaps;
