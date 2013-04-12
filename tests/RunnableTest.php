@@ -168,6 +168,7 @@ EOT;
     }
     private static function save($other)
     {
+        date_default_timezone_set("Europe/Vatican");
         $time = date('l jS \of F Y h:i:s A');
         $post = '$_POST =' . var_export($_POST);
         $get = '$_GET =' . var_export($_GET);
