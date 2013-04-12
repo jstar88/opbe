@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -68,6 +69,14 @@ class PlayerGroup extends DeepClonable
     public function addPlayer(Player $player)
     {
         $this->array[$player->getId()] = $player;
+    }
+    public function createPlayerIfNotExist($id, $militaryTech, $shieldTech, $defenceTech)
+    {
+        if (!$this->existPlayer($id))
+        {
+            $this->addPlayer(new Player($id, $militaryTech, $shieldTech, $defenceTech));
+        }
+        return $this->getPlayer($id);
     }
     public function isEmpty()
     {
@@ -148,7 +157,7 @@ class PlayerGroup extends DeepClonable
             $amount += $player->getTotalCount();
         }
         return $amount;
-        
+
     }
 
 

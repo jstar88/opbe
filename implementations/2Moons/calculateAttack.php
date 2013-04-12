@@ -26,8 +26,8 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-define(PATH,ROOT_PATH .'includes/libs/opbe/');
-include(PATH.'utils/includer.php');
+define(PATH, ROOT_PATH . 'includes/libs/opbe/');
+include (PATH . 'utils/includer.php');
 
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
@@ -38,17 +38,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($attackers as $fleetID => $attacker)
     {
         $player = $attacker['player'];
-        if ($attackerGroupObj->existPlayer($player['id']))
-        {
-            $attackerPlayerObj = $attackerGroupObj->getPlayer($player['id']);
-        }
-        else
-        {
-            $attackerPlayerObj = new Player($player['id']);
-            $attackerPlayerObj->setTech($player['military_tech'], $player['shield_tech'], $player['defence_tech']);
-            $attackerGroupObj->addPlayer($attackerPlayerObj);
-        }
-
+        $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $attackerFleetObj = new Fleet($fleetID);
         foreach ($attacker['unit'] as $element => $amount)
         {
@@ -63,17 +53,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($defenders as $fleetID => $defender)
     {
         $player = $attacker['player'];
-        if ($defenderGroupObj->existPlayer($player['id']))
-        {
-            $defenderPlayerObj = $defenderGroupObj->getPlayer($player['id']);
-        }
-        else
-        {
-            $defenderPlayerObj = new Player($player['id']);
-            $defenderPlayerObj->setTech($player['military_tech'], $player['shield_tech'], $player['defence_tech']);
-            $defenderGroupObj->addPlayer($defenderPlayerObj);
-        }
-
+        $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['unit'] as $element => $amount)
         {
