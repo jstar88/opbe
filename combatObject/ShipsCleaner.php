@@ -60,7 +60,7 @@ class ShipsCleaner
         {
             throw new Exception("negative prob");
         }
-        if ($this->lastShipHit >= $this->fighters->getCount()/2)
+        if ($this->lastShipHit >= $this->fighters->getCount()/PROB_TO_REAL_MAGIC)
         {
             echo "this->lastShipHit >= this->fighters->getCount()/2<br>";
             if ($prob < MIN_PROB_TO_EXPLODE)

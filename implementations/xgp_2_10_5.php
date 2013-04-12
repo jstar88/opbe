@@ -27,6 +27,11 @@
  */
 global $pricelist, $lang, $resource, $CombatCaps, $user;
 
+define('SHIP_MIN_ID', 202);
+define('SHIP_MAX_ID', 217);
+define('DEFENSE_MIN_ID', 401);
+define('DEFENSE_MAX_ID', 503);
+
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
     require (PATH . "utils/includer.php");

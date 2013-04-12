@@ -153,7 +153,7 @@ class PhysicShot
             return;       
         }
         $numeroDiColpiPerDistruggereTuttiGliScudi = $currentCellsCount / $cellsDestroyedInOneShot;
-        $this->bouncedDamage = $numeroDiColpiPerDistruggereTuttiGliScudi * $bouncedDamageForOneShot;
+        $this->bouncedDamage = min($numeroDiColpiPerDistruggereTuttiGliScudi,$this->count) * $bouncedDamageForOneShot;
         //$colpiAsegno = max(0, $this->count - $numeroDiColpiPerDistruggereTuttiGliScudi);
         echo "numeroDiColpiPerDistruggereTuttiGliScudi=$numeroDiColpiPerDistruggereTuttiGliScudi<br>";
         echo "bouncedDamage={$this->bouncedDamage}<br>";

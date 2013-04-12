@@ -1,0 +1,51 @@
+
+---------------------------------
+Tuesday 9th of April 2013 10:46:52 PM
+Unknown error type: [8] Undefined variable: exploded<br />Error on line 87 in file C:\Users\nicola user\opbe\combatObject\ShipsCleaner.php, PHP 5.3.3 (WINNT)<br />
+$_POST =
+$_GET =
+--- Round 1 ---<br><br>---- firing from 206 to 204 ---- <br>Defender single hull=400<br>Defender count=1650<br>currentShield before= 165000<br>currentLife before=660000<br>damage=400<br>count=600<br>shieldCellValue=0.1<br>cellsDestroyedInOneShot=4000<br>bouncedDamageForOneShot=0<br>currentCellsCount=60000<br>bounce function<br>numeroDiColpiPerDistruggereTuttiGliScudi=15<br>bouncedDamage=0<br>assorb function<br>totalCellsDestroyedAtMax = 2400000<br>realTotalCellsDestroyed=60000<br>assorbedDamage=6000<br>inflict function<br>hullDamage=234000<br>hullDamage=234000<br>currentShield after= 105000<br>currentLife after=426000<br>lastShipHit after = 600<br>lastShots after=600<br>---- firing from 204 to 206 ---- <br>Defender single hull=2700<br>Defender count=100<br>currentShield before= 10000<br>currentLife before=270000<br>damage=50<br>count=1650<br>shieldCellValue=0.5<br>cellsDestroyedInOneShot=100<br>bouncedDamageForOneShot=0<br>currentCellsCount=10000<br>bounce function<br>numeroDiColpiPerDistruggereTuttiGliScudi=100<br>bouncedDamage=0<br>assorb function<br>totalCellsDestroyedAtMax = 165000<br>realTotalCellsDestroyed=10000<br>assorbedDamage=5000<br>inflict function<br>hullDamage=77500<br>hullDamage=77500<br>currentShield after= 0<br>currentLife after=192500<br>lastShipHit after = 100<br>lastShots after=1650<br>---- exploding 204 ----<br>lastShipHit after = 600<br>lastShots after=600<br>currentLife before=426000<br>prob=0.35454545454545<br>this->lastShipHit < this->fighters->getCount()/2<br>
+Warning: date(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected 'Europe/Paris' for '2.0/DST' instead in C:\Users\nicola user\opbe\tests\RunnableTest.php on line 171
+
+Call Stack:
+    0.0008     333648   1. {main}() C:\Users\nicola user\opbe\tests\runnable\CrusherVsHunter.php:0
+    0.0083    1228360   2. RunnableTest->__construct() C:\Users\nicola user\opbe\tests\runnable\CrusherVsHunter.php:46
+    0.0090    1236776   3. Battle->startBattle() C:\Users\nicola user\opbe\tests\RunnableTest.php:64
+    0.0095    1303936   4. Round->startRound() C:\Users\nicola user\opbe\core\Battle.php:74
+    0.0119    1309264   5. PlayerGroup->cleanShips() C:\Users\nicola user\opbe\core\Round.php:91
+    0.0119    1309416   6. Player->cleanShips() C:\Users\nicola user\opbe\models\PlayerGroup.php:111
+    0.0119    1309568   7. Fleet->cleanShips() C:\Users\nicola user\opbe\models\Player.php:151
+    0.0119    1309720   8. Fighters->cleanShips() C:\Users\nicola user\opbe\models\Fleet.php:145
+    0.0119    1310224   9. ShipsCleaner->start() C:\Users\nicola user\opbe\models\Fighters.php:146
+    0.0120    1311256  10. RunnableTest::myErrorHandler() C:\Users\nicola user\opbe\tests\RunnableTest.php:0
+    0.0120    1311464  11. RunnableTest::save() C:\Users\nicola user\opbe\tests\RunnableTest.php:164
+    0.0120    1311560  12. date() C:\Users\nicola user\opbe\tests\RunnableTest.php:171
+
+array (
+)array (
+)
+---------------------------------
+Tuesday 9th of April 2013 10:47:09 PM
+Unknown error type: [8] Undefined variable: exploded<br />Error on line 87 in file C:\Users\nicola user\opbe\combatObject\ShipsCleaner.php, PHP 5.3.3 (WINNT)<br />
+$_POST =
+$_GET =
+--- Round 1 ---<br><br>---- firing from 206 to 204 ---- <br>Defender single hull=400<br>Defender count=1650<br>currentShield before= 165000<br>currentLife before=660000<br>damage=400<br>count=600<br>shieldCellValue=0.1<br>cellsDestroyedInOneShot=4000<br>bouncedDamageForOneShot=0<br>currentCellsCount=60000<br>bounce function<br>numeroDiColpiPerDistruggereTuttiGliScudi=15<br>bouncedDamage=0<br>assorb function<br>totalCellsDestroyedAtMax = 2400000<br>realTotalCellsDestroyed=60000<br>assorbedDamage=6000<br>inflict function<br>hullDamage=234000<br>hullDamage=234000<br>currentShield after= 105000<br>currentLife after=426000<br>lastShipHit after = 600<br>lastShots after=600<br>---- firing from 204 to 206 ---- <br>Defender single hull=2700<br>Defender count=100<br>currentShield before= 10000<br>currentLife before=270000<br>damage=50<br>count=1650<br>shieldCellValue=0.5<br>cellsDestroyedInOneShot=100<br>bouncedDamageForOneShot=0<br>currentCellsCount=10000<br>bounce function<br>numeroDiColpiPerDistruggereTuttiGliScudi=100<br>bouncedDamage=0<br>assorb function<br>totalCellsDestroyedAtMax = 165000<br>realTotalCellsDestroyed=10000<br>assorbedDamage=5000<br>inflict function<br>hullDamage=77500<br>hullDamage=77500<br>currentShield after= 0<br>currentLife after=192500<br>lastShipHit after = 100<br>lastShots after=1650<br>---- exploding 204 ----<br>lastShipHit after = 600<br>lastShots after=600<br>currentLife before=426000<br>prob=0.35454545454545<br>this->lastShipHit < this->fighters->getCount()/2<br>
+Warning: date(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected 'Europe/Paris' for '2.0/DST' instead in C:\Users\nicola user\opbe\tests\RunnableTest.php on line 171
+
+Call Stack:
+    0.0008     333648   1. {main}() C:\Users\nicola user\opbe\tests\runnable\CrusherVsHunter.php:0
+    0.0081    1228360   2. RunnableTest->__construct() C:\Users\nicola user\opbe\tests\runnable\CrusherVsHunter.php:46
+    0.0088    1236776   3. Battle->startBattle() C:\Users\nicola user\opbe\tests\RunnableTest.php:64
+    0.0093    1303936   4. Round->startRound() C:\Users\nicola user\opbe\core\Battle.php:74
+    0.0116    1309264   5. PlayerGroup->cleanShips() C:\Users\nicola user\opbe\core\Round.php:91
+    0.0116    1309416   6. Player->cleanShips() C:\Users\nicola user\opbe\models\PlayerGroup.php:111
+    0.0116    1309568   7. Fleet->cleanShips() C:\Users\nicola user\opbe\models\Player.php:151
+    0.0116    1309720   8. Fighters->cleanShips() C:\Users\nicola user\opbe\models\Fleet.php:145
+    0.0116    1310224   9. ShipsCleaner->start() C:\Users\nicola user\opbe\models\Fighters.php:146
+    0.0117    1311256  10. RunnableTest::myErrorHandler() C:\Users\nicola user\opbe\tests\RunnableTest.php:0
+    0.0117    1311464  11. RunnableTest::save() C:\Users\nicola user\opbe\tests\RunnableTest.php:164
+    0.0117    1311560  12. date() C:\Users\nicola user\opbe\tests\RunnableTest.php:171
+
+array (
+)array (
+)

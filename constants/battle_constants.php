@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -25,35 +26,38 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-define('ROUNDS', 6);
 
-define('SHIELDS_TECH_INCREMENT_FACTOR', 0.1);
-define('ARMOUR_TECH_INCREMENT_FACTOR', 0.1);
-define('WEAPONS_TECH_INCREMENT_FACTOR', 0.1);
-
-define('MIN_PROB_TO_EXPLODE', 0.3);
-define('SHIELD_CELLS', 100);
-
-define('DEBRIS_FACTOR', 0.3);
-define('MOON_UNIT_PROB', 100000);
-define('MAX_MOON_PROB', 20);
-
-define('COST_TO_ARMOUR', 0.1);
-define('POINT_UNIT', 1000);
-
+/* System constants, do not edit! */
 define('BATTLE_WIN', 1);
 define('BATTLE_LOSE', -1);
 define('BATTLE_DRAW', 0);
+define('SHIELD_CELLS', 100);
+define('USE_SERIALIZATION_TO_CLONE', true);
+define('USE_PARTIAL_SERIALIZATION_TO_CLONE', false);
+define('PROB_TO_REAL_MAGIC',2);
 
-define('USE_SERIALIZATION_TO_CLONE',true);
-define('USE_PARTIAL_SERIALIZATION_TO_CLONE',false);
+/* Battle constants, default as Ogame */
+define('ROUNDS', 6);
+define('SHIELDS_TECH_INCREMENT_FACTOR', 0.1);
+define('ARMOUR_TECH_INCREMENT_FACTOR', 0.1);
+define('WEAPONS_TECH_INCREMENT_FACTOR', 0.1);
+define('COST_TO_ARMOUR', 0.1);
+define('MIN_PROB_TO_EXPLODE', 0.3);
+define('DEFENSE_REPAIR_PROB', 0.7);
+define('SHIP_REPAIR_PROB', 0);
 
-define('MOON_MIN_START_SIZE',2000);
-define('MOON_MAX_START_SIZE',6000);
-define('MOON_MIN_FACTOR',100);
-define('MOON_MAX_FACTOR',200);
+/* Views and optimization options */
+define('ONLY_FIRST_AND_LAST_ROUND', false);
 
-define('DEFENSE_REPAIR_PROB',0.7);
-define('SHIP_REPAIR_PROB',0);
-
-define('ONLY_FIRST_AND_LAST_ROUND',false);
+/* After-battle constants, default as Ogame */
+define('DEBRIS_FACTOR', 0.3);
+define('POINT_UNIT', 1000);
+define('MOON_UNIT_PROB', 100000);
+define('MAX_MOON_PROB', 20);
+define('MOON_MIN_START_SIZE', 2000);
+define('MOON_MAX_START_SIZE', 6000);
+define('MOON_MIN_FACTOR', 100);
+define('MOON_MAX_FACTOR', 200);
+define('MOON_MAX_HIGHT_TEMP_DIFFERENCE_FROM_PLANET', 30);
+define('MOON_MAX_LOW_TEMP_DIFFERENCE_FROM_PLANET', 10);
+define('DEFAULT_MOON_NAME', 'moon');

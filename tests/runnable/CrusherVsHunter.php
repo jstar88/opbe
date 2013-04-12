@@ -31,13 +31,13 @@ class CrusherVsHunter extends RunnableTest
 {
     public function getAttachers()
     {
-        $fleet = new Fleet(1,array($this->getFighters(206, 50)));
+        $fleet = new Fleet(1,array($this->getFighters(206, 100)));
         $player = new Player(1, array($fleet));
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        $fleet = new Fleet(2,array($this->getFighters(204, 400)));
+        $fleet = new Fleet(2,array($this->getFighters(204, 1650)));
         $player = new Player(2, array($fleet));
         return new PlayerGroup(array($player));
     }
