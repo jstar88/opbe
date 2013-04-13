@@ -29,11 +29,22 @@
 define(PATH, ROOT_PATH . 'includes/libs/opbe/');
 include (PATH . 'utils/includer.php');
 
+/**
+ * calculateAttack()
+ * Calculate the battle using OPBE
+ * 
+ * @param array &$attackers
+ * @param array &$defenders
+ * @param mixed $FleetTF
+ * @param mixed $DefTF
+ * @return array
+ */
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
     global $pricelist, $CombatCaps;
 
-    // building attackers
+    /********** BUILDINGS MODELS **********/
+    //attackers
     $attackerGroupObj = new PlayerGroup();
     foreach ($attackers as $fleetID => $attacker)
     {
@@ -47,8 +58,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         }
         $attackerPlayerObj->addFleet($attackerFleetObj);
     }
-
-    // building defenders
+    //defenders
     $defenderGroupObj = new PlayerGroup();
     foreach ($defenders as $fleetID => $defender)
     {
@@ -63,27 +73,27 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderPlayerObj->addFleet($defenderFleetObj);
     }
 
-    // start of battle
-
+    /********** BATTLE ELABORATION **********/
     $opbe = new Battle($attackerGroupObj, $defenderGroupObj);
     $opbe->startBattle();
     $report = $opbe->getReport();
 
-    //to do: update attackers and defenders array data with the report info.
-
+    /********** WHO WON **********/
     if ($report->defenderHasWin())
     {
-        $won = "r"; // defender
+        $won = "r";
     }
     elseif ($report->attackerHasWin())
     {
-        $won = "a"; // attacker
+        $won = "a";
     }
     else
     {
-        $won = "w"; // draw
+        $won = "w";
     }
 
+    /********** ROUNDS INFOS **********/
+    //attackers
     $ROUND = array();
     $i = 1;
     for (; $i <= $report->getLastRoundNumber(); $i++)
@@ -103,7 +113,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
             'infoD' => $defArray);
 
     }
-
+    //defenders
     $attackerGroupObj = $report->getAfterBattleAttackers();
     $defenderGroupObj = $report->getAfterBattleDefenders();
     $attackAmount = $attackerGroupObj->getTotalCount();
@@ -115,10 +125,24 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         'defenders' => $defenders,
         'attackA' => $attackAmount,
         'defenseA' => $defenseAmount,
-        'infoA' => $attArray,
-        'infoD' => $defArray);
+        'infoA' => $attArray, //to do
+        'infoD' => $defArray); //to do
+
+    /********** DEBRIS **********/
+    //attackers
+    $debAtt = $report->getAttackerDebris();
+    $debAttMet = $debAtt[0];
+    $debAttCry = $debAtt[1];
+    //defenders
+    $debDef = $report->getDefenderDebris();
+    $debDefMet = $debDef[0];
+    $debDefCry = $debDef[1];
+
+    /********** LOST UNITS **********/
+    $totalLost = array('attacker' => $report->getTotalAttackersLostUnits(), 'defender' => $report->getTotalDefendersLostUnits());
 
 
+    /********** RETURNS **********/
     return array(
         'won' => $won,
         'debris' => array('attacker' => array(901 => $debAttMet, 902 => $debAttCry), 'defender' => array(901 => $debDefMet, 902 => $debDefCry)),
@@ -128,11 +152,30 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 
 }
 
+
+//to do
+/**
+ * updatePlayers()
+ * Update players array as default 2moons require
+ * 
+ * @param PlayerGroup $playerGroup
+ * @param array &$players
+ * @return null
+ */
 function updatePlayers(PlayerGroup $playerGroup, &$players)
 {
 
 }
 
+
+/**
+ * getFighters()
+ * Choose the correct class type by ID
+ * 
+ * @param int $id
+ * @param int $count
+ * @return a Ship or Defense instance
+ */
 function getFighters($id, $count)
 {
     global $CombatCaps, $pricelist;
@@ -144,6 +187,15 @@ function getFighters($id, $count)
         return new Ship($id, $count, $rf, $shield, $cost, $power);
     return new Defense($id, $count, $rf, $shield, $cost, $power);
 }
+
+
+/**
+ * getFleet()
+ * Choose the correct class type by ID
+ * 
+ * @param int $id
+ * @return a Fleet or HomeFleet instance
+ */
 function getFleet($id)
 {
     if ($id == 0)

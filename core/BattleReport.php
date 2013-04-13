@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -56,13 +57,16 @@ class BattleReport
         if ($number === 'END')
         {
             return $this->rounds[$this->roundsCount - 1];
-        } elseif ($number === 'START')
+        }
+        elseif ($number === 'START')
         {
             return $this->rounds[0];
-        } elseif (intval($number) < 0 || intval($number) > ROUNDS)
+        }
+        elseif (intval($number) < 0 || intval($number) > ROUNDS)
         {
             throw new Exception('Invalid round number');
-        } else
+        }
+        else
         {
             return $this->rounds[intval($number)];
         }
@@ -161,7 +165,7 @@ class BattleReport
     {
         return min(round(array_sum($this->getDebris()) / MOON_UNIT_PROB), MAX_MOON_PROB);
     }
-    public function getDebris()
+    public function getAttackerDebris()
     {
         $metal = 0;
         $crystal = 0;
@@ -176,6 +180,10 @@ class BattleReport
                 }
             }
         }
+        return array($metal * DEBRIS_FACTOR, $crystal * DEBRIS_FACTOR);
+    }
+    public function getDefenderDebris()
+    {
         foreach ($this->getDefendersLostUnits() as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)
@@ -188,6 +196,12 @@ class BattleReport
             }
         }
         return array($metal * DEBRIS_FACTOR, $crystal * DEBRIS_FACTOR);
+    }
+    public function getDebris()
+    {
+        $aDebris = $this->getAttackerDebris();
+        $dDebris = $this->getDefenderDebris();
+        return array($aDebris[0] + $dDebris[0], $aDebris[1] + $dDebris[1]);
     }
     public function getAttackersFirePower($round)
     {
