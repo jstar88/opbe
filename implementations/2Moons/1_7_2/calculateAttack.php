@@ -29,42 +29,14 @@
 define(PATH, ROOT_PATH . 'includes/libs/opbe/');
 include (PATH . 'utils/includer.php');
 
-define(INDEX_DEFENDER_SHIPS_NAME, 'def');
-define(INDEX_ATTACKER_SHIPS_NAME, 'detail');
-define(INDEX_DEFENDER_TECHS_NAME, 'techs');
-define(INDEX_ATTACKER_TECHS_NAME, 'techs');
 define(ID_MIN_SHIPS, 100);
 define(ID_MAX_SHIPS, 300);
 define(HOME_FLEET, 0);
-define(INDEX_ATTACKERS_NAME, 'attackers');
-define(INDEX_DEFENDERS_NAME, 'defenders');
-define(INDEX_DEBRIS_ATTACKER_NAME, 'attacker');
-define(INDEX_DEBRIS_DEFENDER_NAME, 'defender');
-define(INDEX_ATTACKERS_AMOUNT_NAME, 'attackA');
-define(INDEX_DEFENDERS_AMOUNT_NAME, 'defenseA');
-define(INDEX_ATTACKERS_INFO, 'infoA');
-define(INDEX_DEFENDERS_INFO, 'infoD');
 define(DEFENDERS_WON, 'r');
 define(ATTACKERS_WON, 'a');
 define(DRAW, 'w');
 define(METAL_ID, 901);
 define(CRYSTAL_ID, 902);
-define(INDEX_RETURN_WON, 'won');
-define(INDEX_RETURN_DEBRIS, 'debris');
-define(INDEX_RETURN_RW, 'rw');
-define(INDEX_RETURN_UNITLOST, 'unitLost');
-define(INDEX_RETURN_ATTACKER_NAME, 'att');
-define(INDEX_RETURN_DEFENDER_NAME, 'def');
-define(PRICELIST_VAR_NAME, 'pricelist');
-define(COMBATCAPS_VAR_NAME, 'CombatCaps');
-define(INDEX_RF_NAME, 'sd');
-define(INDEX_COST_NAME, 'cost');
-define(INDEX_POWER_NAME, 'attack');
-define(INDEX_SHIELD_NAME, 'shield');
-define(INDEX_ATTACKERS_POWER_NAME, 'attack');
-define(INDEX_DEFENSES_POWER_NAME, 'defense');
-define(INDEX_ATTACKERS_ASSORBED, 'attackShield');
-define(INDEX_DEFENDERS_ASSORBED, 'defShield');
 
 
 /**
@@ -79,7 +51,8 @@ define(INDEX_DEFENDERS_ASSORBED, 'defShield');
  */
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
-    global $pricelist, $CombatCaps;
+    $CombatCaps = $GLOBALS['CombatCaps'];
+    $pricelist = $GLOBALS['pricelist'];
 
     /********** BUILDINGS MODELS **********/
     //attackers
@@ -140,16 +113,16 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderGroupObj = $report->getPresentationDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
-        $attArray = updatePlayers($attackerGroupObj, $attackers, INDEX_ATTACKER_SHIPS_NAME, INDEX_ATTACKER_TECHS_NAME);
-        $defArray = updatePlayers($defenderGroupObj, $defenders, INDEX_DEFENDER_SHIPS_NAME, INDEX_DEFENDER_TECHS_NAME);
+        $attArray = updatePlayers($attackerGroupObj, $attackers, 'detail');
+        $defArray = updatePlayers($defenderGroupObj, $defenders, 'def');
         $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i, $attArray, $defArray);
 
     }
     //after battle
     $attackerGroupObj = $report->getAfterBattleAttackers();
     $defenderGroupObj = $report->getAfterBattleDefenders();
-    $attArray = updatePlayers($attackerGroupObj, $attackers, INDEX_ATTACKER_SHIPS_NAME, INDEX_ATTACKER_TECHS_NAME);
-    $defArray = updatePlayers($defenderGroupObj, $defenders, INDEX_DEFENDER_SHIPS_NAME, INDEX_DEFENDER_TECHS_NAME);
+    $attArray = updatePlayers($attackerGroupObj, $attackers, 'detail');
+    $defArray = updatePlayers($defenderGroupObj, $defenders, 'def');
     $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i, $attArray, $defArray);
 
     /********** DEBRIS **********/
@@ -161,17 +134,19 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $debDef = $report->getDefenderDebris();
     $debDefMet = $debDef[0];
     $debDefCry = $debDef[1];
+    //total
+    $debris = array('attacker' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'defender' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
 
     /********** LOST UNITS **********/
-    $totalLost = array(INDEX_DEBRIS_ATTACKER_NAME => $report->getTotalAttackersLostUnits(), INDEX_DEBRIS_DEFENDER_NAME => $report->getTotalDefendersLostUnits());
+    $totalLost = array('attacker' => $report->getTotalAttackersLostUnits(), 'defender' => $report->getTotalDefendersLostUnits());
 
 
     /********** RETURNS **********/
     return array(
-        INDEX_RETURN_WON => $won,
-        INDEX_RETURN_DEBRIS => array(INDEX_RETURN_ATTACKER_NAME => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), INDEX_RETURN_DEFENDER_NAME => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry)),
-        INDEX_RETURN_RW => $ROUND,
-        INDEX_RETURN_UNITLOST => $totalLost);
+        'won' => $won,
+        'debris' => $debris,
+        'rw' => $ROUND,
+        'unitLost' => $totalLost);
 }
 
 
@@ -189,16 +164,16 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attArray, $defArray)
 {
     return array(
-        INDEX_ATTACKERS_POWER_NAME => $report->getAttackersFirePower($i),
-        INDEX_DEFENSES_POWER_NAME => $report->getDefendersFirePower($i),
-        INDEX_DEFENDERS_ASSORBED => $report->getDefendersAssorbedDamage($i),
-        INDEX_ATTACKERS_ASSORBED => $report->getAttachersAssorbedDamage($i),
-        INDEX_ATTACKERS_NAME => $attackers,
-        INDEX_DEFENDERS_NAME => $defenders,
-        INDEX_ATTACKERS_AMOUNT_NAME => $attackerGroupObj->getTotalCount(),
-        INDEX_DEFENDERS_AMOUNT_NAME => $defenderGroupObj->getTotalCount(),
-        INDEX_ATTACKERS_INFO => $attArray,
-        INDEX_DEFENDERS_INFO => $defArray);
+        'attack' => $report->getAttackersFirePower($i),
+        'defense' => $report->getDefendersFirePower($i),
+        'defShield' => $report->getDefendersAssorbedDamage($i),
+        'attackShield' => $report->getAttachersAssorbedDamage($i),
+        'attackers' => $attackers,
+        'defenders' => $defenders,
+        'attackA' => $attackerGroupObj->getTotalCount(),
+        'defenseA' => $defenderGroupObj->getTotalCount(),
+        'infoA' => $attArray,
+        'infoD' => $defArray);
 }
 
 
@@ -210,14 +185,14 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
  * @param array &$players
  * @return null
  */
-function updatePlayers(PlayerGroup $playerGroup, &$players, $indexShipsName, $indexTechsName)
+function updatePlayers(PlayerGroup $playerGroup, &$players, $indexShipsName)
 {
     $plyArray = array();
     foreach ($playerGroup as $idPlayer => $player)
     {
         foreach ($player as $idFleet => $fleet)
         {
-            $players[$idFleet][$indexTechsName] = array(
+            $players[$idFleet]['techs'] = array(
                 $player->getWeaponsTech(),
                 $player->getArmourTech(),
                 $player->getShieldsTech());
@@ -246,12 +221,12 @@ function updatePlayers(PlayerGroup $playerGroup, &$players, $indexShipsName, $in
  */
 function getFighters($id, $count)
 {
-    $CombatCaps = $GLOBALS[COMBATCAPS_VAR_NAME];
-    $pricelist = $GLOBALS[PRICELIST_VAR_NAME];
-    $rf = $CombatCaps[$id][INDEX_RF_NAME];
-    $shield = $CombatCaps[$id][INDEX_SHIELD_NAME];
-    $cost = array($pricelist[$element][INDEX_COST_NAME][METAL_ID], $pricelist[$element][INDEX_COST_NAME][CRYSTAL_ID]);
-    $power = $CombatCaps[$id][INDEX_POWER_NAME];
+    $CombatCaps = $GLOBALS['CombatCaps'];
+    $pricelist = $GLOBALS['pricelist'];
+    $rf = $CombatCaps[$id]['sd'];
+    $shield = $CombatCaps[$id]['shield'];
+    $cost = array($pricelist[$element]['cost'][METAL_ID], $pricelist[$element]['cost'][CRYSTAL_ID]);
+    $power = $CombatCaps[$id]['attack'];
     if ($id > ID_MIN_SHIPS && $id < ID_MAX_SHIPS)
     {
         return new Ship($id, $count, $rf, $shield, $cost, $power);
