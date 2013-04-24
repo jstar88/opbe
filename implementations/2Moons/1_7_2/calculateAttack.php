@@ -26,17 +26,17 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-define(PATH, ROOT_PATH . 'includes/libs/opbe/');
-include (PATH . 'utils/includer.php');
+define('PATH', ROOT_PATH . 'includes/libs/opbe/');
+include ('PATH' . 'utils/includer.php');
 
-define(ID_MIN_SHIPS, 100);
-define(ID_MAX_SHIPS, 300);
-define(HOME_FLEET, 0);
-define(DEFENDERS_WON, 'r');
-define(ATTACKERS_WON, 'a');
-define(DRAW, 'w');
-define(METAL_ID, 901);
-define(CRYSTAL_ID, 902);
+define('ID_MIN_SHIPS', 100);
+define('ID_MAX_SHIPS', 300);
+define('HOME_FLEET', 0);
+define('DEFENDERS_WON', 'r');
+define('ATTACKERS_WON', 'a');
+define('DRAW', 'w');
+define('METAL_ID', 901);
+define('CRYSTAL_ID', 902);
 
 
 /**
