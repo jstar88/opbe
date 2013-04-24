@@ -62,7 +62,7 @@ class BattleReport
         {
             return $this->rounds[0];
         }
-        elseif (intval($number) < 0 || intval($number) > ROUNDS)
+        elseif (intval($number) < 0 || intval($number) > $this->getLastRoundNumber())
         {
             throw new Exception('Invalid round number');
         }
