@@ -60,7 +60,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($attackers as $fleetID => $attacker)
     {
         $player = $attacker['player'];
-        $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+        $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $attackerFleetObj = new Fleet($fleetID);
         foreach ($attacker['unit'] as $element => $amount)
         {
@@ -74,7 +74,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($defenders as $fleetID => $defender)
     {
         $player = $attacker['player'];
-        $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+        $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['unit'] as $element => $amount)
         {

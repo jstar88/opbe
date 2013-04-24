@@ -70,11 +70,11 @@ class PlayerGroup extends DeepClonable
     {
         $this->array[$player->getId()] = $player;
     }
-    public function createPlayerIfNotExist($id, $militaryTech, $shieldTech, $defenceTech)
+    public function createPlayerIfNotExist($id, $fleets, $militaryTech, $shieldTech, $defenceTech)
     {
         if (!$this->existPlayer($id))
         {
-            $this->addPlayer(new Player($id, $militaryTech, $shieldTech, $defenceTech));
+            $this->addPlayer(new Player($id, $fleets, $militaryTech, $shieldTech, $defenceTech));
         }
         return $this->getPlayer($id);
     }
