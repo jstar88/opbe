@@ -225,7 +225,7 @@ function getFighters($id, $count)
     $pricelist = $GLOBALS['pricelist'];
     $rf = $CombatCaps[$id]['sd'];
     $shield = $CombatCaps[$id]['shield'];
-    $cost = array($pricelist[$element]['cost'][METAL_ID], $pricelist[$element]['cost'][CRYSTAL_ID]);
+    $cost = array($pricelist[$id]['cost'][METAL_ID], $pricelist[$id]['cost'][CRYSTAL_ID]);
     $power = $CombatCaps[$id]['attack'];
     if ($id > ID_MIN_SHIPS && $id < ID_MAX_SHIPS)
     {
