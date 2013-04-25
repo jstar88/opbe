@@ -49,8 +49,7 @@ class BattleReport
             $this->rounds[1] = $round;
             return;
         }
-        $this->rounds[] = $round;
-        $this->roundsCount++;
+        $this->rounds[$this->roundsCount++] = $round;
     }
     public function getRound($number)
     {
@@ -184,6 +183,8 @@ class BattleReport
     }
     public function getDefenderDebris()
     {
+        $metal = 0;
+        $crystal = 0;
         foreach ($this->getDefendersLostUnits() as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)

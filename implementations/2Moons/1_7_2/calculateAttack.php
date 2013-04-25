@@ -123,7 +123,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $defenderGroupObj = $report->getAfterBattleDefenders();
     $attArray = updatePlayers($attackerGroupObj, $attackers, 'detail');
     $defArray = updatePlayers($defenderGroupObj, $defenders, 'def');
-    $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i, $attArray, $defArray);
+    $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, 'END', $attArray, $defArray);
 
     /********** DEBRIS **********/
     //attackers
@@ -164,10 +164,10 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attArray, $defArray)
 {
     return array(
-        'attack' => $report->getAttackersFirePower($i),
-        'defense' => $report->getDefendersFirePower($i),
-        'defShield' => $report->getDefendersAssorbedDamage($i),
-        'attackShield' => $report->getAttachersAssorbedDamage($i),
+        'attack' => ($i == 'END') ? 0 : $report->getAttackersFirePower($i),
+        'defense' => ($i == 'END') ? 0 : $report->getDefendersFirePower($i),
+        'defShield' => ($i == 'END') ? 0 : $report->getDefendersAssorbedDamage($i),
+        'attackShield' => ($i == 'END') ? 0 : $report->getAttachersAssorbedDamage($i),
         'attackers' => $attackers,
         'defenders' => $defenders,
         'attackA' => $attackerGroupObj->getTotalCount(),
