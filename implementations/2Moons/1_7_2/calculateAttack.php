@@ -113,16 +113,16 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderGroupObj = $report->getPresentationDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
-        $attArray = updatePlayers($attackerGroupObj, $attackers, 'detail');
-        $defArray = updatePlayers($defenderGroupObj, $defenders, 'def');
+        $attArray = updatePlayers($attackerGroupObj, $attackers);
+        $defArray = updatePlayers($defenderGroupObj, $defenders);
         $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i, $attArray, $defArray);
 
     }
     //after battle
     $attackerGroupObj = $report->getAfterBattleAttackers();
     $defenderGroupObj = $report->getAfterBattleDefenders();
-    $attArray = updatePlayers($attackerGroupObj, $attackers, 'detail');
-    $defArray = updatePlayers($defenderGroupObj, $defenders, 'def');
+    $attArray = updatePlayers($attackerGroupObj, $attackers);
+    $defArray = updatePlayers($defenderGroupObj, $defenders);
     $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, 'END', $attArray, $defArray);
 
     /********** DEBRIS **********/
@@ -185,20 +185,20 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
  * @param array &$players
  * @return null
  */
-function updatePlayers(PlayerGroup $playerGroup, &$players, $indexShipsName)
+function updatePlayers(PlayerGroup $playerGroup, &$players)
 {
     $plyArray = array();
 
     foreach ($players as $idFleet => $info)
     {
-        $shipInfo = $info[$indexShipsName];
+        $shipInfo = $info['unit'];
         $player = $playerGroup->getPlayer($info['player']['id']);
         $fleet = $player->getFleet($idFleet);
 
         foreach ($shipInfo as $idFighters => $amount)
         {
             $fighters = $fleet->getFighters($idFighters);
-            $players[$idFleet][$indexShipsName][$idFighters] = ($fleet !== false) ? $fighters->getCount() : 0;
+            $players[$idFleet]['unit'][$idFighters] = ($fleet !== false) ? $fighters->getCount() : 0;
             $plyArray[$idFleet][$idFighters] = array(
                 'def' => $fighters->getHull() * $fighters->getCount(),
                 'shield' => $fighters->getShield() * $fighters->getCount(),
