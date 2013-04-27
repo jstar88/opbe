@@ -159,6 +159,18 @@ class PlayerGroup extends DeepClonable
         return $amount;
 
     }
+    public function getFleet($id)
+    {
+        foreach ($this->array as $id => $player)
+        {
+            $fleet = $player->getFleet($id);
+            if ($fleet !== false)
+            {
+                return $fleet;
+            }
+        }
+        return false;
+    }
 
 
 }
