@@ -188,24 +188,26 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
 function updatePlayers(PlayerGroup $playerGroup, &$players, $indexShipsName)
 {
     $plyArray = array();
-    foreach ($playerGroup as $idPlayer => $player)
-    {
-        foreach ($player as $idFleet => $fleet)
-        {
-            $players[$idFleet]['techs'] = array(
-                $player->getWeaponsTech(),
-                $player->getArmourTech(),
-                $player->getShieldsTech());
 
-            foreach ($fleet as $idFighters => $fighters)
-            {
-                $players[$idFleet][$indexShipsName][$idFighters] = $fighters->getCount();
-                $plyArray[$idFleet][$idFighters] = array(
-                    'def' => $fighters->getHull() * $fighters->getCount(),
-                    'shield' => $fighters->getShield() * $fighters->getCount(),
-                    'att' => $fighters->getPower() * $fighters->getCount());
-            }
+    foreach ($players as $idFleet => $info)
+    {
+        $shipInfo = $info[$indexShipsName];
+        $player = $playerGroup->getPlayer($info['player']['id']);
+        $fleet = $player->getFleet($idFleet);
+
+        foreach ($shipInfo as $idFighters => $amount)
+        {
+            $fighters = $fleet->getFighters($idFighters);
+            $players[$idFleet][$indexShipsName][$idFighters] = ($fleet !== false) ? $fighters->getCount() : 0;
+            $plyArray[$idFleet][$idFighters] = array(
+                'def' => $fighters->getHull() * $fighters->getCount(),
+                'shield' => $fighters->getShield() * $fighters->getCount(),
+                'att' => $fighters->getPower() * $fighters->getCount());
         }
+        $players[$idFleet]['techs'] = array(
+            $player->getWeaponsTech(),
+            $player->getArmourTech(),
+            $player->getShieldsTech());
     }
     return $plyArray;
 }
