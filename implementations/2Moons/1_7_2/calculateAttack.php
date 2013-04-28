@@ -27,7 +27,7 @@
  * @link https://github.com/jstar88/opbe
  */
 define('PATH', ROOT_PATH . 'includes/libs/opbe/');
-include ('PATH' . 'utils/includer.php');
+include (PATH . 'utils/includer.php');
 
 define('ID_MIN_SHIPS', 100);
 define('ID_MAX_SHIPS', 300);
@@ -73,7 +73,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $defenderGroupObj = new PlayerGroup();
     foreach ($defenders as $fleetID => $defender)
     {
-        $player = $attacker['player'];
+        $player = $defender['player'];
         $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['unit'] as $element => $amount)
