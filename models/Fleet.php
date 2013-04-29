@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -85,7 +86,7 @@ class Fleet extends DeepClonable
     }
     public function getFighters($id)
     {
-        return $this->array[$id];
+        return isset($this->array[$id]) ? $this->array[$id] : false;
     }
     public function getTypeCount($type)
     {
