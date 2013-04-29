@@ -34,7 +34,6 @@ class BattleReport
     private $attackersLostUnits;
     private $defendersLostUnits;
 
-    private $playerLostShips;
     public function __construct()
     {
         $this->rounds = array();
@@ -313,11 +312,6 @@ class BattleReport
     }
     private function getPlayersLostShips(PlayerGroup $playersBefore, PlayerGroup $playersAfter)
     {
-        if (isset($this->playerLostShips[$playersBefore->getId()]))
-        {
-            return $this->playerLostShips[$playersBefore->getId()];
-        }
-
         $playersBefore_clone = DeepClonable::cloneIt($playersBefore);
 
         foreach ($playersAfter->getIterator() as $idPlayer => $playerAfter)
@@ -330,7 +324,6 @@ class BattleReport
                 }
             }
         }
-        $this->playerLostShips[$playersBefore->getId()] = $playersBefore_clone;
         return $playersBefore_clone;
     }
     public function getAfterBattleAttackers()
