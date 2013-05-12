@@ -244,7 +244,7 @@ function getFighters($id, $count)
 {
     $CombatCaps = $GLOBALS['CombatCaps'];
     $pricelist = $GLOBALS['pricelist'];
-    $rf = $CombatCaps[$id]['sd'];
+    $rf = isset($CombatCaps[$id]['sd']) ? $CombatCaps[$id]['sd'] : 0;
     $shield = $CombatCaps[$id]['shield'];
     $cost = array($pricelist[$id]['cost'][METAL_ID], $pricelist[$id]['cost'][CRYSTAL_ID]);
     $power = $CombatCaps[$id]['attack'];
