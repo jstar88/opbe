@@ -60,7 +60,7 @@ class PlayerGroup extends DeepClonable
     }
     public function getPlayer($id)
     {
-        return $this->array[$id];
+        return isset($this->array[$id]) ? $this->array[$id] : false;
     }
     public function existPlayer($id)
     {

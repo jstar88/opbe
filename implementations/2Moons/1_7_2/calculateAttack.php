@@ -193,24 +193,28 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
     {
         $shipInfo = $info['unit'];
         $player = $playerGroup->getPlayer($info['player']['id']);
-        $fleet = $player->getFleet($idFleet);
+        $fleet = ($player !== false) ? $player->getFleet($idFleet) : false;
 
         foreach ($shipInfo as $idFighters => $amount)
         {
             if ($fleet !== false)
             {
                 $fighters = $fleet->getFighters($idFighters);
-                $players[$idFleet]['unit'][$idFighters] = ($fighters !== false) ? $fighters->getCount() : 0;
+                if ($fighters !== false)
+                {
+                    $plyArray[$idFleet][$idFighters] = array(
+                        'def' => $fighters->getHull(),
+                        'shield' => $fighters->getShield(),
+                        'att' => $fighters->getPower());
+                    $players[$idFleet]['unit'][$idFighters] = $fighters->getCount();
+                } else
+                {
+                    $players[$idFleet]['unit'][$idFighters] = 0;
+                }
             } else
             {
                 $players[$idFleet]['unit'][$idFighters] = 0;
             }
-            $currentAmount = $players[$idFleet]['unit'][$idFighters];
-
-            $plyArray[$idFleet][$idFighters] = array(
-                'def' => $player->getArmourTech() * $currentAmount,
-                'shield' => $player->getShieldsTech() * $currentAmount,
-                'att' => $player->getWeaponsTech() * $currentAmount);
 
             if (!isset($amountArray[$idFleet]))
             {
@@ -220,13 +224,14 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
             {
                 $amountArray['total'] = 0;
             }
+            $currentAmount = $players[$idFleet]['unit'][$idFighters];
             $amountArray[$idFleet] = $amountArray[$idFleet] + $currentAmount;
             $amountArray['total'] = $amountArray['total'] + $currentAmount;
         }
         $players[$idFleet]['techs'] = array(
-            $player->getWeaponsTech(),
-            $player->getArmourTech(),
-            $player->getShieldsTech());
+            ($player != false) ? $player->getWeaponsTech() : 0,
+            ($player != false) ? $player->getArmourTech() : 0,
+            ($player != false) ? $player->getShieldsTech() : 0);
     }
     return array($plyArray, $amountArray);
 }
