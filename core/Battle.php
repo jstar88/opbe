@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -66,6 +67,7 @@ class Battle
             if ($att_lose || $deff_lose)
             {
                 $this->checkWhoWon($att_lose, $deff_lose);
+                $this->report->setBattleResult($this->attackers->battleResult, $this->defenders->battleResult);
                 if(!$debug) ob_get_clean();
                 return;
             }

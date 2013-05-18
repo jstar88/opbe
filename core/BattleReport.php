@@ -69,6 +69,11 @@ class BattleReport
             return $this->rounds[intval($number)];
         }
     }
+    public function setBattleResult($att, $def)
+    {
+        $this->getRound('END')->getAttachersAfterRound()->battleResult = $att;
+        $this->getRound('END')->getDefendersAfterRound()->battleResult = $def;
+    }
     public function attackerHasWin()
     {
         return $this->getRound('END')->getAttachersAfterRound()->battleResult === BATTLE_WIN;
