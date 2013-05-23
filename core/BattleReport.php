@@ -339,11 +339,33 @@ class BattleReport
 
         foreach ($playersRepaired->getIterator() as $idPlayer => $player)
         {
+            $endPlayer = $players->getPlayer($idPlayer);
+            if ($endPlayer === false) // player is completely destroyed
+            {
+                $endPlayer = $player;
+                $players->addPlayer($endPlayer);
+                continue;
+            }
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
+                $endFleet = $endPlayer->getFleet($idFleet);
+                if ($endFleet === false)
+                {
+                    $endFleet = $fleet;
+                    $endPlayer->addFleet($endFleet);
+                    continue;
+                }
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
                 {
-                    $players->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->increment($fighters->getCount());
+                    $endFighters = $endFleet->getFighters($idFighters);
+                    if ($endFighters === false)
+                    {
+                        $endFighters = $fighters;
+                    }
+                    else
+                    {
+                        $endFighters->increment($fighters->getCount());
+                    }
                 }
             }
         }
@@ -357,11 +379,33 @@ class BattleReport
 
         foreach ($playersRepaired->getIterator() as $idPlayer => $player)
         {
+            $endPlayer = $players->getPlayer($idPlayer);
+            if ($endPlayer === false) // player is completely destroyed
+            {
+                $endPlayer = $player;
+                $players->addPlayer($endPlayer);
+                continue;
+            }
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
+                $endFleet = $endPlayer->getFleet($idFleet);
+                if ($endFleet === false)
+                {
+                    $endFleet = $fleet;
+                    $endPlayer->addFleet($endFleet);
+                    continue;
+                }
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
                 {
-                    $players->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->increment($fighters->getCount());
+                    $endFighters = $endFleet->getFighters($idFighters);
+                    if ($endFighters === false)
+                    {
+                        $endFighters = $fighters;
+                    }
+                    else
+                    {
+                        $endFighters->increment($fighters->getCount());
+                    }
                 }
             }
         }
