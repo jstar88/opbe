@@ -93,37 +93,34 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     if ($report->defenderHasWin())
     {
         $won = DEFENDERS_WON;
-    } elseif ($report->attackerHasWin())
+    }
+    elseif ($report->attackerHasWin())
     {
         $won = ATTACKERS_WON;
-    } else
+    }
+    elseif ($report->isAdraw())
     {
         $won = DRAW;
+    }
+    else
+    {
+        die('problem');
     }
 
     /********** ROUNDS INFOS **********/
 
     $ROUND = array();
-    $i = 1;
+    $i = 0;
     for (; $i <= $report->getLastRoundNumber(); $i++)
     {
-        $attackerGroupObj = $report->getPresentationAttackersFleetOnRound($i);
-        $defenderGroupObj = $report->getPresentationDefendersFleetOnRound($i);
+        $attackerGroupObj = $report->getResultAttackersFleetOnRound($i);
+        $defenderGroupObj = $report->getResultDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
         $attInfo = updatePlayers($attackerGroupObj, $attackers);
         $defInfo = updatePlayers($defenderGroupObj, $defenders);
-        $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i, $attInfo, $defInfo);
-
-
+        $ROUND[$i] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i + 1, $attInfo, $defInfo);
     }
-
-    //after battle
-    $attackerGroupObj = $report->getAfterBattleAttackers();
-    $defenderGroupObj = $report->getAfterBattleDefenders();
-    $attInfo = updatePlayers($attackerGroupObj, $attackers);
-    $defInfo = updatePlayers($defenderGroupObj, $defenders);
-    $ROUND[$i - 1] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, 'END', $attInfo, $defInfo);
 
     /********** DEBRIS **********/
     //attackers
@@ -163,10 +160,10 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attInfo, $defInfo)
 {
     return array(
-        'attack' => ($i == 'END') ? 0 : $report->getAttackersFirePower($i),
-        'defense' => ($i == 'END') ? 0 : $report->getDefendersFirePower($i),
-        'defShield' => ($i == 'END') ? 0 : $report->getDefendersAssorbedDamage($i),
-        'attackShield' => ($i == 'END') ? 0 : $report->getAttachersAssorbedDamage($i),
+        'attack' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getAttackersFirePower($i),
+        'defense' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getDefendersFirePower($i),
+        'defShield' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getDefendersAssorbedDamage($i),
+        'attackShield' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getAttachersAssorbedDamage($i),
         'attackers' => $attackers,
         'defenders' => $defenders,
         'attackA' => $attInfo[1],
@@ -207,11 +204,13 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
                         'shield' => $fighters->getShield(),
                         'att' => $fighters->getPower());
                     $players[$idFleet]['unit'][$idFighters] = $fighters->getCount();
-                } else
+                }
+                else
                 {
                     $players[$idFleet]['unit'][$idFighters] = 0;
                 }
-            } else
+            }
+            else
             {
                 $players[$idFleet]['unit'][$idFighters] = 0;
             }
