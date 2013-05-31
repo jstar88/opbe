@@ -108,8 +108,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $i = 0;
     for (; $i <= $report->getLastRoundNumber(); $i++)
     {
-        $attackerGroupObj = $report->getPresentationAttackersFleetOnRound($i);
-        $defenderGroupObj = $report->getPresentationDefendersFleetOnRound($i);
+        $attackerGroupObj = $report->getResultAttackersFleetOnRound($i);
+        $defenderGroupObj = $report->getResultDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
         $attInfo = updatePlayers($attackerGroupObj, $attackers,"detail");
