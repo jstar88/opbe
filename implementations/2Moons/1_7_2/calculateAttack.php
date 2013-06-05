@@ -78,6 +78,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['unit'] as $element => $amount)
         {
+            if(empty($amount)) continue;
             $fighters = getFighters($element, $amount);
             $defenderFleetObj->add($fighters);
         }
