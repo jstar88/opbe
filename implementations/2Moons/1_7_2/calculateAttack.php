@@ -81,6 +81,11 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
             if(empty($amount)) continue;
             $fighters = getFighters($element, $amount);
             $defenderFleetObj->add($fighters);
+            if ($element > 300) {
+    		if (!isset($STARTDEF[$element])) 
+					$STARTDEF[$element] = 0;
+				
+				$STARTDEF[$element] += $amount;}
         }
         $defenderPlayerObj->addFleet($defenderFleetObj);
     }
@@ -122,6 +127,21 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defInfo = updatePlayers($defenderGroupObj, $defenders);
         $ROUND[$i] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i + 1, $attInfo, $defInfo);
     }
+    
+    $metkaiz = 0;
+    $cryskaiz = 0;
+	
+	foreach ($defenders as $fleetID => $defender) {
+		foreach ($defender['unit'] as $element => $amount) {
+			if ($element > 300) {
+				$lost = $STARTDEF[$element] - $amount;
+				$giveback = round($lost * (rand(56, 84) / 100));
+				$defenders[$fleetID]['unit'][$element] += $giveback;
+				$metkaiz += $pricelist[$element]['cost'][901] * $giveback;
+				$cryskaiz += $pricelist[$element]['cost'][902] * $giveback;
+			}
+		}
+	}
 
     /********** DEBRIS **********/
     //attackers
@@ -130,8 +150,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $debAttCry = $debAtt[1];
     //defenders
     $debDef = $report->getDefenderDebris();
-    $debDefMet = $debDef[0];
-    $debDefCry = $debDef[1];
+    $debDefMet = ($debDef[0] - ($metkaiz * 0.3));
+    $debDefCry = ($debDef[1] - ($cryskaiz * 0.3));
     //total
     $debris = array('attacker' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'defender' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
 
