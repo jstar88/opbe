@@ -70,10 +70,10 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $attackerGroupObj = new PlayerGroup();
     foreach ($attackers as $fleetID => $attacker)
     {
-        $player = $attacker['player'];
+        $player = $attacker['user'];
         $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $attackerFleetObj = new Fleet($fleetID);
-        foreach ($attacker['unit'] as $element => $amount)
+        foreach ($attacker['detail'] as $element => $amount)
         {
             $fighters = getFighters($element, $amount);
             $attackerFleetObj->add($fighters);
@@ -84,12 +84,13 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $defenderGroupObj = new PlayerGroup();
     foreach ($defenders as $fleetID => $defender)
     {
-        $player = $defender['player'];
+        $player = $defender['user'];
         $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
         $defenderFleetObj = getFleet($fleetID);
-        foreach ($defender['unit'] as $element => $amount)
+        foreach ($defender['def'] as $element => $amount)
         {
-	    if (empty($amount)) continue;
+            if (empty($amount))
+                continue;
             $fighters = getFighters($element, $amount);
             $defenderFleetObj->add($fighters);
         }
@@ -131,8 +132,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderGroupObj = ($lastRound == $i) ? $report->getAfterBattleDefenders() : $report->getResultDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
-        $attInfo = updatePlayers($attackerGroupObj, $attackers);
-        $defInfo = updatePlayers($defenderGroupObj, $defenders);
+        $attInfo = updatePlayers($attackerGroupObj, $attackers, "detail");
+        $defInfo = updatePlayers($defenderGroupObj, $defenders, "def");
         $ROUND[$i] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i + 1, $attInfo, $defInfo);
     }
 
@@ -146,23 +147,23 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $debDefMet = $debDef[0];
     $debDefCry = $debDef[1];
     //total
-    $debris = array('attacker' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'defender' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
+    $debris = array('att' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'deff' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
 
     /********** LOST UNITS **********/
-    $totalLost = array('attacker' => $report->getTotalAttackersLostUnits(), 'defender' => $report->getTotalDefendersLostUnits());
+    $totalLost = array('att' => $report->getTotalAttackersLostUnits(), 'def' => $report->getTotalDefendersLostUnits());
 
     /********** RETURNS **********/
     return array(
         'won' => $won,
         'debris' => $debris,
         'rw' => $ROUND,
-        'unitLost' => $totalLost);
+        'lost' => $totalLost);
 }
 
 
 /**
  * roundInfo()
- * Return the info required to fill $ROUND.
+ * Return the info required to fill $ROUND
  * @param BattleReport $report
  * @param array $attackers
  * @param array $defenders
@@ -200,14 +201,14 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
  * @param array &$players
  * @return null
  */
-function updatePlayers(PlayerGroup $playerGroup, &$players)
+function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
 {
     $plyArray = array();
     $amountArray = array();
     foreach ($players as $idFleet => $info)
     {
-        $shipInfo = $info['unit'];
-        $player = $playerGroup->getPlayer($info['player']['id']);
+        $shipInfo = $info[$index];
+        $player = $playerGroup->getPlayer($info['user']['id']);
         $fleet = ($player !== false) ? $player->getFleet($idFleet) : false;
 
         foreach ($shipInfo as $idFighters => $amount)
@@ -222,16 +223,16 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
                         'def' => $fighters->getHull(),
                         'shield' => $fighters->getShield(),
                         'att' => $fighters->getPower());
-                    $players[$idFleet]['unit'][$idFighters] = $fighters->getCount();
+                    $players[$idFleet][$index][$idFighters] = $fighters->getCount();
                 }
                 else //all ships of this type were destroyed
                 {
-                    $players[$idFleet]['unit'][$idFighters] = 0;
+                    $players[$idFleet][$index][$idFighters] = 0;
                 }
             }
             else //the fleet is empty, so all ships of this type were destroyed
             {
-                $players[$idFleet]['unit'][$idFighters] = 0;
+                $players[$idFleet][$index][$idFighters] = 0;
             }
 
             //initialization
@@ -244,7 +245,7 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
                 $amountArray['total'] = 0;
             }
             //increment
-            $currentAmount = $players[$idFleet]['unit'][$idFighters];
+            $currentAmount = $players[$idFleet][$index][$idFighters];
             $amountArray[$idFleet] = $amountArray[$idFleet] + $currentAmount;
             $amountArray['total'] = $amountArray['total'] + $currentAmount;
         }
@@ -272,7 +273,7 @@ function getFighters($id, $count)
     $pricelist = $GLOBALS['pricelist'];
     $rf = isset($CombatCaps[$id]['sd']) ? $CombatCaps[$id]['sd'] : 0;
     $shield = $CombatCaps[$id]['shield'];
-    $cost = array($pricelist[$id]['cost'][METAL_ID], $pricelist[$id]['cost'][CRYSTAL_ID]);
+    $cost = array($pricelist[$id]['metal'], $pricelist[$id]['crystal']);
     $power = $CombatCaps[$id]['attack'];
     if ($id > ID_MIN_SHIPS && $id < ID_MAX_SHIPS)
     {

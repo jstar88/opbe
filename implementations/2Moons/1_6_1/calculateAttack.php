@@ -41,7 +41,12 @@ define('CRYSTAL_ID', 902);
 
 /**
  * calculateAttack()
- * Calculate the battle using OPBE
+ * Calculate the battle using OPBE.
+ * 
+ * OPBE ,to decrease memory usage, don't save both the initial and end state of fleets in a single round: only the end state is saved.
+ * Then OPBE store the first round in BattleReport and don't start it, just to show the fleets before the battle.
+ * Also,cause OPBE start the rounds without saving the initial state, the informations about how many shots were fired etc must be asked to the next round.
+ * Logically, the last round can't ask the next round because there is not.
  * 
  * @param array &$attackers
  * @param array &$defenders
@@ -55,6 +60,12 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $pricelist = $GLOBALS['pricelist'];
 
     /********** BUILDINGS MODELS **********/
+    /** Note: we are transform array of data like
+     *  fleetID => infos
+     *  into object tree structure like
+     *  playerGroup -> player -> fleet -> shipType
+     */
+
     //attackers
     $attackerGroupObj = new PlayerGroup();
     foreach ($attackers as $fleetID => $attacker)
@@ -78,7 +89,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['def'] as $element => $amount)
         {
-            if(empty($amount)) continue;
+            if (empty($amount)) continue;
             $fighters = getFighters($element, $amount);
             $defenderFleetObj->add($fighters);
         }
@@ -94,26 +105,34 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     if ($report->defenderHasWin())
     {
         $won = DEFENDERS_WON;
-    } elseif ($report->attackerHasWin())
+    }
+    elseif ($report->attackerHasWin())
     {
         $won = ATTACKERS_WON;
-    } else
+    }
+    elseif ($report->isAdraw())
     {
         $won = DRAW;
+    }
+    else
+    {
+        throw new Exception('problem');
     }
 
     /********** ROUNDS INFOS **********/
 
     $ROUND = array();
     $i = 0;
-    for (; $i <= $report->getLastRoundNumber(); $i++)
+    $lastRound = $report->getLastRoundNumber();
+    for (; $i <= $lastRound; $i++)
     {
-        $attackerGroupObj = $report->getResultAttackersFleetOnRound($i);
-        $defenderGroupObj = $report->getResultDefendersFleetOnRound($i);
+        // in case of last round, ask for rebuilt defenses. to change rebuils prob see constants/battle_constants.php
+        $attackerGroupObj = ($lastRound == $i) ? $report->getAfterBattleAttackers() : $report->getResultAttackersFleetOnRound($i);
+        $defenderGroupObj = ($lastRound == $i) ? $report->getAfterBattleDefenders() : $report->getResultDefendersFleetOnRound($i);
         $attackAmount = $attackerGroupObj->getTotalCount();
         $defenseAmount = $defenderGroupObj->getTotalCount();
-        $attInfo = updatePlayers($attackerGroupObj, $attackers,"detail");
-        $defInfo = updatePlayers($defenderGroupObj, $defenders,"def");
+        $attInfo = updatePlayers($attackerGroupObj, $attackers, "detail");
+        $defInfo = updatePlayers($defenderGroupObj, $defenders, "def");
         $ROUND[$i] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i + 1, $attInfo, $defInfo);
     }
 
@@ -154,6 +173,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
  */
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attInfo, $defInfo)
 {
+    // the last round doesn't has next round, so we not ask for fire etc
     return array(
         'attack' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getAttackersFirePower($i),
         'defense' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getDefendersFirePower($i),
@@ -170,17 +190,20 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
 
 /**
  * updatePlayers()
- * Update players array as default 2moons require
+ * Update players array as default 2moons require.
+ * OPBE keep the internal array data full to decrease memory size, so a PlayerGroup object don't have data about 
+ * empty users(an user is empty when fleets are empty and fleet is empty when the ships count is zero)
+ * Instead, the old system require to have also array of zero: to update the array of users, after a round, we must iterate them
+ * and check the corrispective OPBE value if empty (functions like "getX()" return "false")  
  * 
  * @param PlayerGroup $playerGroup
  * @param array &$players
  * @return null
  */
-function updatePlayers(PlayerGroup $playerGroup, &$players,$index)
+function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
 {
     $plyArray = array();
     $amountArray = array();
-
     foreach ($players as $idFleet => $info)
     {
         $shipInfo = $info[$index];
@@ -189,25 +212,29 @@ function updatePlayers(PlayerGroup $playerGroup, &$players,$index)
 
         foreach ($shipInfo as $idFighters => $amount)
         {
-            if ($fleet !== false)
+            if ($fleet !== false) //if after battle still there are some ship types in this fleet
             {
                 $fighters = $fleet->getFighters($idFighters);
-                if ($fighters !== false)
+                if ($fighters !== false) //if there are some ships of this type
                 {
+                    //used to show life,power and shield of each ships in the report
                     $plyArray[$idFleet][$idFighters] = array(
                         'def' => $fighters->getHull(),
                         'shield' => $fighters->getShield(),
                         'att' => $fighters->getPower());
                     $players[$idFleet][$index][$idFighters] = $fighters->getCount();
-                } else
+                }
+                else //all ships of this type were destroyed
                 {
                     $players[$idFleet][$index][$idFighters] = 0;
                 }
-            } else
+            }
+            else //the fleet is empty, so all ships of this type were destroyed
             {
                 $players[$idFleet][$index][$idFighters] = 0;
             }
 
+            //initialization
             if (!isset($amountArray[$idFleet]))
             {
                 $amountArray[$idFleet] = 0;
@@ -216,10 +243,12 @@ function updatePlayers(PlayerGroup $playerGroup, &$players,$index)
             {
                 $amountArray['total'] = 0;
             }
+            //increment
             $currentAmount = $players[$idFleet][$index][$idFighters];
             $amountArray[$idFleet] = $amountArray[$idFleet] + $currentAmount;
             $amountArray['total'] = $amountArray['total'] + $currentAmount;
         }
+        //used to show techs in the report .Empty player not exist in OPBE's result data
         $players[$idFleet]['techs'] = array(
             ($player != false) ? $player->getWeaponsTech() : 0,
             ($player != false) ? $player->getArmourTech() : 0,
