@@ -145,6 +145,7 @@ class BattleReport
     private function getPlayersLostUnits(PlayerGroup $playersBefore, PlayerGroup $playersAfter)
     {
         $lostShips = $this->getPlayersLostShips($playersBefore, $playersAfter);
+        $defRepaired = $this->getPlayerRepaired($playersBefore, $playersAfter);
         $return = array();
         foreach ($lostShips->getIterator() as $idPlayer => $player)
         {
@@ -153,7 +154,15 @@ class BattleReport
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
                 {
                     $cost = $fighters->getCost();
-                    $return[$idPlayer][$idFleet][$idFighters] = array($cost[0] * $fighters->getCount(), $cost[1] * $fighters->getCount());
+                    $count = $fighters->getCount() - $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->getCount();
+                    if ($count > 0)
+                    {
+                        $return[$idPlayer][$idFleet][$idFighters] = array($cost[0] * $count, $cost[1] * $count);
+                    }
+                    elseif ($count < 0)
+                    {
+                        throw new Exception('Count negative');
+                    }
                 }
             }
         }
