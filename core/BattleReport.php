@@ -154,7 +154,12 @@ class BattleReport
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
                 {
                     $cost = $fighters->getCost();
-                    $count = $fighters->getCount() - $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->getCount();
+                    $repairedAmount = 0;
+                    if($defRepaired->getPlayer($idPlayer) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters) !== false)
+                    {
+                        $repairedAmount = $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->getCount();    
+                    }
+                    $count = $fighters->getCount() - $repairedAmount;
                     if ($count > 0)
                     {
                         $return[$idPlayer][$idFleet][$idFighters] = array($cost[0] * $count, $cost[1] * $count);
