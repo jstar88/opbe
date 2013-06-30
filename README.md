@@ -23,6 +23,13 @@ features:
 
 ---
 
+## Quick start (installation)
+Ok, seems so cool! How i can use it?  
+You can check in [implementations directory](https://github.com/jstar88/opbe/tree/master/implementations) for your game version, read the installation.txt file.  
+Be sure you had read the *license* with respect for the author.
+
+---
+
 ## Accuracy
 One of main concept used in this battle engine is the **expected value**: instead calculate each ship case, opbe 
 creates an estimation of their behavior. 
@@ -48,7 +55,7 @@ Anyway the battle starts and are calculated as well(some overflow errors maybe).
 
     Battle calculated in 2.54 ms.
     Memory used: 335 KB
-    
+
 ##### Worst case, OPBE max requirements!
 The only think that require a lot of memory in OPBE is the Report, cause it store all ships in each rounds.. this means more  
 rounds = more memory (a draw).  
@@ -65,13 +72,6 @@ Anyway you can decrease a lot the memory usage setting, in *constants/battle_con
 ```php 
     define('ONLY_FIRST_AND_LAST_ROUND',true);
 ```
-
----
-
-## Quick start
-Ok, seems so cool! How i can use it?  
-You can check in **implementations** directory for your game version, read the installation.txt file.  
-Be sure you had read the *license* with respect for the author.
 
 ---
 
