@@ -1,6 +1,6 @@
 ## Installation
 
-1. Download and upload to *game_root/includes/libs/opbe/* all [https://github.com/jstar88/opbe/archive/master.zip](OPBE files) .
+1. Download and upload to *game_root/includes/libs/opbe/* all [OPBE files](https://github.com/jstar88/opbe/archive/master.zip) .
    You should see something like *game_root/includes/libs/opbe/index.php*.
    Alternatively, you can open a terminal and do:
 
