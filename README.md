@@ -2,7 +2,15 @@ OPBE
 ====
 
 **O**game **P**robabilistic **B**attle **E**ngine  
-live: http://opbe.webnet32.com
+live: http://opbe.webnet32.com (offline)
+
+1. [Introduction](https://github.com/jstar88/opbe#introduction)
+2. [Quick start](https://github.com/jstar88/opbe#quick-start-installation)
+3. [Accuracy](https://github.com/jstar88/opbe#accuracy)
+4. [Performance](https://github.com/jstar88/opbe#performance)
+5. [TestCases](https://github.com/jstar88/opbe#making-new-test-cases-to-share)
+6. [Developers guide](https://github.com/jstar88/opbe#implementation-developing-guide)
+7. [License](https://github.com/jstar88/opbe#license)
 
 ## Introduction
 OPBE is the first(and only) battle engine in the world that use Probability theory:  
