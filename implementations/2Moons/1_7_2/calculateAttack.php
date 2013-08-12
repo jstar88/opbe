@@ -130,8 +130,6 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         // in case of last round, ask for rebuilt defenses. to change rebuils prob see constants/battle_constants.php
         $attackerGroupObj = ($lastRound == $i) ? $report->getAfterBattleAttackers() : $report->getResultAttackersFleetOnRound($i);
         $defenderGroupObj = ($lastRound == $i) ? $report->getAfterBattleDefenders() : $report->getResultDefendersFleetOnRound($i);
-        $attackAmount = $attackerGroupObj->getTotalCount();
-        $defenseAmount = $defenderGroupObj->getTotalCount();
         $attInfo = updatePlayers($attackerGroupObj, $attackers);
         $defInfo = updatePlayers($defenderGroupObj, $defenders);
         $ROUND[$i] = roundInfo($report, $attackers, $defenders, $attackerGroupObj, $defenderGroupObj, $i + 1, $attInfo, $defInfo);
