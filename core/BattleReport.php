@@ -414,7 +414,7 @@ class BattleReport
                     $endFighters = $endFleet->getFighters($idFighters);
                     if ($endFighters === false)
                     {
-                        $endFighters = $fighters;
+                        $endFleet->add($fighters);
                     }
                     else
                     {
