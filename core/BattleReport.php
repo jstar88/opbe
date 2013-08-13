@@ -311,7 +311,7 @@ class BattleReport
             {
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
                 {
-                    $lostShips->decrement($idPlayer, $idFleet, $idFighters, floor($fighters->getCount() * (1 - $fighters->getRepairProb())));
+                    $lostShips->decrement($idPlayer, $idFleet, $idFighters, round($fighters->getCount() * (1 - $fighters->getRepairProb())));
                 }
             }
         }
