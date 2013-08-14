@@ -2,7 +2,7 @@ OPBE
 ====
 
 **O**game **P**robabilistic **B**attle **E**ngine  
-live: http://opbe.webnet32.com (offline)
+live: http://opbe.webnet32.com (server offline)
 
 1. [Introduction](#introduction)
 2. [Quick start](#quick-start-installation)
@@ -11,6 +11,7 @@ live: http://opbe.webnet32.com (offline)
 5. [TestCases](#making-new-test-cases-to-share)
 6. [Developers guide](#implementation-developing-guide)
 7. [License](#license)
+8. [Who are using OPBE](#who-are-using-opbe)
 
 ## Introduction
 OPBE is the first(and only) battle engine in the world that use Probability theory:  
@@ -269,4 +270,12 @@ the database after the batte.
   
     
 [why affero GPL](http://www.gnu.org/licenses/why-affero-gpl.html)
+
+## Who are using OPBE
+
+I'm happy to deliver this software giving others the possibility to have a good battle engine.
+In the other hand, it's a pleasure to see people using my OPBE.
+Send me an email to put your game logo here!
+
+![xgproyect](http://www.xgproyect.net/images/misc/xg-logo.png)
 
