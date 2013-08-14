@@ -273,9 +273,9 @@ the database after the batte.
 
 ## Who are using OPBE
 
-I'm happy to deliver this software giving others the possibility to have a good battle engine.
-In the other hand, it's a pleasure to see people using my OPBE.
-Send me an email to put your game logo here!
+I'm happy to deliver this software giving others the possibility to have a good battle engine.  
+In the other hand, it's a pleasure to see people using my OPBE.  
+Send me an email to put your game logo here!  
 
 ![xgproyect](http://www.xgproyect.net/images/misc/xg-logo.png)
 
