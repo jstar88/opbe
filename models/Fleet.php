@@ -68,6 +68,7 @@ class Fleet extends DeepClonable
     public function decrement($id, $count)
     {
         $this->array[$id]->decrement($count);
+        $this->count -= $count;
         if ($this->array[$id]->getCount() <= 0)
         {
             unset($this->array[$id]);
