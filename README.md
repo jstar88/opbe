@@ -266,7 +266,22 @@ the database after the battle.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  
+
+## Questions
+
+> I would like to include your battle engine but the code of my game won't be published
+
+You can keep secret your code because OPBE can be seen as a external module with own license, it's only required to share changes on OPBE.
+
+> I would like to have some profits with my game 
+
+GNU affero v3 accepts profits as well
+
+> I would like use OPBE with numbers greater than double
+
+You should replace any PHP native mathematical with [BC math](http://php.net/manual/en/ref.bc.php) functions
+
+---
     
 [why affero GPL](http://www.gnu.org/licenses/why-affero-gpl.html)
 
