@@ -11,7 +11,8 @@ live: http://opbe.webnet32.com (server offline)
 5. [TestCases](#making-new-test-cases-to-share)
 6. [Developers guide](#implementation-developing-guide)
 7. [License](#license)
-8. [Who are using OPBE](#who-are-using-opbe)
+8. [Questions](#questions)
+9. [Who are using OPBE](#who-are-using-opbe)
 
 ## Introduction
 OPBE is the first (and only) battle engine in the world that uses Probability theory:  
@@ -266,6 +267,8 @@ the database after the battle.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+---
 
 ## Questions
 
