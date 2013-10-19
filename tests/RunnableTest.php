@@ -26,26 +26,11 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-require ("../../utils/DeepClonable.php");
-require ("../../utils/Math.php");
-require ("../../utils/Number.php");
-require ("../../utils/Events.php");
-require ("../../models/Type.php");
-require ("../../models/Fighters.php");
-require ("../../models/Fleet.php");
-require ("../../models/Player.php");
-require ("../../models/PlayerGroup.php");
-include ("../../models/Defense.php");
-include ("../../models/Ship.php");
-require ("../../combatObject/Fire.php");
-require ("../../combatObject/PhysicShot.php");
-require ("../../combatObject/ShipsCleaner.php");
-require ("../../combatObject/FireManager.php");
-require ("../../core/Battle.php");
-require ("../../core/BattleReport.php");
-require ("../../core/Round.php");
+ 
+define('PATH','../../');
+
+require(PATH."utils/includer.php");
 require ("vars.php");
-require ("../../constants/battle_constants.php");
 
 class RunnableTest
 {
