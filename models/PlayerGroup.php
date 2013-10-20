@@ -143,7 +143,7 @@ class PlayerGroup extends DeepClonable
     public function getEquivalentFleetContent()
     {
         $merged = new Fleet(-1);
-        foreach ($this->array as $id => $player)
+        foreach (DeepClonable::cloneIt($this->array) as $id => $player) // cloning don't have any sense because we don't touch the array,maybe php bug :(
         {
             $merged->mergeFleet($player->getEquivalentFleetContent());
         }
