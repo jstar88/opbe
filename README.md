@@ -12,7 +12,7 @@ live: http://opbe.webnet32.com (server offline)
 6. [Developers guide](#implementation-developing-guide)
 7. [License](#license)
 8. [Questions](#questions)
-9. [Who are using OPBE](#who-is-using-opbe)
+9. [Who is using OPBE](#who-is-using-opbe)
 
 ## Introduction
 OPBE is the first (and only) battle engine in the world that uses Probability theory:  
