@@ -32,11 +32,11 @@ define('SHIP_MIN_ID', 202);
 define('SHIP_MAX_ID', 217);
 define('DEFENSE_MIN_ID', 401);
 define('DEFENSE_MAX_ID', 503);
-define('PATH', XGP_ROOT . "includes/battle_engine/");
+define('OPBEPATH', dirname(__DIR__));
 
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
-    require (PATH . 'utils/includer.php');
+    require (OPBEPATH . 'utils/includer.php');
 
     $targetPlanet = doquery("SELECT * FROM {{table}} WHERE `galaxy` = " . $FleetRow['fleet_end_galaxy'] . " AND `system` = " . $FleetRow['fleet_end_system'] . " AND `planet_type` = " . $FleetRow['fleet_end_type'] . " AND `planet` = " . $FleetRow['fleet_end_planet'] . ";", 'planets', true);
     if ($FleetRow['fleet_group'] > 0)
