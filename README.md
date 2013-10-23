@@ -267,6 +267,8 @@ the database after the battle.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    [why affero GPL](http://www.gnu.org/licenses/why-affero-gpl.html)
 
 ---
 
@@ -286,7 +288,6 @@ You should replace any PHP native mathematical with [BC math](http://php.net/man
 
 ---
     
-[why affero GPL](http://www.gnu.org/licenses/why-affero-gpl.html)
 
 ## Who is using OPBE?
 
