@@ -142,17 +142,6 @@ So in a PlayerGroup there are different *Player*s,
 each Player have different *Fleet*s,  
 each Fleet have different *Figthers*.  
 
-An easy way to display them:
-```php   
-    $fleet = new Fleet($idFleet);
-    $fleet->add($this->getFighters($id, $count));
-    
-    $player = new Player($idPlayer);
-    $player->addFleet($fleet);
-    
-    $playerGroup = new PlayerGroup();
-    $playerGroup->addPlayer($player);
-```
 
 #### Fighters
 
@@ -218,6 +207,32 @@ PlayerGroup is a group of Player, don't care about the question attacker or defe
 ```php
     $playerGroup = new PlayerGroup();
     $playerGroup->addPlayer($player);
+```
+
+#### Bring them together
+
+An easy way to display them:
+```php   
+    $fleet = new Fleet($idFleet);
+    $fleet->add($this->getFighters($id, $count));
+    
+    $player = new Player($idPlayer);
+    $player->addFleet($fleet);
+    
+    $playerGroup = new PlayerGroup();
+    $playerGroup->addPlayer($player);
+    
+    // because these objects implements Iterable interface:
+    foreach($playerGroup as $idPlayer => $player)
+    {
+        foreach($player as $idFleet => $fleet)
+        {
+            foreach($fleet as $idFighters => $fighters)
+            {
+                // do something
+            }
+        }
+    }
 ```
 
 #### Battle
