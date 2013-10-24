@@ -38,15 +38,12 @@ class Player extends DeepClonable
     public function __construct($id, $fleets = array(), $weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
     {
         $this->id = $id;
-        $this->weapons_tech = $weapons_tech;
-        $this->shields_tech = $shields_tech;
-        $this->armour_tech = $armour_tech;
 
         foreach ($fleets as $fleet)
         {
-            $fleet->setTech($weapons_tech, $shields_tech, $armour_tech);
             $this->addFleet($fleet);
         }
+        $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
     public function addFleet(Fleet $fleet)
     {
@@ -55,10 +52,6 @@ class Player extends DeepClonable
     }
     public function setTech($weapons, $shields, $armour)
     {
-        if ($this->armour_tech != 0 || $this->shields_tech != 0 || $this->armour_tech != 0)
-        {
-            throw new Exception('Techs already implemented');
-        }
         foreach ($this->array as $id => $fleet)
         {
             $fleet->setTech($weapons, $shields, $armour);
@@ -124,13 +117,12 @@ class Player extends DeepClonable
     }
     public function __toString()
     {
-        $return = "player" . $this->id . "<br>";
-        $return .= "weapons:{$this->weapons_tech} | shields:{$this->shields_tech} | armour:{$this->armour_tech}<br><br>";
-        foreach ($this->array as $id => $fleet)
-        {
-            $return .= $fleet;
-        }
-        return $return;
+        ob_start();
+        $_player = $this;
+        $_st = "";
+        require(OPBEPATH."tests/runnable/vars.php");//just for names
+        require(OPBEPATH."views/player2.html");
+        return ob_get_clean();
     }
     //public function inflictDamage(Fire $fire, Fleet $from)
     public function inflictDamage(FireManager $fire)

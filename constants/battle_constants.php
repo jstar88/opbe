@@ -31,29 +31,29 @@
 define('BATTLE_WIN', 1);
 define('BATTLE_LOSE', -1);
 define('BATTLE_DRAW', 0);
-define('SHIELD_CELLS', 100);
-define('USE_SERIALIZATION_TO_CLONE', true);
+define('SHIELD_CELLS', 100); //how many cells a ship's shield should contain. Carefull to edit: more cells = better accuracy but less bounces in some cases.
+define('USE_SERIALIZATION_TO_CLONE', true); //Because PHP default clone function is bugged, we provide differents ways.
 define('USE_PARTIAL_SERIALIZATION_TO_CLONE', false);
-define('PROB_TO_REAL_MAGIC',2);
+define('PROB_TO_REAL_MAGIC',2); //value used to adapt probability theory to critical cases.
 
 /* Battle constants, default as Ogame */
-define('ROUNDS', 6);
-define('SHIELDS_TECH_INCREMENT_FACTOR', 0.1);
-define('ARMOUR_TECH_INCREMENT_FACTOR', 0.1);
-define('WEAPONS_TECH_INCREMENT_FACTOR', 0.1);
-define('COST_TO_ARMOUR', 0.1);
-define('MIN_PROB_TO_EXPLODE', 0.3);
-define('DEFENSE_REPAIR_PROB', 0.7);
-define('SHIP_REPAIR_PROB', 0);
+define('ROUNDS', 6); //how many rounds a battle have, no limits.
+define('SHIELDS_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the shield, in percentage from 0 to 1.
+define('ARMOUR_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the armour, in percentage from 0 to 1.
+define('WEAPONS_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the weapon, in percentage from 0 to 1.
+define('COST_TO_ARMOUR', 0.1); //how much cost equal the armour, from 0 to 1. 1 means the ships/defenses armour equal its cost.
+define('MIN_PROB_TO_EXPLODE', 0.3); //minimum probability at one the ships/defenses can explode, from 0 to 1. 1 means that the ship/def can explode only when they lost all hp. 
+define('DEFENSE_REPAIR_PROB', 0.7); //probability to repair defenses. From 0 to 1, 1 means that defenses are always rebuilt.
+define('SHIP_REPAIR_PROB', 0); //same as below but for ships.
 
 /* Views and optimization options */
-define('ONLY_FIRST_AND_LAST_ROUND', false);
+define('ONLY_FIRST_AND_LAST_ROUND', false); //This option is usefull to decrease RAM usage, but the battle report will not contain all rounds.
 
 /* After-battle constants, default as Ogame */
-define('DEBRIS_FACTOR', 0.3);
-define('POINT_UNIT', 1000);
+define('DEBRIS_FACTOR', 0.3); //Percentage of debris generated from destroyed resources.
+define('POINT_UNIT', 1000); //Ogame point = 1000 resources.
 define('MOON_UNIT_PROB', 100000);
-define('MAX_MOON_PROB', 20);
+define('MAX_MOON_PROB', 20); //max probability to moon creation. 
 define('MOON_MIN_START_SIZE', 2000);
 define('MOON_MAX_START_SIZE', 6000);
 define('MOON_MIN_FACTOR', 100);

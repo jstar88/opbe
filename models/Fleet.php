@@ -31,7 +31,11 @@ class Fleet extends DeepClonable
     protected $array = array();
     private $count;
     private $id;
-    public function __construct($id, $types = array())
+    // added but only used in report templates
+    private $weapons_tech;
+    private $shields_tech;
+    private $armour_tech;
+    public function __construct($id, $types = array(),$weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
     {
         $this->id = $id;
         $this->count = 0;
@@ -39,6 +43,7 @@ class Fleet extends DeepClonable
         {
             $this->add($type);
         }
+        $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
     public function getId()
     {
@@ -52,6 +57,9 @@ class Fleet extends DeepClonable
             $fighters->setShieldsTech($shields);
             $fighters->setArmourTech($armour);
         }
+        $this->weapons_tech = $weapons;
+        $this->shields_tech = $shields;
+        $this->armour_tech = $armour;
     }
     public function add(Fighters $type)
     {
@@ -99,15 +107,12 @@ class Fleet extends DeepClonable
     }
     public function __toString()
     {
-        if ($this->isEmpty())
-            return "Destroyed<br>";
-        $string = "";
-        ksort($this->array);
-        foreach ($this->array as $id => $fighters)
-        {
-            $string .= $fighters . "________<br>";
-        }
-        return $string;
+        ob_start();
+        $_fleet = $this;
+        $_st = "";
+        require(OPBEPATH."tests/runnable/vars.php");//just for names
+        require(OPBEPATH."views/fleet.html");
+        return ob_get_clean();
     }
     public function inflictDamage(FireManager $fires)
     {
@@ -178,5 +183,17 @@ class Fleet extends DeepClonable
             }
         }
         return true;
+    }
+    public function getWeaponsTech()
+    {
+        return $this->weapons_tech;
+    }
+    public function getShieldsTech()
+    {
+        return $this->shields_tech;
+    }
+    public function getArmourTech()
+    {
+        return $this->armour_tech;
     }
 }

@@ -71,7 +71,12 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($attackers as $fleetID => $attacker)
     {
         $player = $attacker['user'];
-        $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+        //techs + bonus. Note that the bonus is divided by the factor because the result sum will be multiplied by the same inside OPBE
+        $attTech = $player['military_tech'] + $player['factor']['attack'] / WEAPONS_TECH_INCREMENT_FACTOR;
+        $shieldTech = $player['shield_tech'] + $player['factor']['shield'] / SHIELDS_TECH_INCREMENT_FACTOR;
+        $defenceTech = $player['defence_tech'] + $player['factor']['defensive'] / ARMOUR_TECH_INCREMENT_FACTOR;
+        //--
+        $attackerPlayerObj = $attackerGroupObj->createPlayerIfNotExist($player['id'], array(), $attTech, $shieldTech, $defenceTech);
         $attackerFleetObj = new Fleet($fleetID);
         foreach ($attacker['detail'] as $element => $amount)
         {
@@ -86,7 +91,12 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     foreach ($defenders as $fleetID => $defender)
     {
         $player = $defender['user'];
-        $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], array(), $player['military_tech'], $player['shield_tech'], $player['defence_tech']);
+        //techs + bonus. Note that the bonus is divided by the factor because the result sum will be multiplied by the same inside OPBE
+        $attTech = $player['military_tech'] + $player['factor']['attack'] / WEAPONS_TECH_INCREMENT_FACTOR;
+        $shieldTech = $player['shield_tech'] + $player['factor']['shield'] / SHIELDS_TECH_INCREMENT_FACTOR;
+        $defenceTech = $player['defence_tech'] + $player['factor']['defensive'] / ARMOUR_TECH_INCREMENT_FACTOR;
+        //--
+        $defenderPlayerObj = $defenderGroupObj->createPlayerIfNotExist($player['id'], array(), $attTech, $shieldTech, $defenceTech);
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['def'] as $element => $amount)
         {

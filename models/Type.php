@@ -57,8 +57,10 @@ class Type
     }
     public function __toString()
     {
-        global $resource;
-        return $resource[$this->id] . "<br>Count:" . $this->count . "<br>";
+        ob_start();
+        $_type = $this;
+        require(OPBEPATH."views/type.html");
+        return ob_get_clean();
     }
     public function isEmpty()
     {

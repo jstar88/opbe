@@ -91,12 +91,12 @@ class PlayerGroup extends DeepClonable
     }
     public function __toString()
     {
-        $return = "";
-        foreach ($this->array as $id => $player)
-        {
-            $return .= $player;
-        }
-        return $return;
+        ob_start();
+        $_playerGroup = $this;
+        $_st = "";
+        require(OPBEPATH."tests/runnable/vars.php");//just for names
+        require(OPBEPATH."views/playerGroup.html");
+        return ob_get_clean();
     }
     public function getIterator()
     {

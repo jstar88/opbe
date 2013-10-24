@@ -36,9 +36,9 @@ class Fighters extends Type
     // as fusion
     private $currentLife;
 
-    private $weapons_tech;
-    private $shields_tech;
-    private $armour_tech;
+    private $weapons_tech = 0;
+    private $shields_tech = 0;
+    private $armour_tech = 0;
 
     private $lastShots;
     private $lastShipHit;
@@ -49,20 +49,19 @@ class Fighters extends Type
     {
         parent::__construct($id, $count);
 
-        $hull = COST_TO_ARMOUR * array_sum($cost);
         $this->rf = $rf;
-        $this->shield = $shield + SHIELDS_TECH_INCREMENT_FACTOR * $shields_tech * $shield;
-        $this->hull = $hull + ARMOUR_TECH_INCREMENT_FACTOR * $armour_tech * $hull;
-        $this->power = $power + WEAPONS_TECH_INCREMENT_FACTOR * $weapons_tech * $power;
+        $this->shield = $shield;
+        $this->hull = COST_TO_ARMOUR * array_sum($cost);;
+        $this->power = $power;
         $this->currentShield = SHIELD_CELLS * $count;
         $this->currentLife = $this->hull * $count;
-
-        $this->weapons_tech = $weapons_tech;
-        $this->shields_tech = $shields_tech;
-        $this->armour_tech = $armour_tech;
         $this->lastShots = 0;
         $this->lastShipHit = 0;
         $this->cost = $cost;
+        
+        $this->setWeaponsTech($weapons_tech);
+        $this->setArmourTech($armour_tech);
+        $this->setShieldsTech($shields_tech);
     }
     public function getCost()
     {
