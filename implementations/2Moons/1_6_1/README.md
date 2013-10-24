@@ -1,11 +1,12 @@
 ## Installation
 
-1. Download and upload to *game_root/includes/libs/opbe/* all [OPBE files](https://github.com/jstar88/opbe/archive/master.zip) .
-   You should see something like *game_root/includes/libs/opbe/index.php*.
+1. Download and upload to *ROOT_PATH/includes/libs/opbe/* all [OPBE files](https://github.com/jstar88/opbe/archive/master.zip) .
+   You should see something like *ROOT_PATH/includes/libs/opbe/index.php*.
+   (Remember to rename opbe-master to opbe)   
    Alternatively, you can open a terminal and do:
 
     ```
-    cd game_root/includes/libs/
+    cd ROOT_PATH/includes/libs/
     sudo git clone https://github.com/jstar88/opbe.git
     
     ```
@@ -15,11 +16,12 @@
     ```php
     define('OPBEPATH', ROOT_PATH . 'includes/libs/opbe/');
     ```
-3. Replace default 2Moons's *includes/classes/missions/calculateAttack.php* with the one above 
+3. Replace default 2Moons's *ROOT_PATH/includes/classes/missions/calculateAttack.php* with the one above 
     Alternatively, you can open a terminal and do:
     
     ```
-    sudo cp opbe/implementations/2Moons/1_6_1/calculateAttack.php game_root/includes/classes/missions/
+    cd ROOT_PATH/includes/libs/opbe
+    sudo cp implementations/2Moons/1_6_1/calculateAttack.php ROOT_PATH/includes/classes/missions/
     
     ```
     
@@ -27,8 +29,8 @@
     You can use filezilla.
     Alternatively, you can open a terminal and do:
     ```
-    cd game_root/includes/libs/opbe
+    cd ROOT_PATH/includes/libs/opbe
     sudo git pull
-    sudo cp implementations/2Moons/1_6_1/calculateAttack.php game_root/includes/classes/missions/
+    sudo cp implementations/2Moons/1_6_1/calculateAttack.php ROOT_PATH/includes/classes/missions/
     
     ```
