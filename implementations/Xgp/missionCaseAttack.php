@@ -32,7 +32,7 @@ define('SHIP_MIN_ID', 202);
 define('SHIP_MAX_ID', 217);
 define('DEFENSE_MIN_ID', 401);
 define('DEFENSE_MAX_ID', 503);
-define('OPBEPATH', dirname(__DIR__));
+define('OPBEPATH', dirname(__dir__ ));
 
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
@@ -43,7 +43,8 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     {
         doquery("DELETE FROM {{table}} WHERE id =" . $FleetRow['fleet_group'], 'aks');
         doquery("UPDATE {{table}} SET fleet_mess=1 WHERE fleet_group=" . $FleetRow['fleet_group'], 'fleets');
-    } else
+    }
+    else
     {
         doquery("UPDATE {{table}} SET fleet_mess=1 WHERE fleet_id=" . $FleetRow['fleet_id'], 'fleets');
     }
@@ -57,7 +58,8 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     {
         $fleets = doquery('SELECT * FROM {{table}} WHERE fleet_group=' . $FleetRow['fleet_group'], 'fleets');
         $attackers = getPlayerGroupFromQuery($fleets);
-    } else
+    }
+    else
     {
         $attackers = getPlayerGroup($FleetRow);
     }
@@ -91,7 +93,8 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
         $player = new Player($TargetUserID, array($homeFleet));
         $player->setTech($targetUser['military_tech'], $targetUser['shield_tech'], $targetUser['defence_tech']);
         $defenders->addPlayer($player);
-    } else
+    }
+    else
     {
         $defenders->getPlayer($TargetUserID)->addDefense($homeFleet);
     }
@@ -107,7 +110,8 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     updateMoon($FleetRow, $report, '', $TargetUserID, $targetPlanet);
     sendMessage($FleetRow, $report, $lang, $resource);
 
-} elseif ($FleetRow['fleet_end_time'] <= time())
+}
+elseif ($FleetRow['fleet_end_time'] <= time())
 {
     $Message = sprintf($lang['sys_fleet_won'], $TargetName, GetTargetAdressLink($FleetRow, ''), Format::pretty_number($FleetRow['fleet_resource_metal']), $lang['Metal'], Format::pretty_number($FleetRow['fleet_resource_crystal']), $lang['Crystal'], Format::pretty_number($FleetRow['fleet_resource_deuterium']), $lang['Deuterium']);
     SendSimpleMessage($FleetRow['fleet_owner'], '', $FleetRow['fleet_end_time'], 3, $lang['sys_mess_tower'], $lang['sys_mess_fleetback'], $Message);
@@ -186,7 +190,8 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
             $player = new Player($idPlayer, array($fleet));
             $player->setTech($player_info['military_tech'], $player_info['shield_tech'], $player_info['defence_tech']);
             $playerGroup->addPlayer($player);
-        } else
+        }
+        else
         {
             $playerGroup->getPlayer($idPlayer)->addFleet($fleet);
         }
@@ -237,21 +242,22 @@ function updateMoon($FleetRow, $report, $moonName, $targetUserId, $targetPlanet)
     $QryInsertMoonInPlanet .= "`deuterium_max` = '" . BASE_STORAGE_SIZE . "';";
     doquery($QryInsertMoonInPlanet, 'planets');
 
-    $QryGetMoonIdFromPlanet = "SELECT id_luna FROM {{table}} ";
+    $QryGetMoonIdFromPlanet = "SELECT id FROM {{table}} ";
     $QryGetMoonIdFromPlanet .= "WHERE ";
-    $QryGetMoonIdFromPlanet .= "`galaxy` = '$Galaxy' AND ";
-    $QryGetMoonIdFromPlanet .= "`system` = '$System' AND ";
-    $QryGetMoonIdFromPlanet .= "`planet` = '$Planet' AND ";
+    $QryGetMoonIdFromPlanet .= "`galaxy` = '$galaxy' AND ";
+    $QryGetMoonIdFromPlanet .= "`system` = '$system' AND ";
+    $QryGetMoonIdFromPlanet .= "`planet` = '$planet' AND ";
     $QryGetMoonIdFromPlanet .= "`planet_type` = '3';";
     $lunarow = doquery($QryGetMoonIdFromPlanet, 'planets', true);
+
 
     $QryUpdateMoonInGalaxy = "UPDATE {{table}} SET ";
     $QryUpdateMoonInGalaxy .= "`id_luna` = '" . $lunarow['id'] . "', ";
     $QryUpdateMoonInGalaxy .= "`luna` = '0' ";
     $QryUpdateMoonInGalaxy .= "WHERE ";
-    $QryUpdateMoonInGalaxy .= "`galaxy` = '$Galaxy' AND ";
-    $QryUpdateMoonInGalaxy .= "`system` = '$System' AND ";
-    $QryUpdateMoonInGalaxy .= "`planet` = '$Planet';";
+    $QryUpdateMoonInGalaxy .= "`galaxy` = '$galaxy' AND ";
+    $QryUpdateMoonInGalaxy .= "`system` = '$system' AND ";
+    $QryUpdateMoonInGalaxy .= "`planet` = '$planet';";
     doquery($QryUpdateMoonInGalaxy, 'galaxy');
 
 
@@ -261,10 +267,12 @@ function sendMessage($FleetRow, $report, $lang, $resource)
     if ($report->attackerHasWin())
     {
         $style = "green";
-    } elseif ($report->isAdraw())
+    }
+    elseif ($report->isAdraw())
     {
         $style = "orange";
-    } else
+    }
+    else
     {
         $style = "red";
     }
@@ -327,7 +335,8 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
                     $QryUpdateTarget .= "WHERE ";
                     $QryUpdateTarget .= "`id` = '{$targetPlanet['id']}' ;";
                     doquery($QryUpdateTarget, 'planets');
-                } else //delete all the fleets (ACS)
+                }
+                else //delete all the fleets (ACS)
                 {
                     doquery("DELETE FROM {{table}} WHERE `fleet_id`=$SidFleet", 'fleets'); //can be optimized
                 }
@@ -352,7 +361,8 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
                     $QryUpdateTarget .= "WHERE ";
                     $QryUpdateTarget .= "`id` = '{$targetPlanet['id']}' ;";
                     doquery($QryUpdateTarget, 'planets');
-                } else
+                }
+                else
                 {
                     doquery("DELETE FROM {{table}} WHERE `fleet_id`=$SidFleet", 'fleets'); //can be optimized
                 }
@@ -384,7 +394,8 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
                 $QryUpdateTarget .= "WHERE ";
                 $QryUpdateTarget .= "`id` = '{$targetPlanet['id']}' ;";
                 doquery($QryUpdateTarget, 'planets');
-            } else
+            }
+            else
             {
                 $fleetCapacity = 0;
                 foreach ($fleet->getIterator() as $idFighters => $fighters)
