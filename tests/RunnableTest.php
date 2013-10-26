@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
  
@@ -68,7 +68,7 @@ EOT;
         }
 
     }
-    public function getFighters($id, $count)
+    public function getShipType($id, $count)
     {
         global $CombatCaps, $pricelist;
         $rf = $CombatCaps[$id]['sd'];
@@ -86,19 +86,19 @@ EOT;
         //light_fighter
         $id = 204;
         $count = 100;
-        $a4 = $this->getFighters($id, $count);
+        $a4 = $this->getShipType($id, $count);
         //cruiser
         $id = 206;
         $count = 150;
-        $a1 = $this->getFighters($id, $count);
+        $a1 = $this->getShipType($id, $count);
         //battle_ship
         $id = 207;
         $count = 50;
-        $a2 = $this->getFighters($id, $count);
+        $a2 = $this->getShipType($id, $count);
         //destroyer
         $id = 213;
         $count = 50;
-        $a3 = $this->getFighters($id, $count);
+        $a3 = $this->getShipType($id, $count);
 
         $fleet1 = new Fleet(array($a2));
         $player1 = new Player(1, array($fleet1), 0, 0, 0);
@@ -109,15 +109,15 @@ EOT;
         //light_fighter
         $id = 204;
         $count = 100;
-        $d1 = $this->getFighters($id, $count);
+        $d1 = $this->getShipType($id, $count);
         //probe
         $id = 210;
         $count = 300;
-        $d2 = $this->getFighters($id, $count);
+        $d2 = $this->getShipType($id, $count);
         //battle_cruiser
         $id = 215;
         $count = 50;
-        $d3 = $this->getFighters($id, $count);
+        $d3 = $this->getShipType($id, $count);
 
         $fleet2 = new Fleet(array($d3));
         $player2 = new Player(2, array($fleet2), 0, 0, 0);

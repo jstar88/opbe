@@ -22,27 +22,30 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-require (OPBEPATH."utils/DeepClonable.php");
-require (OPBEPATH."utils/Math.php");
-require (OPBEPATH."utils/Number.php");
-require (OPBEPATH."utils/Events.php");
-require (OPBEPATH."models/Type.php");
-require (OPBEPATH."models/Fighters.php");
-require (OPBEPATH."models/Fleet.php");
-require (OPBEPATH."models/HomeFleet.php");
-include (OPBEPATH."models/Defense.php");
-include (OPBEPATH."models/Ship.php");
-require (OPBEPATH."models/Player.php");
-require (OPBEPATH."models/PlayerGroup.php");
-require (OPBEPATH."combatObject/Fire.php");
-require (OPBEPATH."combatObject/PhysicShot.php");
-require (OPBEPATH."combatObject/ShipsCleaner.php");
-require (OPBEPATH."combatObject/FireManager.php");
-require (OPBEPATH."core/Battle.php");
-require (OPBEPATH."core/BattleReport.php");
-require (OPBEPATH."core/Round.php");
-require (OPBEPATH."constants/battle_constants.php");
+
+define('OPBEPATH', dirname(__DIR__).DIRECTORY_SEPARATOR);
+ 
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Iterable.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Math.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Number.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Events.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Type.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'ShipType.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Fleet.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'HomeFleet.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Defense.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Ship.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Player.php');
+require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'PlayerGroup.php');
+require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'Fire.php');
+require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'PhysicShot.php');
+require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'ShipsCleaner.php');
+require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'FireManager.php');
+require (OPBEPATH.'core'.DIRECTORY_SEPARATOR.'Battle.php');
+require (OPBEPATH.'core'.DIRECTORY_SEPARATOR.'BattleReport.php');
+require (OPBEPATH.'core'.DIRECTORY_SEPARATOR.'Round.php');
+require (OPBEPATH.'constants'.DIRECTORY_SEPARATOR.'battle_constants.php');
 ?>

@@ -23,31 +23,43 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version beta(26-10-2013)
+ * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-require ("../RunnableTest.php");
-class Shuffle extends RunnableTest
+class Iterable implements Iterator
 {
-    public function getAttachers()
-    {
-        $fleet = new Fleet(1,array(
-            $this->getShipType(206, 50),
-            $this->getShipType(207, 50),
-            $this->getShipType(204, 150)));
-        $player = new Player(1, array($fleet));
-        return new PlayerGroup(array($player));
-    }
-    public function getDefenders()
-    {
-        $fleet = new Fleet(2,array(
-            $this->getShipType(210, 150),
-            $this->getShipType(215, 50),
-            $this->getShipType(207, 20)));
-        $player = new Player(2, array($fleet));
-        return new PlayerGroup(array($player));
-    }
-}
-new Shuffle();
 
-?>
+    /* Iterator functions */
+
+    public function rewind()
+    {
+        reset($this->array);
+    }
+
+    public function current()
+    {
+        return current($this->array);
+    }
+
+    public function key()
+    {
+        return key($this->array);
+    }
+
+    public function next()
+    {
+        return next($this->array);
+    }
+
+    public function valid()
+    {
+        return $this->current() !== false;
+    }
+
+    /* other functions */
+    public function getIterator()
+    {
+        return $this->array;
+    }
+
+}

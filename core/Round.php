@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -22,16 +23,23 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
+ */
+/**
+ * Round
+ * 
+ * This class rappresent the round in a battle.
+ * When it is started, the PlayerGroup objects inside it will be updated.
+ * Then, this class offers some methods to retrive informations about the round and the updated players.
  */
 class Round
 {
-    private $attackers;
-    private $defenders;
+    private $attackers; // PlayerGroup attackers , will be updated when round start
+    private $defenders; // PlayerGroup defenders, will be updated when round start
 
-    private $fire_a;
-    private $fire_d;
+    private $fire_a; // a fire manager that rappresent all fires from attackers to defenders
+    private $fire_d; // a fire manager that rappresent all fires from defenders to attackers
 
     private $physicShotsToDefenders;
     private $physicShotsToAttachers;
@@ -41,111 +49,173 @@ class Round
 
     private $number;
 
+    /**
+     * Round::__construct()
+     * Construct a new Round object. No side effects.
+     * @param PlayerGroup: the attackers
+     * @param PlayerGroup: the defenders
+     * @param int: the round number 
+     * @return void
+     */
     public function __construct(PlayerGroup $attackers, PlayerGroup $defenders, $number)
     {
         $this->number = $number;
         $this->fire_a = new FireManager();
         $this->fire_d = new FireManager();
-        // we clone to avoid collateral effects
-        if (USE_SERIALIZATION_TO_CLONE)
-        {
-            $this->attackers = DeepClonable::cloneIt($attackers);
-            $this->defenders = DeepClonable::cloneIt($defenders);
-        }
-        else
-        {
-            DeepClonable::$useSerialization = USE_PARTIAL_SERIALIZATION_TO_CLONE;
-            $this->attackers = clone $attackers;
-            $this->defenders = clone $defenders;
-        }
+
+        $this->attackers = $attackers->cloneMe();
+        $this->defenders = $defenders->cloneMe();
     }
+    
+    /**
+     * Round::startRound()
+     * Start the current round and update the players instance inside this object.
+     * @return
+     */
     public function startRound()
     {
-        echo '--- Round '.$this->number.' ---<br><br>';
+        echo '--- Round ' . $this->number . ' ---<br><br>';
+        //---------------------- Generating the fire -------------------------------//
+        //note that we don't need to check the order of fire, because we will order when splitting the fire later
+        
+        // here we add to fire manager each fire shotted from an attacker's ShipType to all defenders 
         $defendersMerged = $this->defenders->getEquivalentFleetContent();
-        foreach ($this->attackers->getIterator() as  $player)
+        foreach ($this->attackers->getIterator() as $idPlayer => $player)
         {
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
-                foreach($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $this->fire_a->add(new Fire($fighters, $defendersMerged));    
+                    $this->fire_a->add(new Fire($shipType, $defendersMerged));
                 }
             }
-        }    
+        }       
+        // here we add to fire manager each fire shotted from an defender's ShipType to all attackers
         $attackersMerged = $this->attackers->getEquivalentFleetContent();
         foreach ($this->defenders->getIterator() as $idPlayer => $player)
         {
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
-                foreach($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $this->fire_d->add(new Fire($fighters, $attackersMerged));
+                    $this->fire_d->add(new Fire($shipType, $attackersMerged));
                 }
             }
-        }
-        
+        }        
+        //--------------------------------------------------------------------------//
+
+        //------------------------- Sending the fire -------------------------------//
         $this->physicShotsToDefenders = $this->defenders->inflictDamage($this->fire_a);
         $this->physicShotsToAttachers = $this->attackers->inflictDamage($this->fire_d);
-        
+        //--------------------------------------------------------------------------//
+
+        //------------------------- Cleaning ships ---------------------------------//
         $this->defenderShipsCleaner = $this->defenders->cleanShips();
         $this->attacherShipsCleaner = $this->attackers->cleanShips();
+        //--------------------------------------------------------------------------//
         
-        $this->defenders->repairShields();                
+        //------------------------- Repairing shields ------------------------------//
+        $this->defenders->repairShields();
         $this->attackers->repairShields();
-        #//first merge all fleets to calculate a right RF
-#        $attackersMerged = $this->attackers->getEquivalentFleetContent();
-#        $defendersMerged = $this->defenders->getEquivalentFleetContent();
-#        $this->fire_a = new Fire($attackersMerged, $defendersMerged);
-#        $this->fire_d = new Fire($defendersMerged, $attackersMerged);
-#        //inflict the fire to defenders
-#        $this->physicShotsToDefenders = $this->defenders->inflictDamage($this->fire_a, $attackersMerged);
-#        //inflict the fire to attackers
-#        $this->physicShotsToAttachers = $this->attackers->inflictDamage($this->fire_d, $defendersMerged);
-#        //clean ships
-#        $this->defenders->cleanShips();
-#        $this->attackers->cleanShips();
-#        //repair shields
-#        $this->defenders->repairShields();
-#        $this->attackers->repairShields();
+        //--------------------------------------------------------------------------//
     }
+    
+    /**
+     * Round::getAttackersFire()
+     * Return the FireManager of the attacker
+     * @return FireManager: attacker
+     */
     public function getAttackersFire()
     {
         return $this->fire_a;
     }
+    
+    /**
+     * Round::getDefendersFire()
+     * Return the FireManager of the defender
+     * @return FireManager: defender
+     */
     public function getDefendersFire()
     {
         return $this->fire_d;
     }
+    
+    /**
+     * Round::getAttachersPhysicShots()
+     * Return an array of attacker PhysicShots (multidimensional)
+     * @return array
+     */
     public function getAttachersPhysicShots()
     {
         return $this->physicShotsToDefenders;
     }
+    
+    /**
+     * Round::getDefendersPhysicShots()
+     * Return an array of defender PhysicShots (multidimensional)
+     * @return array
+     */
     public function getDefendersPhysicShots()
     {
         return $this->physicShotsToAttachers;
     }
+    
+    /**
+     * Round::getAttachersShipsCleaner()
+     * Return an array of attacker ShipsCleaner (multidimensional)
+     * @return array
+     */
     public function getAttachersShipsCleaner()
     {
         return $this->attacherShipsCleaner;
     }
+    
+    /**
+     * Round::getDefendersShipsCleaner()
+     * Return an array of defender ShipsCleaner (multidimensional)
+     * @return array
+     */
     public function getDefendersShipsCleaner()
     {
         return $this->defenderShipsCleaner;
     }
+    
+    /**
+     * Round::getAttachersAfterRound()
+     * Return the attackers after the round.
+     * @return PlayerGroup: attackers
+     */
     public function getAttachersAfterRound()
     {
         return $this->attackers;
     }
+    
+    /**
+     * Round::getDefendersAfterRound()
+     * Return the defenders after the round.
+     * @return PlayerGroup: defenders
+     */
     public function getDefendersAfterRound()
     {
         return $this->defenders;
     }
+    
+    /**
+     * Round::__toString()
+     * An html rappresentation of this object
+     * @return string
+     */
     public function __toString()
     {
         return 'Round: ' . $this->number . '<br>Attackers:' . $this->attackers . '<br>Defenders:' . $this->defenders;
 
     }
+    
+    /**
+     * Round::getNumber()
+     * Return this round number
+     * @return int: number
+     */
     public function getNumber()
     {
         return $this->number;

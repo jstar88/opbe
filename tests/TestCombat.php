@@ -22,31 +22,13 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-include ("..\\utils\\DeepClonable.php");
-include ("..\\models\\Type.php");
-include ("..\\models\\Fighters.php");
-include ("..\\models\\Fleet.php");
-include ("..\\models\\HomeFleet.php");
-include ("..\\models\\Player.php");
-include ("..\\models\\Defense.php");
-include ("..\\models\\Ship.php");
-include ("..\\models\\PlayerGroup.php");
-include ("..\\combatObject\\Fire.php");
-include ("..\\combatObject\\PhysicShot.php");
-include ("..\\combatObject\\ShipsCleaner.php");
-include ("..\\combatObject\\FireManager.php");
-include ("..\\core\\Battle.php");
-include ("..\\core\\BattleReport.php");
-include ("..\\core\\Round.php");
-require ("runnable\\vars.php");
-require ("..\\constants\\battle_constants.php");
-include ("..\\utils\\Math.php");
-include ("..\\utils\\Number.php");
-include ("..\\utils\\Events.php");
-function getFighters($id, $count)
+require ("..\\utils\\includer.php");
+require ("\\runnable\\vars.php");
+
+function getShipType($id, $count)
 {
     global $CombatCaps, $pricelist;
     $rf = $CombatCaps[$id]['sd'];
@@ -65,13 +47,13 @@ function getFighters($id, $count)
 //battle_ship
 $id = 204;
 $count = 20;
-$a2 = getFighters($id, $count);
+$a2 = getShipType($id, $count);
 
 //------------Defenders--------------//
 //light_fighter
 $id = 205;
 $count = 10;
-$d3 = getFighters($id, $count);
+$d3 = getShipType($id, $count);
 
 $attackers = new Fleet(1, array($a2));
 $defenders = new Fleet(2, array($d3));

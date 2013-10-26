@@ -23,10 +23,10 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-class PlayerGroup extends DeepClonable
+class PlayerGroup extends Iterable
 {
 
     protected $array = array();
@@ -46,13 +46,13 @@ class PlayerGroup extends DeepClonable
     {
         return $this->id;
     }
-    public function decrement($idPlayer, $idFleet, $idFighters, $count)
+    public function decrement($idPlayer, $idFleet, $idShipType, $count)
     {
         if (!$this->existPlayer($idPlayer))
         {
             throw new Exception('Player with id : ' . $idPlayer . ' not exist');
         }
-        $this->array[$idPlayer]->decrement($idFleet, $idFighters, $count);
+        $this->array[$idPlayer]->decrement($idFleet, $idShipType, $count);
         if ($this->array[$idPlayer]->isEmpty())
         {
             unset($this->array[$idPlayer]);
@@ -68,7 +68,7 @@ class PlayerGroup extends DeepClonable
     }
     public function addPlayer(Player $player)
     {
-        $this->array[$player->getId()] = $player;
+        $this->array[$player->getId()] = $player->cloneMe();//avoid collateral effects: when the object or array is an argument && it's saved in a structure
     }
     public function createPlayerIfNotExist($id, $fleets, $militaryTech, $shieldTech, $defenceTech)
     {
@@ -98,44 +98,40 @@ class PlayerGroup extends DeepClonable
         require(OPBEPATH."views/playerGroup.html");
         return ob_get_clean();
     }
-    public function getIterator()
-    {
-        return $this->array;
-    }
     public function inflictDamage(FireManager $fire)
     {
         $physicShots = array();
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
             $ps = $player->inflictDamage($fire);
-            $physicShots[$player->getId()] = $ps;
+            $physicShots[$idPlayer] = $ps;
         }
         return $physicShots;
     }
     public function cleanShips()
     {
         $shipsCleaners = array();
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
             $sc = $player->cleanShips();
             $shipsCleaners[] = $sc;
             if ($player->isEmpty())
             {
-                unset($this->array[$id]);
+                unset($this->array[$idPlayer]);
             }
         }
         return $shipsCleaners;
     }
     public function repairShields()
     {
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
             $player->repairShields();
         }
     }
     public function repairHull()
     {
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
             $player->repairHull();
         }
@@ -143,7 +139,7 @@ class PlayerGroup extends DeepClonable
     public function getEquivalentFleetContent()
     {
         $merged = new Fleet(-1);
-        foreach (DeepClonable::cloneIt($this->array) as $id => $player) // cloning don't have any sense because we don't touch the array,maybe php bug :(
+        foreach ($this->array as $idPlayer => $player) // cloning don't have any sense because we don't touch the array,maybe php bug :(
         {
             $merged->mergeFleet($player->getEquivalentFleetContent());
         }
@@ -152,24 +148,33 @@ class PlayerGroup extends DeepClonable
     public function getTotalCount()
     {
         $amount = 0;
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
             $amount += $player->getTotalCount();
         }
         return $amount;
 
     }
-    public function getFleet($id)
+    public function getFleet($idFleet)
     {
-        foreach ($this->array as $id => $player)
+        foreach ($this->array as $idPlayer => $player)
         {
-            $fleet = $player->getFleet($id);
+            $fleet = $player->getFleet($idFleet);
             if ($fleet !== false)
             {
                 return $fleet;
             }
         }
         return false;
+    }
+    public function cloneMe()
+    {
+        $players = array();
+        foreach($this->array as $idPlayer => $player)
+        {
+            $players[] = $player->cloneMe();
+        }
+        return new PlayerGroup($players);
     }
 
 

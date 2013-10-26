@@ -23,11 +23,10 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-define('OPBEPATH', ROOT_PATH . 'includes/libs/opbe/');
-include (OPBEPATH . 'utils/includer.php');
+require (ROOT_PATH . 'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'opbe'.DIRECTORY_SEPARATOR.'utils'.DIRECTORY_SEPARATOR.'includer.php');
 
 define('ID_MIN_SHIPS', 100);
 define('ID_MAX_SHIPS', 300);
@@ -81,8 +80,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         foreach ($attacker['detail'] as $element => $amount)
         {
             if (empty($amount)) continue;
-            $fighters = getFighters($element, $amount);
-            $attackerFleetObj->add($fighters);
+            $shipType = getShipType($element, $amount);
+            $attackerFleetObj->add($shipType);
         }
         $attackerPlayerObj->addFleet($attackerFleetObj);
     }
@@ -101,8 +100,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         foreach ($defender['def'] as $element => $amount)
         {
             if (empty($amount)) continue;
-            $fighters = getFighters($element, $amount);
-            $defenderFleetObj->add($fighters);
+            $shipType = getShipType($element, $amount);
+            $defenderFleetObj->add($shipType);
         }
         $defenderPlayerObj->addFleet($defenderFleetObj);
     }
@@ -219,28 +218,28 @@ function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
         $player = $playerGroup->getPlayer($info['user']['id']);
         $fleet = ($player !== false) ? $player->getFleet($idFleet) : false;
 
-        foreach ($shipInfo as $idFighters => $amount)
+        foreach ($shipInfo as $idShipType => $amount)
         {
             if ($fleet !== false) //if after battle still there are some ship types in this fleet
             {
-                $fighters = $fleet->getFighters($idFighters);
-                if ($fighters !== false) //if there are some ships of this type
+                $shipType = $fleet->getShipType($idShipType);
+                if ($shipType !== false) //if there are some ships of this type
                 {
                     //used to show life,power and shield of each ships in the report
-                    $plyArray[$idFleet][$idFighters] = array(
-                        'def' => $fighters->getHull(),
-                        'shield' => $fighters->getShield(),
-                        'att' => $fighters->getPower());
-                    $players[$idFleet][$index][$idFighters] = $fighters->getCount();
+                    $plyArray[$idFleet][$idShipType] = array(
+                        'def' => $shipType->getHull(),
+                        'shield' => $shipType->getShield(),
+                        'att' => $shipType->getPower());
+                    $players[$idFleet][$index][$idShipType] = $shipType->getCount();
                 }
                 else //all ships of this type were destroyed
                 {
-                    $players[$idFleet][$index][$idFighters] = 0;
+                    $players[$idFleet][$index][$idShipType] = 0;
                 }
             }
             else //the fleet is empty, so all ships of this type were destroyed
             {
-                $players[$idFleet][$index][$idFighters] = 0;
+                $players[$idFleet][$index][$idShipType] = 0;
             }
 
             //initialization
@@ -253,7 +252,7 @@ function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
                 $amountArray['total'] = 0;
             }
             //increment
-            $currentAmount = $players[$idFleet][$index][$idFighters];
+            $currentAmount = $players[$idFleet][$index][$idShipType];
             $amountArray[$idFleet] = $amountArray[$idFleet] + $currentAmount;
             $amountArray['total'] = $amountArray['total'] + $currentAmount;
         }
@@ -268,14 +267,14 @@ function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
 
 
 /**
- * getFighters()
+ * getShipType()
  * Choose the correct class type by ID
  * 
  * @param int $id
  * @param int $count
  * @return a Ship or Defense instance
  */
-function getFighters($id, $count)
+function getShipType($id, $count)
 {
     $CombatCaps = $GLOBALS['CombatCaps'];
     $pricelist = $GLOBALS['pricelist'];

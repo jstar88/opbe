@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -22,40 +23,33 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-class FireManager extends DeepClonable
+class FireManager extends Iterable
 {
     protected $array = array();
-    private $position = 0;
     public function add(Fire $fire)
     {
-        $this->array[] = $fire;
+        $this->array[] = $fire->cloneMe();
     }
     public function getAttackerTotalShots()
     {
-        
-        $tmp=0;
-        foreach($this->array as $id => $fire)
+        $tmp = 0;
+        foreach ($this->array as $id => $fire)
         {
-            $tmp+= $fire->getAttackerTotalShots();    
+            $tmp += $fire->getAttackerTotalShots();
         }
         return $tmp;
     }
-    public function getAttacherTotalFire()
+    public function getAttackerTotalFire()
     {
-        
-        $tmp=0;
-        foreach($this->array as $id => $fire)
+        $tmp = 0;
+        foreach ($this->array as $id => $fire)
         {
-            $tmp+= $fire->getAttacherTotalFire();    
+            $tmp += $fire->getAttackerTotalFire();
         }
         return $tmp;
     }
-    public function getIterator()
-    {
-        return $this->array;
-    }
-    
+
 }

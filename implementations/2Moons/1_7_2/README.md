@@ -11,10 +11,10 @@
     
     ```
 
-2. Make sure that the constant *OPBEPATH* point to the correct OPBE path,defined in the implementation file as:
+2. Make sure of correct OPBE path,defined in the implementation file as:
     
     ```php
-    define('OPBEPATH', ROOT_PATH . 'includes/libs/opbe/');
+    require (ROOT_PATH . 'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'opbe'.DIRECTORY_SEPARATOR.'utils'.DIRECTORY_SEPARATOR.'includer.php');
     ```
 3. Replace default 2Moons's *ROOT_PATH/includes/classes/missions/calculateAttack.php* with the one above 
     Alternatively, you can open a terminal and do:

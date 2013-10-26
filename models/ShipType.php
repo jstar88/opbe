@@ -25,9 +25,15 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-class Fighters extends Type
+class ShipType extends Type
 {
     private $rf;
+    
+    //only used to clone
+    private $originalShield;
+    private $originalHull;
+    private $originalPower;
+        
     private $shield;
     private $hull;
     private $power;
@@ -50,9 +56,9 @@ class Fighters extends Type
         parent::__construct($id, $count);
 
         $this->rf = $rf;
-        $this->shield = $shield;
-        $this->hull = COST_TO_ARMOUR * array_sum($cost);;
-        $this->power = $power;
+        $this->originalShield = $this->shield = $shield;
+        $this->originalHull = $this->hull = COST_TO_ARMOUR * array_sum($cost);;
+        $this->originalPower = $this->power = $power;
         $this->currentShield = SHIELD_CELLS * $count;
         $this->currentLife = $this->hull * $count;
         $this->lastShots = 0;
@@ -86,9 +92,25 @@ class Fighters extends Type
         $this->hull += ARMOUR_TECH_INCREMENT_FACTOR * $diff * $this->hull;
         $this->currentLife += ARMOUR_TECH_INCREMENT_FACTOR * $diff * $this->currentLife;
     }
-    public function getRfTo(Fighters $other)
+    public function getWeaponsTech()
+    {
+        return $this->weapons_tech;    
+    }
+    public function getShieldsTech()
+    {
+        return $this->shields_tech;
+    }
+    public function getArmourTech()
+    {
+        return $this->armour_tech;
+    }
+    public function getRfTo(ShipType $other)
     {
         return (isset($this->rf[$other->getId()]))? $this->rf[$other->getId()] : 0 ;
+    }
+    public function getRF()
+    {
+        return $this->rf;
     }
     public function getShield()
     {
@@ -106,6 +128,14 @@ class Fighters extends Type
     {
         return $this->power;
     }
+    public function getOriginalPower()
+    {
+        return $this->originalPower;
+    }
+    public function getOriginalShield()
+    {
+        return $this->originalShield;
+    }
     public function getCurrentShield()
     {
         return $this->currentShield;
@@ -114,7 +144,7 @@ class Fighters extends Type
     {
         return $this->currentLife;
     }
-    public function inflictShots($damage, $colpiSparatiVersoQuestoTipoDiNavi)
+    public function inflictDamage($damage, $colpiSparatiVersoQuestoTipoDiNavi)
     {
         if ($colpiSparatiVersoQuestoTipoDiNavi == 0)
             return;
@@ -167,5 +197,9 @@ class Fighters extends Type
     public function isShieldDisabled()
     {
         return $this->currentShield == 0;
+    }
+    public function cloneMe()
+    {
+        return new ShipType($this->getId(), $this->getCount(), $this->rf, $this->originalShield, $this->cost, $this->originalPower, $this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

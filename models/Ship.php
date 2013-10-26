@@ -22,14 +22,22 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-class Ship extends Fighters
+class Ship extends ShipType
 {
+    public function __construct($id, $count, $rf, $shield, array $cost, $power, $w = 0, $s = 0, $a = 0)
+    {
+        parent::__construct($id, $count, $rf, $shield, $cost, $power, $w, $s, $a);
+    }
     public function getRepairProb()
     {
         return SHIP_REPAIR_PROB;
+    }
+    public function cloneMe()
+    {
+        return new Ship($this->getId(), $this->getCount(), $this->getRF(), $this->getOriginalShield(), $this->getCost(), $this->getOriginalPower(), $this->getWeaponsTech(), $this->getShieldsTech(), $this->getArmourTech());
     }
 }
 

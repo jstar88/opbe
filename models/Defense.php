@@ -22,10 +22,10 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-class Defense extends Fighters
+class Defense extends ShipType
 {
     public function __construct($id, $count, $rf, $shield, array $cost, $power, $w = 0, $s = 0, $a = 0)
     {
@@ -34,6 +34,10 @@ class Defense extends Fighters
     public function getRepairProb()
     {
         return DEFENSE_REPAIR_PROB;
+    }
+    public function cloneMe()
+    {
+        return new Defense($this->getId(), $this->getCount(), $this->getRF(), $this->getOriginalShield(), $this->getCost(), $this->getOriginalPower(), $this->getWeaponsTech(), $this->getShieldsTech(), $this->getArmourTech());
     }
 
 }

@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
 require ("../RunnableTest.php");
@@ -31,13 +31,13 @@ class CrusherVsSpy extends RunnableTest
 {
     public function getAttachers()
     {
-        $fleet = new Fleet(1,array($this->getFighters(206, 150)));
+        $fleet = new Fleet(1,array($this->getShipType(206, 150)));
         $player = new Player(1, array($fleet));
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        $fleet = new Fleet(2,array($this->getFighters(210, 1250)));
+        $fleet = new Fleet(2,array($this->getShipType(210, 1250)));
         $player = new Player(2, array($fleet));
         return new PlayerGroup(array($player));
     }

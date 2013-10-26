@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
 class BattleReport
@@ -151,18 +151,18 @@ class BattleReport
         {
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $cost = $fighters->getCost();
+                    $cost = $shipType->getCost();
                     $repairedAmount = 0;
-                    if($defRepaired->getPlayer($idPlayer) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters) !== false)
+                    if($defRepaired->getPlayer($idPlayer) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet) !== false && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getShipType($idShipType) !== false)
                     {
-                        $repairedAmount = $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getFighters($idFighters)->getCount();    
+                        $repairedAmount = $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getShipType($idShipType)->getCount();    
                     }
-                    $count = $fighters->getCount() - $repairedAmount;
+                    $count = $shipType->getCount() - $repairedAmount;
                     if ($count > 0)
                     {
-                        $return[$idPlayer][$idFleet][$idFighters] = array($cost[0] * $count, $cost[1] * $count);
+                        $return[$idPlayer][$idFleet][$idShipType] = array($cost[0] * $count, $cost[1] * $count);
                     }
                     elseif ($count < 0)
                     {
@@ -190,7 +190,7 @@ class BattleReport
         {
             foreach ($player as $idFleet => $fleet)
             {
-                foreach ($fleet as $idFighters => $lost)
+                foreach ($fleet as $idShipType => $lost)
                 {
                     $metal += $lost[0];
                     $crystal += $lost[1];
@@ -207,7 +207,7 @@ class BattleReport
         {
             foreach ($player as $idFleet => $fleet)
             {
-                foreach ($fleet as $idFighters => $lost)
+                foreach ($fleet as $idShipType => $lost)
                 {
                     $metal += $lost[0];
                     $crystal += $lost[1];
@@ -224,7 +224,7 @@ class BattleReport
     }
     public function getAttackersFirePower($round)
     {
-        return $this->getRound($round)->getAttackersFire()->getAttacherTotalFire();
+        return $this->getRound($round)->getAttackersFire()->getAttackerTotalFire();
     }
     public function getAttackersFireCount($round)
     {
@@ -232,7 +232,7 @@ class BattleReport
     }
     public function getDefendersFirePower($round)
     {
-        return $this->getRound($round)->getDefendersFire()->getAttacherTotalFire();
+        return $this->getRound($round)->getDefendersFire()->getAttackerTotalFire();
     }
     public function getDefendersFireCount($round)
     {
@@ -299,7 +299,7 @@ class BattleReport
     public function toString($resource)
     {
         ob_start();
-        require (PATH."views/report.html");
+        require (OPBEPATH."views/report.html");
         return ob_get_clean();
     }
     private function getPlayerRepaired($playersBefore, $playersAfter)
@@ -309,9 +309,9 @@ class BattleReport
         {
             foreach ($player->getIterator() as $idFleet => $fleet)
             {
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $lostShips->decrement($idPlayer, $idFleet, $idFighters, round($fighters->getCount() * (1 - $fighters->getRepairProb())));
+                    $lostShips->decrement($idPlayer, $idFleet, $idShipType, round($shipType->getCount() * (1 - $shipType->getRepairProb())));
                 }
             }
         }
@@ -331,15 +331,15 @@ class BattleReport
     }
     private function getPlayersLostShips(PlayerGroup $playersBefore, PlayerGroup $playersAfter)
     {
-        $playersBefore_clone = DeepClonable::cloneIt($playersBefore);
+        $playersBefore_clone = $playersBefore->cloneMe();
 
         foreach ($playersAfter->getIterator() as $idPlayer => $playerAfter)
         {
             foreach ($playerAfter->getIterator() as $idFleet => $fleet)
             {
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $playersBefore_clone->decrement($idPlayer, $idFleet, $idFighters, $fighters->getCount());
+                    $playersBefore_clone->decrement($idPlayer, $idFleet, $idShipType, $shipType->getCount());
                 }
             }
         }
@@ -349,7 +349,7 @@ class BattleReport
     {
         $players = $this->getResultAttackersFleetOnRound('END');
         $playersRepaired = $this->getAttackersRepaired();
-        $players = DeepClonable::cloneIt($players);
+        $players = $players->cloneMe();
 
         foreach ($playersRepaired->getIterator() as $idPlayer => $player)
         {
@@ -369,16 +369,16 @@ class BattleReport
                     $endPlayer->addFleet($endFleet);
                     continue;
                 }
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $endFighters = $endFleet->getFighters($idFighters);
-                    if ($endFighters === false)
+                    $endShipType = $endFleet->getShipType($idShipType);
+                    if ($endShipType === false)
                     {
-                        $endFighters = $fighters;
+                        $endShipType = $shipType;
                     }
                     else
                     {
-                        $endFighters->increment($fighters->getCount());
+                        $endShipType->increment($shipType->getCount());
                     }
                 }
             }
@@ -389,7 +389,7 @@ class BattleReport
     {
         $players = $this->getResultDefendersFleetOnRound('END');
         $playersRepaired = $this->getDefendersRepaired();
-        $players = DeepClonable::cloneIt($players);
+        $players = $players->cloneMe();
 
         foreach ($playersRepaired->getIterator() as $idPlayer => $player)
         {
@@ -409,16 +409,16 @@ class BattleReport
                     $endPlayer->addFleet($endFleet);
                     continue;
                 }
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $endFighters = $endFleet->getFighters($idFighters);
-                    if ($endFighters === false)
+                    $endShipType = $endFleet->getShipType($idShipType);
+                    if ($endShipType === false)
                     {
-                        $endFleet->add($fighters);
+                        $endFleet->add($shipType);
                     }
                     else
                     {
-                        $endFighters->increment($fighters->getCount());
+                        $endShipType->increment($shipType->getCount());
                     }
                 }
             }

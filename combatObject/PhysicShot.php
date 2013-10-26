@@ -22,13 +22,13 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
  
 class PhysicShot
 {
-    private $fighters;
+    private $shipType;
     private $damage;
     private $count;
 
@@ -39,15 +39,15 @@ class PhysicShot
     /**
      * PhysicShot::__construct()
      * 
-     * @param Fighters $fighters
+     * @param ShipType $shipType
      * @param int $damage
      * @param int $count
      * @return
      */
-    public function __construct(Fighters $fighters, $damage, $count)
+    public function __construct(ShipType $shipType, $damage, $count)
     {
         echo "damage=$damage<br>count=$count<br>";
-        $this->fighters = $fighters;
+        $this->fighters = $shipType->cloneMe();
         $this->damage = $damage;
         $this->count = $count;
     }

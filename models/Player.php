@@ -23,10 +23,10 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-class Player extends DeepClonable
+class Player extends Iterable
 {
     private $id;
     protected $array = array();
@@ -48,7 +48,7 @@ class Player extends DeepClonable
     public function addFleet(Fleet $fleet)
     {
         $fleet->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
-        $this->array[$fleet->getId()] = $fleet;
+        $this->array[$fleet->getId()] = $fleet->cloneMe(); //avoid collateral effects: when the object or array is an argument && it's saved in a structure
     }
     public function setTech($weapons, $shields, $armour)
     {
@@ -64,9 +64,9 @@ class Player extends DeepClonable
     {
         return $this->id;
     }
-    public function decrement($idFleet, $idFighters, $count)
+    public function decrement($idFleet, $idShipType, $count)
     {
-        $this->array[$idFleet]->decrement($idFighters, $count);
+        $this->array[$idFleet]->decrement($idShipType, $count);
         if ($this->array[$idFleet]->isEmpty())
         {
             unset($this->array[$idFleet]);
@@ -83,10 +83,6 @@ class Player extends DeepClonable
     public function getArmourTech()
     {
         return $this->armour_tech;
-    }
-    public function getIterator()
-    {
-        return $this->array;
     }
     public function getOrderedItereator()
     {
@@ -124,42 +120,40 @@ class Player extends DeepClonable
         require(OPBEPATH."views/player2.html");
         return ob_get_clean();
     }
-    //public function inflictDamage(Fire $fire, Fleet $from)
     public function inflictDamage(FireManager $fire)
     {
         $physicShots = array();
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
-            //$ps = $fleet->inflictDamage($fire, $from);
             $ps = $fleet->inflictDamage($fire);
-            $physicShots[$id] = $ps;
+            $physicShots[$idFleet] = $ps;
         }
         return $physicShots;
     }
     public function cleanShips()
     {
         $shipsCleaners = array();
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
             $sc = $fleet->cleanShips();
             $shipsCleaners[$this->getId()] = $sc;
             if ($fleet->isEmpty())
             {
-                unset($this->array[$id]);
+                unset($this->array[$idFleet]);
             }
         }
         return $shipsCleaners;
     }
     public function repairShields()
     {
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
             $fleet->repairShields();
         }
     }
     public function repairHull()
     {
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
             $fleet->repairHull();
         }
@@ -167,41 +161,50 @@ class Player extends DeepClonable
     public function getEquivalentFleetContent()
     {
         $merged = new Fleet(-1);
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
             $merged->mergeFleet($fleet);
         }
         return $merged;
     }
-    public function addDefense(Fleet $defense)
+    public function addDefense(Fleet $fleetDefender) // da fare: controllare ordine 
     {
-        $defense->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        $fleetDefender->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
         $this->order();
         $fl = current($this->array);
         if ($fl === false)
         {
-            $this->array[$defense->getId()] = $defense;
+            $this->array[$fleetDefender->getId()] = $fleetDefender->cloneMe();//avoid collateral effects: when the object or array is an argument && it's saved in a structure
         }
         else
         {
-            $f->mergeFleet($defense);
+            $f->mergeFleet($fleetDefender);
         }
     }
     public function mergePlayerFleets(Player $player)
     {
-        foreach ($player->getIterator() as $id => $fleets)
+        foreach ($player->getIterator() as $idFleet => $fleet)
         {
-            $this->array[$id] = $fleets;
+            $this->array[$id] = $fleet->cloneMe();//avoid collateral effects: when the object or array is an argument && it's saved in a structure
         }
     }
     public function getTotalCount()
     {
         $amount = 0;
-        foreach ($this->array as $id => $fleet)
+        foreach ($this->array as $idFleet => $fleet)
         {
             $amount += $fleet->getTotalCount();
         }
         return $amount;
 
+    }
+    public function cloneMe()
+    {
+        $fleets = array();
+        foreach($this->array as $idFleet => $fleet)
+        {
+            $fleets[] = $fleet->cloneMe();
+        }
+        return new Player($this->id, $fleets ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

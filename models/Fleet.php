@@ -26,7 +26,7 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-class Fleet extends DeepClonable
+class Fleet extends Iterable
 {
     protected $array = array();
     private $count;
@@ -35,13 +35,13 @@ class Fleet extends DeepClonable
     private $weapons_tech;
     private $shields_tech;
     private $armour_tech;
-    public function __construct($id, $types = array(),$weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
+    public function __construct($id, $shipTypes = array(),$weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
     {
         $this->id = $id;
         $this->count = 0;
-        foreach ($types as $type)
+        foreach ($shipTypes as $shipType)
         {
-            $this->add($type);
+            $this->add($shipType);
         }
         $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
@@ -51,27 +51,27 @@ class Fleet extends DeepClonable
     }
     public function setTech($weapons, $shields, $armour)
     {
-        foreach ($this->array as $id => $fighters)
+        foreach ($this->array as $id => $shipType)
         {
-            $fighters->setWeaponsTech($weapons);
-            $fighters->setShieldsTech($shields);
-            $fighters->setArmourTech($armour);
+            $shipType->setWeaponsTech($weapons);
+            $shipType->setShieldsTech($shields);
+            $shipType->setArmourTech($armour);
         }
         $this->weapons_tech = $weapons;
         $this->shields_tech = $shields;
         $this->armour_tech = $armour;
     }
-    public function add(Fighters $type)
+    public function add(ShipType $shipType)
     {
-        if (isset($this->array[$type->getId()]))
+        if (isset($this->array[$shipType->getId()]))
         {
-            $this->array[$type->getId()]->increment($type->getCount());
+            $this->array[$shipType->getId()]->increment($shipType->getCount());
         }
         else
         {
-            $this->array[$type->getId()] = $type;
+            $this->array[$shipType->getId()] = $shipType->cloneMe(); //avoid collateral effects
         }
-        $this->count += $type->getCount();
+        $this->count += $shipType->getCount();
     }
     public function decrement($id, $count)
     {
@@ -84,16 +84,12 @@ class Fleet extends DeepClonable
     }
     public function mergeFleet(Fleet $other)
     {
-        foreach ($other->getIterator() as $type)
+        foreach ($other->getIterator() as $idShipType => $shipType)
         {
-            $this->add($type);
+            $this->add($shipType);
         }
     }
-    public function getIterator()
-    {
-        return $this->array;
-    }
-    public function getFighters($id)
+    public function getShipType($id)
     {
         return isset($this->array[$id]) ? $this->array[$id] : false;
     }
@@ -117,17 +113,17 @@ class Fleet extends DeepClonable
     public function inflictDamage(FireManager $fires)
     {
         $physicShots = array();
-        foreach ($fires->getIterator() as $idf => $fire)
+        //doesn't matter who shot first, but who receive first the damage
+        foreach ($fires->getIterator() as $fire)
         {
-            foreach ($this->getOrderedIterator() as $id => $defenders)
+            foreach ($this->getOrderedIterator() as $idShipTypeDefender => $shipTypeDefender)
             {
-                $ida = $fire->getId();
-                echo "---- firing from $ida to $id ---- <br>";
-                $xs = $fire->getShotsFiredByAllToDefenderType($defenders, true);
-                $ps = $defenders->inflictShots($fire->getPower(), $xs->result);
+                $idShipTypeAttacker = $fire->getId();
+                echo "---- firing from $idShipTypeAttacker to $idShipTypeDefender ---- <br>";
+                $xs = $fire->getShotsFiredByAllToDefenderType($shipTypeDefender, true);
+                $ps = $shipTypeDefender->inflictDamage($fire->getPower(), $xs->result);
                 if ($ps != null)
-                    $physicShots[$id][$idf] = $ps;
-
+                    $physicShots[$idShipTypeDefender][] = $ps;
             }
 
         }
@@ -146,38 +142,38 @@ class Fleet extends DeepClonable
     public function cleanShips()
     {
         $shipsCleaners = array();
-        foreach ($this->array as $id => $defenders)
+        foreach ($this->array as $id => $shipType)
         {
             echo "---- exploding $id ----<br>";
-            $sc = $defenders->cleanShips();
+            $sc = $shipType->cleanShips();
             $this->count -= $sc->getExplodedShips();
-            if ($defenders->isEmpty())
+            if ($shipType->isEmpty())
             {
                 unset($this->array[$id]);
             }
-            $shipsCleaners[$defenders->getId()] = $sc;
+            $shipsCleaners[$shipType->getId()] = $sc;
         }
         return $shipsCleaners;
     }
     public function repairShields()
     {
-        foreach ($this->array as $id => $defenders)
+        foreach ($this->array as $id => $shipTypeDefender)
         {
-            $defenders->repairShields();
+            $shipTypeDefender->repairShields();
         }
     }
     public function repairHull()
     {
-        foreach ($this->array as $id => $defenders)
+        foreach ($this->array as $id => $shipTypeDefender)
         {
-            $defenders->repairHull();
+            $shipTypeDefender->repairHull();
         }
     }
     public function isEmpty()
     {
-        foreach ($this->array as $id => $fighters)
+        foreach ($this->array as $id => $shipType)
         {
-            if (!$fighters->isEmpty())
+            if (!$shipType->isEmpty())
             {
                 return false;
             }
@@ -195,5 +191,14 @@ class Fleet extends DeepClonable
     public function getArmourTech()
     {
         return $this->armour_tech;
+    }
+    public function cloneMe()
+    {
+        $types = array();
+        foreach($this->array as $idShipType => $shipType)
+        {
+            $types[] = $shipType->cloneMe();
+        }
+        return new Fleet($this->id, $types ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

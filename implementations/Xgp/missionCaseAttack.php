@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
 global $pricelist, $lang, $resource, $CombatCaps, $user;
@@ -32,11 +32,10 @@ define('SHIP_MIN_ID', 202);
 define('SHIP_MAX_ID', 217);
 define('DEFENSE_MIN_ID', 401);
 define('DEFENSE_MAX_ID', 503);
-define('OPBEPATH', dirname(__dir__ ));
 
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
-    require (OPBEPATH . 'utils/includer.php');
+    require (dirname(dirname(__dir__ )) . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
 
     $targetPlanet = doquery("SELECT * FROM {{table}} WHERE `galaxy` = " . $FleetRow['fleet_end_galaxy'] . " AND `system` = " . $FleetRow['fleet_end_system'] . " AND `planet_type` = " . $FleetRow['fleet_end_type'] . " AND `planet` = " . $FleetRow['fleet_end_planet'] . ";", 'planets', true);
     if ($FleetRow['fleet_group'] > 0)
@@ -74,7 +73,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
         {
             if ($targetPlanet[$resource[$i]] != 0)
             {
-                $homeFleet->add(getFighters($i, $targetPlanet[$resource[$i]]));
+                $homeFleet->add(getShipType($i, $targetPlanet[$resource[$i]]));
             }
         }
     }
@@ -84,7 +83,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
         {
             if ($targetPlanet[$resource[$i]] != 0)
             {
-                $homeFleet->add(getFighters($i, $targetPlanet[$resource[$i]]));
+                $homeFleet->add(getShipType($i, $targetPlanet[$resource[$i]]));
             }
         }
     }
@@ -119,7 +118,7 @@ elseif ($FleetRow['fleet_end_time'] <= time())
     doquery('DELETE FROM {{table}} WHERE `fleet_id`=' . intval($FleetRow['fleet_id']), 'fleets');
 }
 
-function getFighters($id, $count)
+function getShipType($id, $count)
 {
     global $CombatCaps, $pricelist;
     $rf = $CombatCaps[$id]['sd'];
@@ -157,7 +156,7 @@ function getPlayerGroup($fleetRow)
         list($id, $count) = explode(',', $serializedType);
         if ($id != 0 && $count != 0)
         {
-            $fleet->add(getFighters($id, $count));
+            $fleet->add(getShipType($id, $count));
         }
     }
     $player_info = doquery("SELECT * FROM {{table}} WHERE id =$idPlayer", 'users', true);
@@ -180,7 +179,7 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
             list($id, $count) = explode(',', $serializedType);
             if ($id != 0 && $count != 0)
             {
-                $fleet->add(getFighters($id, $count));
+                $fleet->add(getShipType($id, $count));
             }
         }
         //making the player object and add it to playerGroup object
@@ -301,9 +300,9 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
     {
         foreach ($player->getIterator() as $idFleet => $fleet)
         {
-            foreach ($fleet->getIterator() as $idFighters => $fighters)
+            foreach ($fleet->getIterator() as $idShipType => $shipType)
             {
-                $capacity += $fighters->getCount() * $pricelist[$idFighters]['capacity'];
+                $capacity += $shipType->getCount() * $pricelist[$idShipType]['capacity'];
             }
         }
     }
@@ -326,9 +325,9 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
                 if ($Sfleet instanceof HomeFleet)
                 {
                     $fleetArray = "";
-                    foreach ($Sfleet->getIterator() as $SidFighters => $Sfighters)
+                    foreach ($Sfleet->getIterator() as $SidShipType => $Sfighters)
                     {
-                        $fleetArray .= '`' . $resource[$SidFighters] . '`=0, ';
+                        $fleetArray .= '`' . $resource[$SidShipType] . '`=0, ';
                     }
                     $QryUpdateTarget = "UPDATE {{table}} SET ";
                     $QryUpdateTarget .= substr($fleetArray, 0, -1);
@@ -352,9 +351,9 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
                 if ($Sfleet instanceof HomeFleet)
                 {
                     $fleetArray = "";
-                    foreach ($Sfleet->getIterator() as $SidFighters => $Sfighters)
+                    foreach ($Sfleet->getIterator() as $SidShipType => $Sfighters)
                     {
-                        $fleetArray .= '`' . $resource[$SidFighters] . '`=0, ';
+                        $fleetArray .= '`' . $resource[$SidShipType] . '`=0, ';
                     }
                     $QryUpdateTarget = "UPDATE {{table}} SET ";
                     $QryUpdateTarget .= substr($fleetArray, 0, -1);
@@ -381,10 +380,10 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
 
             if ($fleet instanceof HomeFleet)
             {
-                foreach ($report->getPresentationDefendersFleetOnRound('START')->getPlayer($idPlayer)->getFleet($idFleet)->getIterator() as $SidFighters => $Sfighters)
+                foreach ($report->getPresentationDefendersFleetOnRound('START')->getPlayer($idPlayer)->getFleet($idFleet)->getIterator() as $SidShipType => $Sfighters)
                 {
-                    $amount = ($fleet->getFighters($SidFighters) == false) ? 0 : $fleet->getFighters($SidFighters)->getCount();
-                    $fleetArray .= '`' . $resource[$SidFighters] . '`=' . $amount . ', ';
+                    $amount = ($fleet->getShipType($SidShipType) == false) ? 0 : $fleet->getShipType($SidShipType)->getCount();
+                    $fleetArray .= '`' . $resource[$SidShipType] . '`=' . $amount . ', ';
                 }
                 $QryUpdateTarget = "UPDATE {{table}} SET ";
                 $QryUpdateTarget .= $fleetArray;
@@ -398,12 +397,12 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
             else
             {
                 $fleetCapacity = 0;
-                foreach ($fleet->getIterator() as $idFighters => $fighters)
+                foreach ($fleet->getIterator() as $idShipType => $shipType)
                 {
-                    $amount = $fighters->getCount();
-                    $fleetArray .= "$idFighters,$amount;";
+                    $amount = $shipType->getCount();
+                    $fleetArray .= "$idShipType,$amount;";
                     $totalCount += $amount;
-                    $fleetCapacity += $amount * $pricelist[$idFighters]['capacity'];
+                    $fleetCapacity += $amount * $pricelist[$idShipType]['capacity'];
                 }
                 $fleetSteal = array(
                     'metal' => 0,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -22,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(2013-2-4)
  * @link https://github.com/jstar88/opbe
  *
  *
@@ -34,8 +35,8 @@
  */
 class Fire
 {
-    private $attackers;
-    private $defenders;
+    private $attackerShipType;
+    private $defenderFleet;
     const SPEEDSIM = true;
     const RAPIDFIRE = true;
 
@@ -45,32 +46,32 @@ class Fire
     /**
      * Fire::__construct()
      * 
-     * @param Fleet $attackers
-     * @param Fleet $defenders
+     * @param ShipType $attackerShipType
+     * @param Fleet $defenderFleet
      * @param bool $attacking
      * @return
      */
-     public function __construct(Fighters $attackers, Fleet $defenders)
-    //public function __construct(Fleet $attackers, Fleet $defenders)
+    public function __construct(ShipType $attackerShipType, Fleet $defenderFleet)
     {
-        $this->attackers = $attackers;
-        $this->defenders = $defenders;
+        $this->attackerShipType = $attackerShipType->cloneMe();
+        $this->defenderFleet = $defenderFleet->cloneMe();
     }
     public function getPower()
     {
-        return $this->attackers->getPower();
+        return $this->attackerShipType->getPower();
     }
     public function getId()
     {
-        return $this->attackers->getId();
+        return $this->attackerShipType->getId();
     }
     //----------- SENDED FIRE -------------
+    
     /**
-     * Fire::getAttacherTotalFire()
-     * 
-     * @return
+     * Fire::getAttackerTotalFire()
+     * Return the total fire
+     * @return int
      */
-    public function getAttacherTotalFire()
+    public function getAttackerTotalFire()
     {
         if ($this->power == null)
         {
@@ -78,10 +79,11 @@ class Fire
         }
         return $this->power;
     }
+    
     /**
      * Fire::getAttackerTotalShots()
-     * 
-     * @return
+     * Return the total shots
+     * @return int
      */
     public function getAttackerTotalShots()
     {
@@ -91,10 +93,11 @@ class Fire
         }
         return $this->shots;
     }
+    
     /**
      * Fire::calculateTotal()
-     * 
-     * @return
+     * Calculate the total power and shots amount of attacker, including RF and standart fire
+     * @return void
      */
     private function calculateTotal()
     {
@@ -102,155 +105,140 @@ class Fire
         $this->power = 0;
         if (self::RAPIDFIRE)
         {
-            $this->calculateRf();            
+            $this->calculateRf();
         }
         if (!self::SPEEDSIM || !self::RAPIDFIRE)
         {
-            //$this->shots += $this->attackers->getTotalCount();
-            $this->shots += $this->attackers->getCount();
+            $this->shots += $this->attackerShipType->getCount();
             $this->power += $this->getNormalPower();
         }
     }
+    
     /**
      * Fire::calculateRf()
-     * 
-     * @return
+     * This function implement the RF component of above function
+     * @return void
      */
     private function calculateRf()
     {
-#        foreach ($this->attackers->getIterator() as $fighters_A)
-#        {
-#            $tmpshots = round($this->getShotsFromOneAttackerShipOfType($fighters_A) * $fighters_A->getCount());
-#            if (self::SPEEDSIM && $tmpshots == 0)
-#            {
-#                $tmpshots = $fighters_A->getCount();
-#            }
-#            $this->power += $tmpshots * $fighters_A->getPower();
-#            $this->shots += $tmpshots;
-#        }
-        $tmpshots = round($this->getShotsFromOneAttackerShipOfType($this->attackers ) * $this->attackers->getCount());
-           if (self::SPEEDSIM && $tmpshots == 0)
-            {
-                $tmpshots = $this->attackers->getCount();
-            }
-            $this->power += $tmpshots * $this->attackers->getPower();
-           $this->shots += $tmpshots;
+        $tmpshots = round($this->getShotsFromOneAttackerShipOfType($this->attackerShipType) * $this->attackerShipType->getCount());
+        if (self::SPEEDSIM && $tmpshots == 0)
+        {
+            $tmpshots = $this->attackerShipType->getCount();
+        }
+        $this->power += $tmpshots * $this->attackerShipType->getPower();
+        $this->shots += $tmpshots;
     }
+    
     /**
      * Fire::getShotsFromOneAttackerShipOfType()
-     * 
-     * @param mixed $fighters_A
-     * @return
+     * This function return the number of shots caused by RF from one ShipType to all defenders
+     * @param ShipType $shipType_A
+     * @return int
      */
-    private function getShotsFromOneAttackerShipOfType(Fighters $fighters_A)
+    private function getShotsFromOneAttackerShipOfType(ShipType $shipType_A)
     {
-        $p = $this->getProbabilityToShotAgainForAttackerShipOfType($fighters_A);
+        $p = $this->getProbabilityToShotAgainForAttackerShipOfType($shipType_A);
         return ($p != 1) ? 1 / (1 - $p) : 0;
     }
+    
     /**
      * Fire::getProbabilityToShotAgainForAttackerShipOfType()
-     * 
-     * @param mixed $fighters_A
-     * @return
+     * This function return the probability of a ShipType to shot thanks RF
+     * @param ShipType $shipType_A
+     * @return int
      */
-    private function getProbabilityToShotAgainForAttackerShipOfType(Fighters $fighters_A)
+    private function getProbabilityToShotAgainForAttackerShipOfType(ShipType $shipType_A)
     {
         $p = 0;
-        foreach ($this->defenders->getIterator() as $fighters_D)
+        foreach ($this->defenderFleet->getIterator() as $idFleet => $shipType_D)
         {
-            $RF = $fighters_A->getRfTo($fighters_D);
+            $RF = $shipType_A->getRfTo($shipType_D);
             if (!self::SPEEDSIM)
             {
                 $RF = max(0, $RF - 1);
             }
             $probabilityToShotAgain = ($RF != 0) ? ($RF - 1) / $RF : 0;
-            $probabilityToHitThisType = $fighters_D->getCount() / $this->defenders->getTotalCount();
+            $probabilityToHitThisType = $shipType_D->getCount() / $this->defenderFleet->getTotalCount();
             $p += $probabilityToShotAgain * $probabilityToHitThisType;
         }
         return $p;
     }
+    
     /**
      * Fire::getNormalPower()
-     * 
-     * @return
+     * Return the total fire shotted from attacker ShipType to all defenders without RF
+     * @return int
      */
     private function getNormalPower()
-    {#
-#        $power = 0;
-        #foreach ($this->attackers->getIterator() as $attacker)
-#        {
-#            $power += $attacker->getCount() * $attacker->getPower();
-#        }
-        #return $power;
-        return $this->attackers->getCount() * $this->attackers->getPower();
+    { 
+        return $this->attackerShipType->getCount() * $this->attackerShipType->getPower();
     }
     //------- INCOMING FIRE------------
 
-    public function getShotsFiredByAttackerTypeToDefenderType(Fighters $fighters_A, Fighters $fighters_D, $real = false)
+    public function getShotsFiredByAttackerTypeToDefenderType(ShipType $shipType_A, ShipType $shipType_D, $real = false)
     {
-        /*$num = $this->getShotsFiredByAllToDefenderType($fighters_D) * $fighters_A->getCount();
-        $denum = $this->attackers->getTotalCount();
-        return $this->divide($num,$denum,$real,"shots","rest");*/
-        $first = $this->getShotsFiredByAttackerToOne($fighters_A);
-        $second = new Number($fighters_D->getCount());
+        $first = $this->getShotsFiredByAttackerToOne($shipType_A);
+        $second = new Number($shipType_D->getCount());
         return Math::multiple($first, $second, $real);
     }
-    public function getShotsFiredByAttackerToOne(Fighters $fighters_A, $real = false)
+    public function getShotsFiredByAttackerToOne(ShipType $shipType_A, $real = false)
     {
-        $num = $this->getShotsFiredByAttackerToAll($fighters_A);
-        $denum = new Number($this->defenders->getTotalCount());
+        $num = $this->getShotsFiredByAttackerToAll($shipType_A);
+        $denum = new Number($this->defenderFleet->getTotalCount());
         return Math::divide($num, $denum, $real);
     }
-    public function getShotsFiredByAllToDefenderType(Fighters $fighters_D, $real = false)
+    public function getShotsFiredByAllToDefenderType(ShipType $shipType_D, $real = false)
     {
-        /*$num = $this->getAttackerTotalShots() * $fighters_D->getCount();
-        $denum = $this->defenders->getTotalCount();
-        return $this->divide($num,$denum,$real,"shots","rest");*/
         $first = $this->getShotsFiredByAllToOne();
-        $second = new Number($fighters_D->getCount());
+        $second = new Number($shipType_D->getCount());
         return Math::multiple($first, $second, $real);
     }
-    public function getShotsFiredByAttackerToAll(Fighters $fighters_A, $real = false)
+    public function getShotsFiredByAttackerToAll(ShipType $shipType_A, $real = false)
     {
-        $num = new Number($this->getAttackerTotalShots() * $fighters_A->getCount());
-        $denum = new Number($this->attackers->getTotalCount());
+        $num = new Number($this->getAttackerTotalShots() * $shipType_A->getCount());
+        $denum = new Number($this->attackerShipType->getTotalCount());
         return Math::divide($num, $denum, $real);
     }
     public function getShotsFiredByAllToOne($real = false)
     {
         $num = new Number($this->getAttackerTotalShots());
-        $denum = new Number($this->defenders->getTotalCount());
+        $denum = new Number($this->defenderFleet->getTotalCount());
         return Math::divide($num, $denum, $real);
     }
     /**
      * Fire::__toString()
-     * 
+     * Rappresentation of this object
      * @return
      */
     public function __toString()
     {
         #global $resource;
-#        $shots = $this->getAttackerTotalShots();
-#        $power = $this->getAttacherTotalFire();
-#        $iter = $this->attackers->getIterator();
-#        $page = "<center><table bgcolor='#ADC9F4' border='1' ><body><tr><tr><td colspan='" . count($iter) . "'><center><font color='red'>Attackers</font></center></td></tr>";
-#        foreach ($iter as $attacher)
-#            $page .= "<td>" . $resource[$attacher->getId()] . "</td>";
-#        $page .= "</tr><tr>";
-#        foreach ($iter as $attacher)
-#            $page .= "<td><center>" . $attacher->getCount() . "</center></td>";
-#        $iter = $this->defenders->getIterator();
-#        $page .= "</tr></body></table><br><table bgcolor='#ADC9F4' border='1'><body><tr><td colspan='" . count($iter) . "'><center><font color='red'>Defenders</font></center></td></tr></tr>";
-#        foreach ($iter as $defender)
-#            $page .= "<td>" . $resource[$defender->getId()] . "</td>";
-#        $page .= "<tr>";
-#        foreach ($iter as $defender)
-#            $page .= "<td><center>" . $defender->getCount() . "</center></td>";
-#        $page .= "</tr></body></table><br>";
-#        $page .= "The attacking fleet fires a total of $shots times with the power of $power upon the defenders.<br>";
-#        $page .= "</center>";
-#        return $page;
-    return $this->getAttacherTotalFire().'';
+        #        $shots = $this->getAttackerTotalShots();
+        #        $power = $this->getAttackerTotalFire();
+        #        $iter = $this->attackerShipType->getIterator();
+        #        $page = "<center><table bgcolor='#ADC9F4' border='1' ><body><tr><tr><td colspan='" . count($iter) . "'><center><font color='red'>Attackers</font></center></td></tr>";
+        #        foreach ($iter as $attacher)
+        #            $page .= "<td>" . $resource[$attacher->getId()] . "</td>";
+        #        $page .= "</tr><tr>";
+        #        foreach ($iter as $attacher)
+        #            $page .= "<td><center>" . $attacher->getCount() . "</center></td>";
+        #        $iter = $this->defenderFleet->getIterator();
+        #        $page .= "</tr></body></table><br><table bgcolor='#ADC9F4' border='1'><body><tr><td colspan='" . count($iter) . "'><center><font color='red'>Defenders</font></center></td></tr></tr>";
+        #        foreach ($iter as $defender)
+        #            $page .= "<td>" . $resource[$defender->getId()] . "</td>";
+        #        $page .= "<tr>";
+        #        foreach ($iter as $defender)
+        #            $page .= "<td><center>" . $defender->getCount() . "</center></td>";
+        #        $page .= "</tr></body></table><br>";
+        #        $page .= "The attacking fleet fires a total of $shots times with the power of $power upon the defenders.<br>";
+        #        $page .= "</center>";
+        #        return $page;
+        return $this->getAttackerTotalFire() . '';
+    }
+    public function cloneMe()
+    {
+        return new Fire($this->attackerShipType,$this->defenderFleet);
     }
 
 }

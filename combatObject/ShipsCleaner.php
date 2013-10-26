@@ -22,12 +22,12 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2013 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version alpha(2013-2-4)
+ * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
 class ShipsCleaner
 {
-    private $fighters;
+    private $shipType;
     private $lastShipHit;
     private $lastShots;
 
@@ -36,14 +36,14 @@ class ShipsCleaner
     /**
      * ShipsCleaner::__construct()
      * 
-     * @param mixed $fighters
+     * @param mixed $shipType
      * @param int $lastShipHit
      * @param int $lastShot
      * @return ShipsCleaner
      */
-    public function __construct(Fighters $fighters, $lastShipHit, $lastShots)
+    public function __construct(ShipType $shipType, $lastShipHit, $lastShots)
     {
-        $this->fighters = $fighters;
+        $this->fighters = $shipType->cloneMe();
         $this->lastShipHit = $lastShipHit;
         $this->lastShots = $lastShots;
     }

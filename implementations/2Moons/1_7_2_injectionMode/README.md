@@ -20,7 +20,7 @@ Instead, using injectionMode the only used OPBE's implementation stay inside OPB
     
     ```php
     <?php
-        require_once( ROOT_PATH . 'includes/libs/opbe/implementations/2Moons/1_7_2_injectionmode/calculateAttack.php' );
+        require_once( ROOT_PATH . 'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'opbe'.DIRECTORY_SEPARATOR.'implementations'.DIRECTORY_SEPARATOR.'2Moons'.DIRECTORY_SEPARATOR.'1_7_2_injectionmode'.DIRECTORY_SEPARATOR.'calculateAttack.php' );
     ?>
     ```
 3. Updating:

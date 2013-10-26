@@ -107,18 +107,18 @@ class MyTest extends RunnableTest
     public function getAttachers()
     {
         $fleet = new Fleet(1,array(
-            $this->getFighters(206, 50),
-            $this->getFighters(207, 50),
-            $this->getFighters(204, 150)));
+            $this->getShipType(206, 50),
+            $this->getShipType(207, 50),
+            $this->getShipType(204, 150)));
         $player = new Player(1, array($fleet));
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
         $fleet = new Fleet(2,array(
-            $this->getFighters(210, 150),
-            $this->getFighters(215, 50),
-            $this->getFighters(207, 20)));
+            $this->getShipType(210, 150),
+            $this->getShipType(215, 50),
+            $this->getShipType(207, 20)));
         $player = new Player(2, array($fleet));
         return new PlayerGroup(array($player));
     }
@@ -135,30 +135,30 @@ The system organization is like :
    * Player2
       * Fleet1
       * Fleet2
-         * Fighters1
-         * Fighters2
+         * ShipType1
+         * ShipType2
 
 So in a PlayerGroup there are different *Player*s,  
 each Player have different *Fleet*s,  
 each Fleet have different *Figthers*.  
 
 
-#### Fighters
+#### ShipType
 
-Fighters is the smallest unit in the system: it reppresents a group of specific object type able to fight.
-For some reasons, OPBE needs to categorize it in either one of these two types extending Fighters:
+ShipType is the smallest unit in the system: it reppresents a group of specific object type able to fight.
+For some reasons, OPBE needs to categorize it in either one of these two types extending ShipType:
 * Defense
 * Ship
 
 You shouldn't ened to care about this fact because this automatic code will do it for you:
 
 ```php
-    $fighters =  $this->getFighters($idFighters, $count);
+    $shipType =  $this->getShipType($idShipType, $count);
 ```    
 
 ```php
    
-function getFighters($id, $count)
+function getShipType($id, $count)
 {
     global $CombatCaps, $pricelist;
     $rf = $CombatCaps[$id]['sd'];
@@ -178,7 +178,7 @@ function getFighters($id, $count)
 
 #### Fleet
 
-Fleet is a group of Fighters and it is extended by a single object 
+Fleet is a group of ShipType and it is extended by a single object 
 * HomeFleet : represent the ships and defense in the target's planet
 
 This time you have to manually choose the right class and HomeFleet should have $id = 0;
@@ -186,10 +186,10 @@ This time you have to manually choose the right class and HomeFleet should have 
 ```php
     $fleet = new Fleet($idFleet); // $idFleet is a must
     $fleet = new HomeFleet(0); // 0 is a must
-    $fleet->add($fighters);
+    $fleet->add($shipType);
 ```
 Note that you can assign differents techs to each *Fleet*, see functions inside this class.   
-In this case, all Fighters contained in a *Fleet* will take it techs.
+In this case, all ShipType contained in a *Fleet* will take it techs.
 
 #### Player
 
@@ -214,7 +214,7 @@ PlayerGroup is a group of Player, don't care about the question attacker or defe
 An easy way to display them:
 ```php   
     $fleet = new Fleet($idFleet);
-    $fleet->add($this->getFighters($id, $count));
+    $fleet->add($this->getShipType($id, $count));
     
     $player = new Player($idPlayer);
     $player->addFleet($fleet);
@@ -227,7 +227,7 @@ An easy way to display them:
     {
         foreach($player as $idFleet => $fleet)
         {
-            foreach($fleet as $idFighters => $fighters)
+            foreach($fleet as $idShipType => $shipType)
             {
                 // do something
             }
