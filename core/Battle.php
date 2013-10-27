@@ -118,12 +118,7 @@ class Battle
      */
     public function __toString()
     {
-        $string = "<br><b>Results:</b><br>";
-        $string .= "<font color=red>attackers:</font><br>";
-        $string .= $this->attackers;
-        $string .= "<br><br><font color=red>defenders:</font><br>";
-        $string .= $this->defenders;
-        return $string;
+        return $this->report->__toString();
     }
     /**
      * Battle::getReport()

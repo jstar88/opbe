@@ -116,7 +116,6 @@ class Player extends Iterable
         ob_start();
         $_player = $this;
         $_st = "";
-        require(OPBEPATH."tests/runnable/vars.php");//just for names
         require(OPBEPATH."views/player2.html");
         return ob_get_clean();
     }

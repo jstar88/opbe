@@ -30,6 +30,7 @@
 define('PATH','../../');
 
 require(PATH."utils/includer.php");
+require(PATH."tests/LangImplementation.php");
 require ("vars.php");
 
 class RunnableTest

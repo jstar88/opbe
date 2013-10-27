@@ -27,12 +27,6 @@
  * @link https://github.com/jstar88/opbe
  */
 class HomeFleet extends Fleet
-{
-
-    public function __construct($id, $types = array())
-    {
-        parent::__construct($id, $types);
-    }
-}
+{}
 
 ?>

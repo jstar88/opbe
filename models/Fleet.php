@@ -106,7 +106,6 @@ class Fleet extends Iterable
         ob_start();
         $_fleet = $this;
         $_st = "";
-        require(OPBEPATH."tests/runnable/vars.php");//just for names
         require(OPBEPATH."views/fleet.html");
         return ob_get_clean();
     }

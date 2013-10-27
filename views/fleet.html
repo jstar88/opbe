@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <?php foreach($_fleet as $_shipID => $_ship) { ?>
-                <th><?php echo $resource[$_shipID]; ?></th>
+                <th><?php echo LangManager::getInstance()->getShipName($_shipID); ?></th>
             <?php } ?>
         </tr>
     </thead>

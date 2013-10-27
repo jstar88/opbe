@@ -35,7 +35,9 @@ define('DEFENSE_MAX_ID', 503);
 
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
-    require (dirname(dirname(__dir__ )) . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
+    $base = dirname(dirname(__dir__ )) . DIRECTORY_SEPARATOR;
+    require ($base . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
+    require ($base . 'implementations' . DIRECTORY_SEPARATOR . 'Xgp' . DIRECTORY_SEPARATOR . 'LangImplementation.php');
 
     $targetPlanet = doquery("SELECT * FROM {{table}} WHERE `galaxy` = " . $FleetRow['fleet_end_galaxy'] . " AND `system` = " . $FleetRow['fleet_end_system'] . " AND `planet_type` = " . $FleetRow['fleet_end_type'] . " AND `planet` = " . $FleetRow['fleet_end_planet'] . ";", 'planets', true);
     if ($FleetRow['fleet_group'] > 0)

@@ -200,6 +200,12 @@ class ShipType extends Type
     }
     public function cloneMe()
     {
-        return new ShipType($this->getId(), $this->getCount(), $this->rf, $this->originalShield, $this->cost, $this->originalPower, $this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        $class = get_class($this);
+        $tmp = new $class($this->getId(), $this->getCount(), $this->rf, $this->originalShield, $this->cost, $this->originalPower, $this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        $tmp->currentShield = $this->currentShield;
+        $tmp->currentLife = $this->currentLife;
+        $tmp->lastShots = $this->lastShots;
+        $tmp->lastShipHit = $this->lastShipHit;
+        return $tmp;
     }
 }

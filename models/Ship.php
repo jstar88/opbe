@@ -27,17 +27,9 @@
  */
 class Ship extends ShipType
 {
-    public function __construct($id, $count, $rf, $shield, array $cost, $power, $w = 0, $s = 0, $a = 0)
-    {
-        parent::__construct($id, $count, $rf, $shield, $cost, $power, $w, $s, $a);
-    }
     public function getRepairProb()
     {
         return SHIP_REPAIR_PROB;
-    }
-    public function cloneMe()
-    {
-        return new Ship($this->getId(), $this->getCount(), $this->getRF(), $this->getOriginalShield(), $this->getCost(), $this->getOriginalPower(), $this->getWeaponsTech(), $this->getShieldsTech(), $this->getArmourTech());
     }
 }
 

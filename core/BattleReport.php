@@ -299,7 +299,7 @@ class BattleReport
     public function toString($resource)
     {
         ob_start();
-        require (OPBEPATH."views/report.html");
+        require(OPBEPATH."views/report.html");
         return ob_get_clean();
     }
     private function getPlayerRepaired($playersBefore, $playersAfter)

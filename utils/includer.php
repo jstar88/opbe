@@ -32,6 +32,8 @@ require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Iterable.php');
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Math.php');
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Number.php');
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Events.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Lang.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'LangManager.php');
 require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Type.php');
 require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'ShipType.php');
 require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Fleet.php');

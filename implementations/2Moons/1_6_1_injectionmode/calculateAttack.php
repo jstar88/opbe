@@ -26,7 +26,9 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-require (dirname(dirname(dirname(__dir__ ))) . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
+$path = dirname(dirname(dirname(__dir__ ))) . DIRECTORY_SEPARATOR;
+require ($path . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
+require ($path . 'implementations' . DIRECTORY_SEPARATOR . '2Moons' . DIRECTORY_SEPARATOR . '1_6_1_injectionmode' . DIRECTORY_SEPARATOR . 'LangImplementation.php');
 
 define('ID_MIN_SHIPS', 100);
 define('ID_MAX_SHIPS', 300);

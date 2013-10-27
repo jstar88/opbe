@@ -94,7 +94,6 @@ class PlayerGroup extends Iterable
         ob_start();
         $_playerGroup = $this;
         $_st = "";
-        require(OPBEPATH."tests/runnable/vars.php");//just for names
         require(OPBEPATH."views/playerGroup.html");
         return ob_get_clean();
     }
@@ -174,7 +173,11 @@ class PlayerGroup extends Iterable
         {
             $players[] = $player->cloneMe();
         }
-        return new PlayerGroup($players);
+        $tmp = new PlayerGroup($players);
+        $tmp->battleResult = $this->battleResult;
+        $tmp->id = $this->id;
+        self::$id_count--;
+        return $tmp;
     }
 
 
