@@ -78,12 +78,13 @@ class Battle
             $this->report->addRound($round);
             //if($i==2) die('Round: '.$this->report->getRound(0)->getNumber()); // ERRORE
             //update the attackers and defenders after round
-            $this->attackers =  $round->getAttachersAfterRound();
-            $this->defenders =  $round->getDefendersAfterRound();
+            $this->attackers =  $round->getAfterBattleAttackers();
+            $this->defenders =  $round->getAfterBattleDefenders();
         }
         //check status after all rounds
         $this->checkWhoWon($this->attackers->isEmpty(), $this->defenders->isEmpty());
         if(!$debug) ob_get_clean();
+        return true;
     }
     /**
      * Battle::checkWhoWon()

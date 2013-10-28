@@ -37,7 +37,6 @@ class RunnableTest
 {
     public function __construct($debug = false)
     {
-        global $resource;
         try
         {
             set_error_handler(array('RunnableTest', "myErrorHandler"));
@@ -52,7 +51,7 @@ class RunnableTest
             $micro1 = microtime() - $micro1;
             $memory1 = memory_get_usage() - $memory1;
 
-            echo $engine->getReport()->toString($resource);
+            echo $engine->getReport();
 
             $micro1 = round(1000 * $micro1, 2);
             $memory1 = round($memory1 / 1000);
@@ -166,7 +165,8 @@ EOT;
     }
     private static function br2nl($text)
     {
-        return preg_replace('/<br\\\\s*?\\/??>/i', PHP_EOL, $text);
+        $x = preg_replace('/<br\\\\s*?\\/??>/i', PHP_EOL, $text);
+        return str_ireplace('<br />','',$x);
     }
 }
 

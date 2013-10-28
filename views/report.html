@@ -7,7 +7,7 @@
 <body>
 <center>
     <?php for ( $_i=1;$_i<=$this->getLastRoundNumber();$_i++){ ?>
-        <?php include('round.html'); ?>
+        <?php $_round = $this->getRound($_i - 1); include('round.html'); ?>
     <?php } ?>
     <cite> END OF BATTLE </cite>
     <?php $_st = 'Attacker'; $_playerGroup =  $this->getResultAttackersFleetOnRound('END'); include('playerGroup.html');?>

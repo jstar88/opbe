@@ -47,7 +47,7 @@ class Round
     private $attacherShipsCleaner;
     private $defenderShipsCleaner;
 
-    private $number;
+    private $number; // this round number
 
     /**
      * Round::__construct()
@@ -181,21 +181,21 @@ class Round
     }
     
     /**
-     * Round::getAttachersAfterRound()
+     * Round::getAfterBattleAttackers()
      * Return the attackers after the round.
      * @return PlayerGroup: attackers
      */
-    public function getAttachersAfterRound()
+    public function getAfterBattleAttackers()
     {
         return $this->attackers;
     }
     
     /**
-     * Round::getDefendersAfterRound()
+     * Round::getAfterBattleDefenders()
      * Return the defenders after the round.
      * @return PlayerGroup: defenders
      */
-    public function getDefendersAfterRound()
+    public function getAfterBattleDefenders()
     {
         return $this->defenders;
     }
@@ -207,8 +207,11 @@ class Round
      */
     public function __toString()
     {
-        return 'Round: ' . $this->number . '<br>Attackers:' . $this->attackers . '<br>Defenders:' . $this->defenders;
-
+        ob_start();
+        $_round = $this;
+        $_i = $this->number;
+        require(OPBEPATH."views/round.html");
+        return ob_get_clean();
     }
     
     /**
