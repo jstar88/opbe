@@ -327,6 +327,7 @@ This is very usefull to store only the object in database and generate the html 
     
     $result = mysql_fetch_array(mysql_query("SELECT obj FROM Reports WHERE id = $id"));    
     $info = unserialize($result['obj']);
+    echo $info;
 ```
 
 ---
