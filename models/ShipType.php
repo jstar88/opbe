@@ -57,7 +57,7 @@ class ShipType extends Type
 
         $this->rf = $rf;
         $this->originalShield = $this->shield = $shield;
-        $this->originalHull = $this->hull = COST_TO_ARMOUR * array_sum($cost);;
+        $this->originalHull = $this->hull = COST_TO_ARMOUR * array_sum($cost);
         $this->originalPower = $this->power = $power;
         $this->currentShield = SHIELD_CELLS * $count;
         $this->currentLife = $this->hull * $count;
