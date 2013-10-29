@@ -2,7 +2,7 @@ OPBE
 ====
 
 **O**game **P**robabilistic **B**attle **E**ngine  
-live: http://opbe.webnet32.com (server offline)
+live: http://opbe.altervista.org
 
 1. [Introduction](#introduction)
 2. [Quick start](#quick-start-installation)
