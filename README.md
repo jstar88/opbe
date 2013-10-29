@@ -40,15 +40,16 @@ Also, memory and CPU usage are O(1), this means they are CONSTANT and independen
 
 ## Quick start (installation)
 This seems so cool! How can I use it?  
-You can check in [implementations directory](https://github.com/jstar88/opbe/tree/master/implementations) for your game version, read the installation.txt file.  
+You can check in [implementations directory](https://github.com/jstar88/opbe/tree/master/implementations) for your game version,
+read the installation.txt file.  
 Be sure you have read the *license* with respect for the author.
 
 ---
 
 ## Accuracy
-One of main concepts used in this battle engine is the **expected value**: instead calculate each ship case, OPBE 
-creates an estimation of their behavior. 
-This estimation is improved by analyzing behavior for infinite simulations, so, 
+One of main concepts used in this battle engine is the **expected value**: instead calculate each ship case, OPBE
+creates an estimation of their behavior.   
+This estimation is improved by analyzing behavior for infinite simulations, so,
 to test OPBE's accuracy you have to set speedsim (or dragosim)'s battles amount to a big number, such as 3k.  
 
 ---
@@ -56,25 +57,26 @@ to test OPBE's accuracy you have to set speedsim (or dragosim)'s battles amount 
 ## Performance
 It seems that noone knows the O() notation, so this is the definition from the Wiki:  
 *big O notation is used to classify algorithms by how they respond (e.g., in their processing time or working space requirements) to changes in input size.*   
-There are different possibilities, such as O(n) (linear), O(n^2) (quadratic) etc.
-OPBE is O(1) in both CPU and MEMORY usage:  
+There are different possibilities, such as O(n) (linear), O(n^2) (quadratic) etc.   
+OPBE is O(1) in both CPU and MEMORY usage:    
 In practice, that means that the computional requirements to solve an algoritm **don't increase** with the input size.  
-It's awesome! You can simulate 20 ships or 20 Tera ships and nothing should change. In reality, there is a small difference  
-because the arithmetic operations aren't O(1) for CPU, and also a *double* requires more space than an *integer*.  
+It's awesome! You can simulate 20 ships or 20 Tera ships and nothing should change.  
+In reality, there is a small difference because the arithmetic operations aren't O(1) for CPU, and also a *double* requires more space than an *integer*.  
 
 Let's do some test:
 
 ##### Double's limit test 
-Write a lot of nines in both defender's BC and attacker's BC. Because of the *double* limit, your number will be trunked to *9223372036854775807*.  
+Write a lot of nines in both defender's BC and attacker's BC.  
+Because of the *double* limit, your number will be trunked to *9223372036854775807*.  
 Anyway the battle starts and are calculated as well (some overflow errors maybe).  
 
     Battle calculated in 2.54 ms.
     Memory used: 335 KB
 
 ##### Worst case, OPBE max requirements!
-The only thing that requires a lot of memory in OPBE is the Report, because it stores all ships in every round... this means that more  
+The only thing that requires a lot of memory in OPBE is the Report, because it stores all ships in every round... this means that more   
 rounds = more memory.  
-Also, the worst case for CPU and memory is to have all types of ships(iteration of them).
+Also, the worst case for CPU and memory is to have all types of ships(iteration of them).  
 So we set 1'000'000 of ships in each type(defenses only for defender),not a big number just to avoid overflow in calculations.  
 And we got:
 
@@ -139,11 +141,12 @@ new MyTest();
 ## Implementation developing guide 
 The system organization is like :
 * PlayerGroup
-   * Player1
-   * Player2
-      * Fleet1
-      * Fleet2
-         * ShipType1
+    * Player1
+    * Player2
+        * Fleet1
+        * Fleet2
+            * ShipType1
+            * ShipType2
 
 So in a PlayerGroup there are different *Player*s,  
 each Player have different *Fleet*s,  
@@ -193,7 +196,7 @@ Sometimes it's not really required to clone, but this good practice ensure less 
 
 #### ShipType
 
-ShipType is the smallest unit in the system: it reppresents a group of specific object type able to fight.
+ShipType is the smallest unit in the system: it reppresents a group of specific object type able to fight.  
 For some reasons, OPBE needs to categorize it in either one of these two types extending ShipType:
 * Defense
 * Ship
@@ -390,7 +393,7 @@ You should replace any PHP native mathematical with [BC math](http://php.net/man
 
 I'm happy to deliver this software giving others the possibility to have a good battle engine.  
 On the other hand, it's a pleasure to see people using my OPBE.  
-Send me an email to put your game logo here!  
+Send me an email to put your game logo here!  [frascafresca@gmail.com](mailto:frascafresca@gmail.com)
 
 ![xgproyect](http://www.xgproyect.net/images/misc/xg-logo.png)
 
