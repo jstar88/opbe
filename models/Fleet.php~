@@ -193,7 +193,11 @@ class Fleet extends Iterable
     }
     public function cloneMe()
     {
-        $types = array_values($this->array);
+        $types = array();
+        foreach($this->array as $idShipType => $shipType)
+        {
+            $types[] = $shipType->cloneMe();
+        }
         return new Fleet($this->id, $types ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

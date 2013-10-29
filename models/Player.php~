@@ -199,7 +199,11 @@ class Player extends Iterable
     }
     public function cloneMe()
     {
-        $fleets = array_values($this->array);
+        $fleets = array();
+        foreach($this->array as $idFleet => $fleet)
+        {
+            $fleets[] = $fleet->cloneMe();
+        }
         return new Player($this->id, $fleets ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

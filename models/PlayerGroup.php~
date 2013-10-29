@@ -168,7 +168,11 @@ class PlayerGroup extends Iterable
     }
     public function cloneMe()
     {
-        $players = array_values($this->array);
+        $players = array();
+        foreach($this->array as $idPlayer => $player)
+        {
+            $players[] = $player->cloneMe();
+        }
         $tmp = new PlayerGroup($players);
         $tmp->battleResult = $this->battleResult;
         $tmp->id = $this->id;
