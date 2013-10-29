@@ -78,9 +78,7 @@ And we got:
     Battle calculated in 144.88 ms.
     Memory used: 6249 KB
 
-* These values really depend on your hardware and PHP configuration: expecially, caching the bytecode will decrease a lot the CPU usage but increase RAM usage.
-
-Seems a lot? Try a O(n^2) algorithm and you will crash with insane small amount of ships :)  
+Seems a lot? Try a O(n) algorithm and you will crash with insane small amount of ships :)  
 Anyway you can decrease a lot the memory usage setting, in *constants/battle_constants.php*,  
 
 ```php 
