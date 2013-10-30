@@ -35,6 +35,9 @@ require ("vars.php");
 
 class RunnableTest
 {
+	 private $time;
+	 private $memory;
+	 private $report;
     public function __construct($debug = false)
     {
         try
@@ -51,16 +54,11 @@ class RunnableTest
             $micro1 = microtime() - $micro1;
             $memory1 = memory_get_usage() - $memory1;
 
-            echo $engine->getReport();
+            $this->report = $engine->getReport();
 
-            $micro1 = round(1000 * $micro1, 2);
-            $memory1 = round($memory1 / 1000);
-            echo <<< EOT
-<br>______________________________________________<br>
-Battle calculated in <font color=blue>$micro1 ms</font>.<br>
-Memory used: <font color=blue>$memory1 KB</font><br>
-_______________________________________________<br>
-EOT;
+            $this->time = round(1000 * $micro1, 2);
+            $this->memory = round($memory1 / 1000);
+            echo $this;
         }
         catch (exception $e)
         {
@@ -158,13 +156,29 @@ EOT;
         $post = '$_POST =' . var_export($_POST);
         $get = '$_GET =' . var_export($_GET);
         $output = ob_get_clean();
-        file_put_contents('errors/'.date('d-m-y_H:i:s').'.txt',  $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
+        if (!file_exists('errors/internals')) {
+    			mkdir('errors/internals', 0777, true);
+			}
+        file_put_contents('errors/internals/'.date('d-m-y_H:i:s').'.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)
     {
         $x = preg_replace('/<br\\\\s*?\\/??>/i', PHP_EOL, $text);
         return str_ireplace('<br />','',$x);
+    }
+    public function __toString()
+    {
+    	$micro = $this->time;
+    	$memory = $this->memory;
+    	return $this->report.
+    	 <<< EOT
+<br>______________________________________________<br>
+Battle calculated in <font color=blue>$micro ms</font>.<br>
+Memory used: <font color=blue>$memory KB</font><br>
+_______________________________________________<br>
+EOT;
+	
     }
 }
 
