@@ -27,6 +27,7 @@
  * @link https://github.com/jstar88/opbe
  */
 require ("../RunnableTest.php");
+
 class WebTest extends RunnableTest
 {
     public function getAttachers()
@@ -69,6 +70,17 @@ class WebTest extends RunnableTest
     }
 }
 
+if (isset($_GET['vars']))
+{
+	includeVars($_GET['vars']);
+	$selectedVar = $_GET['vars'];
+}
+else
+{
+	includeVars('XG');
+	$selectedVar = $_GET['XG'];
+}
+
 if (isset($_GET['good']))
 {
     session_start();
@@ -95,7 +107,6 @@ elseif (isset($_GET['bad']))
 }
 if ($_POST)
 {
-
 	if(isset($_POST['report']))
 	{
 	 	  if (!file_exists('errors/reports')) {
@@ -168,6 +179,7 @@ else
     $bad = file_get_contents('bad.txt');
     $good = file_get_contents('good.txt');
     $count = floor(file_get_contents('count.txt'));
+    $list = getVarsList();
     require ('WebTestGui.html');
 
 }

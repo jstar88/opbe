@@ -12,6 +12,12 @@
             <font color="blue">Ogame Probabilistic Battle Engine</font><br>
             Version: beta 4       <br>
             Simulations done : <?php echo $count ?> <br>
+            Select vars: 
+            <select name="vars" onchange="window.location = 'WebTest.php?vars='+this.value;";>
+            	<?php foreach($list as $var) { ?>
+            		<option value="<?php echo $var; ?>" <?php if($selectedVar ==  $var) echo "selected"; ?>><?php echo $var; ?> </option>
+            	<?php } ?>
+            </select><br>
             <a href="WebTest.php?good=1"><img src="good.png"></a><a href="WebTest.php?bad=1"><img src="bad.png"></a> <?php echo $good ?> | <?php echo $bad ?>
          </div>
          <form method="post" action="WebTest.php">

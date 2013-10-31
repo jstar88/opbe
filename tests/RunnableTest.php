@@ -31,7 +31,24 @@ define('PATH','../../');
 
 require(PATH."utils/includer.php");
 require(PATH."tests/LangImplementation.php");
-require ("vars.php");
+
+function includeVars($name)
+{
+	global $reslist,$pricelist,$requeriments,$resource,$CombatCaps;
+	require("vars/$name.php");
+}
+function getVarsList()
+{
+	$list = array();
+	if ($handle = opendir('vars')) 
+	{
+   	while (false !== ($entry = readdir($handle)))
+       	if ($entry != "." && $entry != "..") 
+       		$list[] = basename($entry,".php");  	
+   	closedir($handle);
+	}
+	return $list;
+}
 
 class RunnableTest
 {
@@ -81,45 +98,11 @@ class RunnableTest
     }
     public function getAttachers()
     {
-        //light_fighter
-        $id = 204;
-        $count = 100;
-        $a4 = $this->getShipType($id, $count);
-        //cruiser
-        $id = 206;
-        $count = 150;
-        $a1 = $this->getShipType($id, $count);
-        //battle_ship
-        $id = 207;
-        $count = 50;
-        $a2 = $this->getShipType($id, $count);
-        //destroyer
-        $id = 213;
-        $count = 50;
-        $a3 = $this->getShipType($id, $count);
 
-        $fleet1 = new Fleet(array($a2));
-        $player1 = new Player(1, array($fleet1), 0, 0, 0);
-        return new PlayerGroup(array($player1));
     }
     public function getDefenders()
     {
-        //light_fighter
-        $id = 204;
-        $count = 100;
-        $d1 = $this->getShipType($id, $count);
-        //probe
-        $id = 210;
-        $count = 300;
-        $d2 = $this->getShipType($id, $count);
-        //battle_cruiser
-        $id = 215;
-        $count = 50;
-        $d3 = $this->getShipType($id, $count);
 
-        $fleet2 = new Fleet(array($d3));
-        $player2 = new Player(2, array($fleet2), 0, 0, 0);
-        return new PlayerGroup(array($player2));
     }
     public static function myErrorHandler($errno, $errstr, $errfile, $errline)
     {
