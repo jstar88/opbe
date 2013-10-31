@@ -80,6 +80,7 @@ else
 	includeVars('XG');
 	$selectedVar = 'XG';
 }
+LangManager::getInstance()->setImplementation(new LangImplementation($selectedVar));
 
 if (isset($_GET['good']))
 {
@@ -138,6 +139,7 @@ if ($_POST)
     $count++;
     file_put_contents('count.txt', $count);
     //inject html code in the report
+    LangManager::getInstance()->setImplementation(new LangImplementation($_POST['lang']));
     ob_start();
      new WebTest($_POST['debug'] === 'debug');
     $wb = ob_get_clean();

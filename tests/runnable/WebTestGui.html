@@ -21,6 +21,7 @@
             <a href="WebTest.php?good=1"><img src="good.png"></a><a href="WebTest.php?bad=1"><img src="bad.png"></a> <?php echo $good ?> | <?php echo $bad ?>
          </div>
          <form method="post" action="WebTest.php">
+         <input type="hidden" name="lang" value="<?php echo $selectedVar; ?>" />
          <center>
             <table width= "70%">
                 <tr>

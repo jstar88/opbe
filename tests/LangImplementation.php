@@ -3,9 +3,9 @@
 class LangImplementation implements Lang
 {
     private $lang;
-    public function __construct()
+    public function __construct($name)
     {
-        require('INGAME.php');
+        require("langs/$name.php");
         $this->lang = $lang;    
     }
     
@@ -15,5 +15,4 @@ class LangImplementation implements Lang
     }
 }
 
-LangManager::getInstance()->setImplementation(new LangImplementation());
 ?>
