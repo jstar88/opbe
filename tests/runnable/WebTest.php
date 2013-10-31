@@ -78,7 +78,7 @@ if (isset($_GET['vars']))
 else
 {
 	includeVars('XG');
-	$selectedVar = $_GET['XG'];
+	$selectedVar = 'XG';
 }
 
 if (isset($_GET['good']))
