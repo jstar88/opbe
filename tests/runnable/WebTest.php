@@ -41,6 +41,7 @@ class WebTest extends RunnableTest
 
     private function buildPlayerGroup($tech, $fleets)
     {
+        global $CombatCaps;
         $playerObj = new Player(1);
         $playerObj->setTech($tech['weapons'], $tech['shields'], $tech['armour']);
         foreach ($fleets as $idFleet => $fleet)
@@ -72,14 +73,17 @@ class WebTest extends RunnableTest
 
 if (isset($_GET['vars']))
 {
-    includeVars($_GET['vars']);
     $selectedVar = $_GET['vars'];
+}
+elseif (isset($_POST['vars']))
+{
+    $selectedVar = $_POST['vars'];
 }
 else
 {
-    includeVars('XG');
     $selectedVar = 'XG';
 }
+WebTest::includeVars($selectedVar);
 LangManager::getInstance()->setImplementation(new LangImplementation($selectedVar));
 
 if (isset($_GET['good']))
@@ -144,7 +148,6 @@ if ($_POST)
     $count++;
     file_put_contents('count.txt', $count);
     //inject html code in the report
-    LangManager::getInstance()->setImplementation(new LangImplementation($_POST['lang']));
     ob_start();
     new WebTest($_POST['debug'] === 'debug');
     $wb = ob_get_clean();
@@ -186,7 +189,8 @@ else
     $bad = file_get_contents('bad.txt');
     $good = file_get_contents('good.txt');
     $count = floor(file_get_contents('count.txt'));
-    $list = getVarsList();
+    $list = WebTest::getVarsList();
+    $reslist = WebTest::$reslist;
     require ('WebTestGui.html');
 
 }

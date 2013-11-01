@@ -4,7 +4,7 @@
                      
                      <?php foreach($reslist['fleet'] as $idType) { ?>
                         <tr>
-                           <td><?php echo $resource[$idType]?></td>
+                           <td><?php echo LangManager::getInstance()->getShipName($idType);?></td>
                            <td><input type="number" class="rounded" name="<?php echo $type ?>_fleet[<?php echo $_l ?>][<?php echo $idType ?>]" value="0"></td>
                         </tr>
                      <?php } ?>
@@ -14,7 +14,7 @@
                      </tr>
                      <?php foreach($reslist['defense'] as $idType) { ?>
                         <tr>
-                           <td><?php echo $resource[$idType]?></td>
+                           <td><?php echo LangManager::getInstance()->getShipName($idType);?></td>
                            <td><input type="number" class="rounded" name="<?php echo $type ?>_fleet[<?php echo $_l ?>][<?php echo $idType ?>]" value="0"></td>
                         </tr>
                      <?php } ?>

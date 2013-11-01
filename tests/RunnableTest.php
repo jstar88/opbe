@@ -26,35 +26,19 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
- 
-define('PATH','../../');
 
-require(PATH."utils/includer.php");
-require(PATH."tests/LangImplementation.php");
+define('PATH', '../../');
 
-function includeVars($name)
-{
-	global $reslist,$pricelist,$requeriments,$resource,$CombatCaps;
-	require("vars/$name.php");
-}
-function getVarsList()
-{
-	$list = array();
-	if ($handle = opendir('vars')) 
-	{
-   	while (false !== ($entry = readdir($handle)))
-       	if ($entry != "." && $entry != "..") 
-       		$list[] = basename($entry,".php");  	
-   	closedir($handle);
-	}
-	return $list;
-}
+require (PATH . "utils/includer.php");
+require (PATH . "tests/LangImplementation.php");
 
 class RunnableTest
 {
-	 private $time;
-	 private $memory;
-	 private $report;
+    private $time;
+    private $memory;
+    private $report;
+
+    public static $reslist, $pricelist, $requeriments, $resource, $CombatCaps;
     public function __construct($debug = false)
     {
         try
@@ -85,12 +69,11 @@ class RunnableTest
     }
     public function getShipType($id, $count)
     {
-        global $CombatCaps, $pricelist;
-        $rf = $CombatCaps[$id]['sd'];
-        $shield = $CombatCaps[$id]['shield'];
-        $cost = array($pricelist[$id]['metal'], $pricelist[$id]['crystal']);
-        $power = $CombatCaps[$id]['attack'];
-        if ($id <= 217)
+        $rf = self::$CombatCaps[$id]['sd'];
+        $shield = self::$CombatCaps[$id]['shield'];
+        $cost = array(self::$pricelist[$id]['metal'], self::$pricelist[$id]['crystal']);
+        $power = self::$CombatCaps[$id]['attack'];
+        if (in_array($id, self::$reslist['fleet']))
         {
             return new Ship($id, $count, $rf, $shield, $cost, $power);
         }
@@ -139,29 +122,52 @@ class RunnableTest
         $post = '$_POST =' . var_export($_POST);
         $get = '$_GET =' . var_export($_GET);
         $output = ob_get_clean();
-        if (!file_exists('errors/internals')) {
-    			mkdir('errors/internals', 0777, true);
-			}
-        file_put_contents('errors/internals/'.date('d-m-y_H:i:s').'.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
+        if (!file_exists('errors/internals'))
+        {
+            mkdir('errors/internals', 0777, true);
+        }
+        file_put_contents('errors/internals/' . date('d-m-y_H:i:s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)
     {
         $x = preg_replace('/<br\\\\s*?\\/??>/i', PHP_EOL, $text);
-        return str_ireplace('<br />','',$x);
+        return str_ireplace('<br />', '', $x);
     }
     public function __toString()
     {
-    	$micro = $this->time;
-    	$memory = $this->memory;
-    	return $this->report.
-    	 <<< EOT
+        $micro = $this->time;
+        $memory = $this->memory;
+        return $this->report . <<< EOT
 <br>______________________________________________<br>
 Battle calculated in <font color=blue>$micro ms</font>.<br>
 Memory used: <font color=blue>$memory KB</font><br>
 _______________________________________________<br>
 EOT;
-	
+
+    }
+
+
+    public static function includeVars($name)
+    {
+        require ("vars/$name.php");
+        RunnableTest::$reslist = $reslist;
+        RunnableTest::$pricelist = $pricelist;
+        RunnableTest::$requeriments = $requeriments;
+        RunnableTest::$resource = $resource;
+        RunnableTest::$CombatCaps = $CombatCaps;
+    }
+    public static function getVarsList()
+    {
+        $list = array();
+        if ($handle = opendir('vars'))
+        {
+            while (false !== ($entry = readdir($handle)))
+                if ($entry != "." && $entry != "..")
+                    $list[] = basename($entry, ".php");
+            closedir($handle);
+        }
+        return $list;
     }
 }
 
