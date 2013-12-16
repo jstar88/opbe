@@ -41,30 +41,28 @@ class RunnableTest
     public static $reslist, $pricelist, $requeriments, $resource, $CombatCaps;
     public function __construct($debug = false)
     {
-        try
+        if(empty(self::$reslist))
         {
-            set_error_handler(array('RunnableTest', "myErrorHandler"));
-            $attackers = $this->getAttachers();
-            $defenders = $this->getDefenders();
-            $memory1 = memory_get_usage();
-            $micro1 = microtime();
-
-            $engine = new Battle($attackers, $defenders);
-            $engine->startBattle($debug);
-
-            $micro1 = microtime() - $micro1;
-            $memory1 = memory_get_usage() - $memory1;
-
-            $this->report = $engine->getReport();
-
-            $this->time = round(1000 * $micro1, 2);
-            $this->memory = round($memory1 / 1000);
-            echo $this;
+            self::includeVars('XG');
         }
-        catch (exception $e)
-        {
-            self::save($e);
-        }
+        $attackers = $this->getAttachers();
+        $defenders = $this->getDefenders();
+        $memory1 = memory_get_usage();
+        $micro1 = microtime();
+
+        $engine = new Battle($attackers, $defenders);
+        $startBattle = DebugManager::runDebugged(array($engine,'startBattle'),array('RunnableTest', 'myErrorHandler'), array('RunnableTest', 'save'));
+        $startBattle($debug);
+
+        $micro1 = microtime() - $micro1;
+        $memory1 = memory_get_usage() - $memory1;
+
+        $this->report = $engine->getReport();
+
+        $this->time = round(1000 * $micro1, 2);
+        $this->memory = round($memory1 / 1000);
+        echo $this;
+
 
     }
     public function getShipType($id, $count)
@@ -115,7 +113,7 @@ class RunnableTest
         return true;
 
     }
-    private static function save($other)
+    public static function save($other)
     {
         date_default_timezone_set("Europe/Vatican");
         $time = date('l jS \of F Y h:i:s A');
@@ -126,7 +124,7 @@ class RunnableTest
         {
             mkdir('errors/internals', 0777, true);
         }
-        file_put_contents('errors/internals/' . date('d-m-y_H:i:s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
+        file_put_contents('errors/internals/' . date('d-m-y__H-i-s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)

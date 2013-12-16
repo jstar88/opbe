@@ -41,7 +41,6 @@ class WebTest extends RunnableTest
 
     private function buildPlayerGroup($tech, $fleets)
     {
-        global $CombatCaps;
         $playerObj = new Player(1);
         $playerObj->setTech($tech['weapons'], $tech['shields'], $tech['armour']);
         foreach ($fleets as $idFleet => $fleet)
