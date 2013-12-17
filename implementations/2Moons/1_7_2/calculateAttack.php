@@ -55,6 +55,10 @@ define('CRYSTAL_ID', 902);
  */
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 {
+    //null == use default handlers
+    $errorHandler = null;
+    $exceptionHandler = null;
+    
     $CombatCaps = $GLOBALS['CombatCaps'];
     $pricelist = $GLOBALS['pricelist'];
 
@@ -108,7 +112,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 
     /********** BATTLE ELABORATION **********/
     $opbe = new Battle($attackerGroupObj, $defenderGroupObj);
-    $opbe->startBattle();
+    $startBattle = DebugManager::runDebugged(array($opbe,'startBattle'),$errorHandler,$exceptionHandler);
+    $startBattle();
     $report = $opbe->getReport();
 
     /********** WHO WON **********/

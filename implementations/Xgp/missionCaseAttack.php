@@ -33,6 +33,10 @@ define('SHIP_MAX_ID', 217);
 define('DEFENSE_MIN_ID', 401);
 define('DEFENSE_MAX_ID', 503);
 
+//null == use default handlers
+$errorHandler = null;
+$exceptionHandler = null;
+
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
     $base = dirname(dirname(__dir__ )) . DIRECTORY_SEPARATOR;
@@ -101,7 +105,8 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     }
     //start of battle
     $battle = new Battle($attackers, $defenders);
-    $success = $battle->startBattle();
+    $startBattle = DebugManager::runDebugged(array($battle,'startBattle'),$errorHandler,$exceptionHandler);
+    $startBattle();
     //end of battle
     $report = $battle->getReport();
 
