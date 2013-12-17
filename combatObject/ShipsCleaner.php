@@ -53,13 +53,17 @@ class ShipsCleaner
      * @return null
      */
     public function start()
-    {     
+    {
+        /*** calculating probability to explode ***/
+        
+        //the mean probably to explode based on damage
         $prob = 1 - $this->fighters->getCurrentLife() / ($this->fighters->getHull() * $this->fighters->getCount());
         echo "prob=$prob<br>";
         if ($prob < 0)
         {
             throw new Exception("negative prob");
         }
+        //if most of ships are hitten,then we can apply the more realistic way
         if ($this->lastShipHit >= $this->fighters->getCount()/PROB_TO_REAL_MAGIC)
         {
             echo "this->lastShipHit >= this->fighters->getCount()/2<br>";
@@ -72,19 +76,26 @@ class ShipsCleaner
                 $probToExplode = $prob;
             }
         }
+        //otherwise  statistically:
         else
         {
             echo "this->lastShipHit < this->fighters->getCount()/2<br>";
             $probToExplode = $prob * (1 - MIN_PROB_TO_EXPLODE);
         }
         
+        
+        /*** calculating the amount of exploded ships ***/
+        
         $teoricExploded = $this->fighters->getCount() * $probToExplode;
-        $this->exploded = min(floor($teoricExploded), $this->lastShots);
-
-        //tolgo la vita rimanente delle navi esplose
-        $this->remainLife = $this->exploded * (1 - $prob) * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
-        //se tolgo una nave non interamente distrutta,vado ad incrementare la vita o viceversa
-        //$this->currentLife -= ($teoricExploded-$exploded)*$this->hull*(1-$prob);
+        //$this->exploded = round($teoricExploded);
+        //$this->exploded = min(floor($teoricExploded), $this->lastShots);
+        $this->exploded = min(round($teoricExploded), $this->lastShots);//bounded by the total shots fired to simulate a real combat :)
+        
+        
+        /*** calculating the life of destroyed ships ***/
+        
+        //$this->remainLife = $this->exploded * (1 - $prob) * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
+        $this->remainLife = $this->exploded * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
         echo "probToExplode = $probToExplode<br>$teoricExploded = teoricExploded<br>";
         echo "exploded ={$this->exploded}<br>";
         echo "remainLife = {$this->remainLife}<br>";
