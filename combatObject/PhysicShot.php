@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -25,7 +26,7 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
- 
+
 class PhysicShot
 {
     private $shipType;
@@ -108,24 +109,24 @@ class PhysicShot
      */
     public function start()
     {
-        if($this->damage == 0) return;
-        $hitShips = $this->getHitShips();
-        $shieldCellValue = $this->fighters->getShieldCellValue();
-        if($shieldCellValue == 0)
-        {
-            $this->inflict($hitShips);
-            return;    
-        }
+        //se il danno è zero non serve.
+        if ($this->damage == 0)
+            return;
+
         $dv = Math::divide(new Number($this->damage), new Number($this->fighters->getShieldCellValue()), true);
         $cellsDestroyedInOneShot = $dv->result;
         $bouncedDamageForOneShot = $dv->rest;
-        // bisogna tenere solo i colpi neccessari alla distruzione di tutti gli scudi
-        $currentCellsCount = floor($this->fighters->getCurrentShield() * $hitShips / $this->fighters->getCount());
-        echo "shieldCellValue=".$this->fighters->getShieldCellValue()."<br>";
+
+        $currentCellsCount = $this->fighters->getCurrentShield();
+        if (USE_HITSHIP_LIMITATION)
+        {
+            // bisogna tenere solo i colpi neccessari alla distruzione di tutti gli scudi
+            $currentCellsCount = floor($currentCellsCount * $this->getHitShips() / $this->fighters->getCount());
+        }
         echo "cellsDestroyedInOneShot=$cellsDestroyedInOneShot<br>bouncedDamageForOneShot=$bouncedDamageForOneShot<br>currentCellsCount=$currentCellsCount<br>";
         $this->bounce($currentCellsCount, $cellsDestroyedInOneShot, $bouncedDamageForOneShot);
         $this->assorb($currentCellsCount, $cellsDestroyedInOneShot);
-        $this->inflict($hitShips);
+        $this->inflict();
     }
     /**
      * PhysicShot::bounce()
@@ -141,19 +142,29 @@ class PhysicShot
     private function bounce($currentCellsCount, $cellsDestroyedInOneShot, $bouncedDamageForOneShot)
     {
         echo "bounce function<br>";
-        if ($this->damage > $this->fighters->getCurrentShield())
+        if ($this->fighters->getCurrentShield() == 0)
+        {
+            return;
+        }
+        $currentShieldValue = $currentCellsCount * $this->fighters->getShieldCellValue();
+        if ($this->damage > $currentShieldValue)
         {
             $this->bouncedDamage = 0;
             echo "bouncedDamage = 0<br>";
             return;
         }
-        if($cellsDestroyedInOneShot == 0)
+        if ($cellsDestroyedInOneShot == 0)
         {
-            $this->bouncedDamage = $this->damage * $this->count;  
-            return;       
+            $this->bouncedDamage = $this->damage * $this->count;
+            return;
         }
         $numeroDiColpiPerDistruggereTuttiGliScudi = $currentCellsCount / $cellsDestroyedInOneShot;
-        $this->bouncedDamage = min($numeroDiColpiPerDistruggereTuttiGliScudi,$this->count) * $bouncedDamageForOneShot;
+        $this->bouncedDamage = min($numeroDiColpiPerDistruggereTuttiGliScudi, $this->count) * $bouncedDamageForOneShot;
+        //l'ultimo colpo viene rimbalzato => dovrebbe andare nella corazza!<-
+        if ($this->count >= $numeroDiColpiPerDistruggereTuttiGliScudi)
+        {
+            $this->bouncedDamage -= $bouncedDamageForOneShot;
+        }
         //$colpiAsegno = max(0, $this->count - $numeroDiColpiPerDistruggereTuttiGliScudi);
         echo "numeroDiColpiPerDistruggereTuttiGliScudi=$numeroDiColpiPerDistruggereTuttiGliScudi<br>";
         echo "bouncedDamage={$this->bouncedDamage}<br>";
@@ -170,10 +181,10 @@ class PhysicShot
     {
         echo "assorb function<br>";
         $totalCellsDestroyedAtMax = $cellsDestroyedInOneShot * $this->count;
-        $realTotalCellsDestroyed = floor(min($totalCellsDestroyedAtMax, $currentCellsCount));
+        $realTotalCellsDestroyed = round(min($totalCellsDestroyedAtMax, $currentCellsCount));
         $this->assorbedDamage = $realTotalCellsDestroyed * $this->fighters->getShieldCellValue();
         $this->cellDestroyed = $realTotalCellsDestroyed;
-        
+
         echo "totalCellsDestroyedAtMax = $totalCellsDestroyedAtMax<br>realTotalCellsDestroyed=$realTotalCellsDestroyed<br>assorbedDamage={$this->assorbedDamage}<br>";
     }
     /**
@@ -182,14 +193,18 @@ class PhysicShot
      * Expecially, it should be less than the life of hitten ships.
      * @return null
      */
-    private function inflict($hitShips)
+    private function inflict()
     {
         echo "inflict function<br>";
+        //il danno è quello sparato meno quello assorbito dagli scudi meno quello rimbalzato
         $hullDamage = $this->getPureDamage() - $this->assorbedDamage - $this->bouncedDamage;
         //il danno non può essere superiore alla vita delle navi colpite
-        $hullDamage = min($hullDamage, $this->fighters->getCurrentLife() * $hitShips / $this->fighters->getCount());
+        if (USE_HITSHIP_LIMITATION)
+        {
+            $hullDamage = min($hullDamage, $this->fighters->getCurrentLife() * $this->getHitShips() / $this->fighters->getCount());
+        }
         $this->hullDamage = max(0, $hullDamage);
-        
+
         echo "hullDamage=$hullDamage<br>hullDamage={$this->hullDamage}<br>";
     }
 }

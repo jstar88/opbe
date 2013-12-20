@@ -35,6 +35,7 @@ define('SHIELD_CELLS', 100); //how many cells a ship's shield should contain. Ca
 define('USE_SERIALIZATION_TO_CLONE', true); //Because PHP default clone function is bugged, we provide differents ways.
 define('USE_PARTIAL_SERIALIZATION_TO_CLONE', false);
 define('PROB_TO_REAL_MAGIC',2); //value used to adapt probability theory to critical cases.
+define('USE_HITSHIP_LIMITATION',true);
 
 /* Battle constants, default as Ogame */
 define('ROUNDS', 6); //how many rounds a battle have, no limits.
