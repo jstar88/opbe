@@ -33,6 +33,8 @@ class BattleReport
 
     private $attackersLostUnits;
     private $defendersLostUnits;
+    
+    public $css = '../../';
 
     public function __construct()
     {
@@ -343,6 +345,7 @@ class BattleReport
     public function __toString()
     {
         ob_start();
+        $css = $this->css;
         require(OPBEPATH."views/report.html");
         return ob_get_clean();
     }

@@ -138,6 +138,10 @@ class RunnableTest
     {
         $micro = $this->time;
         $memory = $this->memory;
+        if(get_class($this) != 'WebTest')
+        {
+            $this->report->css = '../../../';
+        }
         return $this->report . <<< EOT
 <br>______________________________________________<br>
 Battle calculated in <font color=blue>$micro ms</font>.<br>
