@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OPBE
  *  Copyright (C) 2013  Jstar
@@ -43,6 +44,10 @@ class ShipsCleaner
      */
     public function __construct(ShipType $shipType, $lastShipHit, $lastShots)
     {
+        if ($lastShipHit < 0)
+            throw new Exception('negative $lastShipHit');
+        if ($lastShots < 0)
+            throw new Exception('negative $lastShots');
         $this->fighters = $shipType->cloneMe();
         $this->lastShipHit = $lastShipHit;
         $this->lastShots = $lastShots;
@@ -55,7 +60,7 @@ class ShipsCleaner
     public function start()
     {
         /*** calculating probability to explode ***/
-        
+
         //the mean probably to explode based on damage
         $prob = 1 - $this->fighters->getCurrentLife() / ($this->fighters->getHull() * $this->fighters->getCount());
         echo "prob=$prob<br>";
@@ -64,7 +69,7 @@ class ShipsCleaner
             throw new Exception("negative prob");
         }
         //if most of ships are hitten,then we can apply the more realistic way
-        if ($this->lastShipHit >= $this->fighters->getCount()/PROB_TO_REAL_MAGIC)
+        if (USE_BIEXPLOSION_SYSTEM && $this->lastShipHit >= $this->fighters->getCount() / PROB_TO_REAL_MAGIC)
         {
             echo "this->lastShipHit >= this->fighters->getCount()/2<br>";
             if ($prob < MIN_PROB_TO_EXPLODE)
@@ -82,18 +87,18 @@ class ShipsCleaner
             echo "this->lastShipHit < this->fighters->getCount()/2<br>";
             $probToExplode = $prob * (1 - MIN_PROB_TO_EXPLODE);
         }
-        
-        
+
+
         /*** calculating the amount of exploded ships ***/
-        
+
         $teoricExploded = $this->fighters->getCount() * $probToExplode;
         //$this->exploded = round($teoricExploded);
         //$this->exploded = min(floor($teoricExploded), $this->lastShots);
-        $this->exploded = min(round($teoricExploded), $this->lastShots);//bounded by the total shots fired to simulate a real combat :)
-        
-        
+        $this->exploded = min(round($teoricExploded), $this->lastShots); //bounded by the total shots fired to simulate a real combat :)
+
+
         /*** calculating the life of destroyed ships ***/
-        
+
         //$this->remainLife = $this->exploded * (1 - $prob) * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
         $this->remainLife = $this->exploded * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
         echo "probToExplode = $probToExplode<br>$teoricExploded = teoricExploded<br>";

@@ -48,6 +48,10 @@ class PhysicShot
     public function __construct(ShipType $shipType, $damage, $count)
     {
         echo "damage=$damage<br>count=$count<br>";
+        if ($damage < 0)
+            throw new Exception('negative damage');
+        if ($count < 0)
+            throw new Exception('negative amount of shots');
         $this->fighters = $shipType->cloneMe();
         $this->damage = $damage;
         $this->count = $count;
@@ -199,10 +203,8 @@ class PhysicShot
         //il danno è quello sparato meno quello assorbito dagli scudi meno quello rimbalzato
         $hullDamage = $this->getPureDamage() - $this->assorbedDamage - $this->bouncedDamage;
         //il danno non può essere superiore alla vita delle navi colpite
-        if (USE_HITSHIP_LIMITATION)
-        {
-            $hullDamage = min($hullDamage, $this->fighters->getCurrentLife() * $this->getHitShips() / $this->fighters->getCount());
-        }
+        $hullDamage = min($hullDamage, $this->fighters->getCurrentLife() * $this->getHitShips() / $this->fighters->getCount());
+
         $this->hullDamage = max(0, $hullDamage);
 
         echo "hullDamage=$hullDamage<br>hullDamage={$this->hullDamage}<br>";
