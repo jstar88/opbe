@@ -32,7 +32,7 @@ abstract class Math
         if ($real)
         {
             if ($denum->result == 0)
-                throw new Exception();
+                throw new Exception('denum is zero');
             $shots = floor($num->result / $denum->result);
             $rest = Math::rest($num->result, $denum->result);
             return new Number($shots, $rest);

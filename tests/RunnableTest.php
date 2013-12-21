@@ -27,10 +27,8 @@
  * @link https://github.com/jstar88/opbe
  */
 
-define('PATH', '../../');
-
-require (PATH . "utils/includer.php");
-require (PATH . "tests/LangImplementation.php");
+require (dirname(__DIR__) . "/utils/includer.php");
+require (OPBEPATH . "tests/LangImplementation.php");
 
 class RunnableTest
 {
@@ -44,6 +42,10 @@ class RunnableTest
         if(empty(self::$reslist))
         {
             self::includeVars('XG');
+        }
+        if(!LangManager::getInstance()->implementationExist())
+        {
+            LangManager::getInstance()->setImplementation(new LangImplementation('XG'));
         }
         $attackers = $this->getAttachers();
         $defenders = $this->getDefenders();
@@ -120,11 +122,11 @@ class RunnableTest
         $post = '$_POST =' . var_export($_POST);
         $get = '$_GET =' . var_export($_GET);
         $output = ob_get_clean();
-        if (!file_exists('errors/internals'))
+        if (!file_exists(OPBEPATH.'tests/runnable/errors/internals'))
         {
-            mkdir('errors/internals', 0777, true);
+            mkdir(OPBEPATH.'tests/runnable/errors/internals', 0777, true);
         }
-        file_put_contents('errors/internals/' . date('d-m-y__H-i-s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
+        file_put_contents(OPBEPATH.'tests/runnable/errors/internals/' . date('d-m-y__H-i-s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)
@@ -148,7 +150,7 @@ EOT;
 
     public static function includeVars($name)
     {
-        require ("vars/$name.php");
+        require (OPBEPATH."tests/runnable/vars/$name.php");
         RunnableTest::$reslist = $reslist;
         RunnableTest::$pricelist = $pricelist;
         RunnableTest::$requeriments = $requeriments;
@@ -158,7 +160,7 @@ EOT;
     public static function getVarsList()
     {
         $list = array();
-        if ($handle = opendir('vars'))
+        if ($handle = opendir(OPBEPATH.'tests/runnable/vars'))
         {
             while (false !== ($entry = readdir($handle)))
                 if ($entry != "." && $entry != "..")

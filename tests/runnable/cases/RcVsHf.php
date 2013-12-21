@@ -26,22 +26,22 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-require ("../RunnableTest.php");
-class BsVsBc extends RunnableTest
+require ("../../RunnableTest.php");
+class RcVsHf extends RunnableTest
 {
     public function getAttachers()
     {
-        $fleet = new Fleet(1,array($this->getShipType(207, 50)));
+        $fleet = new Fleet(1,array($this->getShipType(205, 30)));
         $player = new Player(1, array($fleet));
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        $fleet = new Fleet(2,array($this->getShipType(215, 50)));
+        $fleet = new Fleet(2,array($this->getShipType(209, 30)));
         $player = new Player(2, array($fleet));
         return new PlayerGroup(array($player));
     }
 }
-new BsVsBc();
+new RcVsHf();
 
 ?>

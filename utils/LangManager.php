@@ -27,6 +27,11 @@ class LangManager
         }
         return call_user_func_array(array($this->impl, $name), $arguments);
     }
+    
+    public function implementationExist()
+    {
+        return !empty($this->impl);
+    }
 }
 
 ?>

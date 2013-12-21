@@ -26,23 +26,21 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-require ("../RunnableTest.php");
-class CrusherVsHunter extends RunnableTest
+require ("../../RunnableTest.php");
+class NoDef extends RunnableTest
 {
     public function getAttachers()
     {
-        $fleet = new Fleet(1,array($this->getShipType(206, 100)));
+        $fleet = new Fleet(1,array($this->getShipType(207, 50)));
         $player = new Player(1, array($fleet));
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
-        $fleet = new Fleet(2,array($this->getShipType(204, 1650)));
-        $player = new Player(2, array($fleet));
+        $player = new Player(2);
         return new PlayerGroup(array($player));
     }
-
 }
-new CrusherVsHunter();
+new NoDef();
 
 ?>

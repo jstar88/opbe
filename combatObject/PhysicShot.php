@@ -115,18 +115,26 @@ class PhysicShot
     {
         //se il danno è zero non serve.
         if ($this->damage == 0)
+        {
             return;
-
-        $dv = Math::divide(new Number($this->damage), new Number($this->fighters->getShieldCellValue()), true);
-        $cellsDestroyedInOneShot = $dv->result;
-        $bouncedDamageForOneShot = $dv->rest;
-
+        }  
+        //se gli scudi sono disattivati,per evitare la divisione per zero  
+        if($this->fighters->getShieldCellValue() == 0)
+        {
+            $this->inflict();
+            return;    
+        }
         $currentCellsCount = $this->fighters->getCurrentShield();
         if (USE_HITSHIP_LIMITATION)
         {
             // bisogna tenere solo i colpi neccessari alla distruzione di tutti gli scudi
             $currentCellsCount = floor($currentCellsCount * $this->getHitShips() / $this->fighters->getCount());
         }
+                
+        $dv = Math::divide(new Number($this->damage), new Number($this->fighters->getShieldCellValue()), true);
+        $cellsDestroyedInOneShot = $dv->result;
+        $bouncedDamageForOneShot = $dv->rest;
+
         echo "cellsDestroyedInOneShot=$cellsDestroyedInOneShot<br>bouncedDamageForOneShot=$bouncedDamageForOneShot<br>currentCellsCount=$currentCellsCount<br>";
         $this->bounce($currentCellsCount, $cellsDestroyedInOneShot, $bouncedDamageForOneShot);
         $this->assorb($currentCellsCount, $cellsDestroyedInOneShot);
