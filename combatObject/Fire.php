@@ -139,12 +139,12 @@ class Fire
     private function getShotsFromOneAttackerShipOfType(ShipType $shipType_A)
     {
         $p = $this->getProbabilityToShotAgainForAttackerShipOfType($shipType_A);
-        $meanShots = ($p != 1) ? 1 / (1 - $p) : 0;
+        $meanShots = ($p != 1) ? GeometricDistribution::getMeanFromProbability(1 - $p) : 0;
         if (USE_RANDOMIC_RF)
         {
             $max = $meanShots * (1 + MAX_RF_BUFF);
             $min = $meanShots * MAX_RF_NERF;
-            return Gauss::getNextMsBetween($meanShots, GeometricDistribution::getStandardDeviationFromProbability(1-$p), $min, $max);
+            return Gauss::getNextMsBetween($meanShots, GeometricDistribution::getStandardDeviationFromProbability(1 - $p), $min, $max);
         }
         return $meanShots;
     }
@@ -165,7 +165,7 @@ class Fire
             {
                 $RF = max(0, $RF - 1);
             }
-            $probabilityToShotAgain = ($RF != 0) ? ($RF - 1) / $RF : 0;
+            $probabilityToShotAgain = ($RF != 0) ? 1 - GeometricDistribution::getProbabilityFromMean($RF) : 0;
             $probabilityToHitThisType = $shipType_D->getCount() / $this->defenderFleet->getTotalCount();
             $p += $probabilityToShotAgain * $probabilityToHitThisType;
         }
