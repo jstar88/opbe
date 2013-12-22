@@ -29,6 +29,7 @@ Also, memory and CPU usage are O(1), this means they are CONSTANT and independen
 * Multiple players and fleets (ACS)
 * Fake targets (Fodder)
 * Rapid fire
+* Randomic rapid fire with [normal distribution](http://education-portal.com/cimages/multimages/16/Normal_distribution_and_scales.PNG)
 * Ordered fires
 * Bounce rule
 * Waste of damage
@@ -57,7 +58,7 @@ One of main concepts used in this battle engine is the **expected value**: inste
 creates an estimation of their behavior.   
 This estimation is improved by analyzing behavior for infinite simulations, so,
 to test OPBE's accuracy you have to set speedsim (or dragosim)'s battles amount to a big number, such as 3k.  
-Recently was added a feature to simulate a randomic rapid fire, making the combat more realistic.  Anyway you can enable or disable it inside the *constants/battle_constants* file.
+Recently was added a feature to simulate a randomic rapid fire, making the combat more realistic.  Anyway you can enable or disable it inside the *constants/battle_constants* file.  
 Note: randomic rapid fire will only change the amount of shots,but the way it do is particularly...Infact the deviaton from the mean is made by a special random number generator implementing Gauss algorithm.  
 This ensure a [bell curve](http://courses.ttu.edu/rreddick/images/law/bell_curve.gif) of shots close to the ideality.  
 Also,the system can be bounded by values that can be setted in the constants/battle_constants* file.
