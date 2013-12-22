@@ -65,7 +65,7 @@ class Fire
         return $this->attackerShipType->getId();
     }
     //----------- SENDED FIRE -------------
-    
+
     /**
      * Fire::getAttackerTotalFire()
      * Return the total fire
@@ -79,7 +79,7 @@ class Fire
         }
         return $this->power;
     }
-    
+
     /**
      * Fire::getAttackerTotalShots()
      * Return the total shots
@@ -93,7 +93,7 @@ class Fire
         }
         return $this->shots;
     }
-    
+
     /**
      * Fire::calculateTotal()
      * Calculate the total power and shots amount of attacker, including RF and standart fire
@@ -113,7 +113,7 @@ class Fire
             $this->power += $this->getNormalPower();
         }
     }
-    
+
     /**
      * Fire::calculateRf()
      * This function implement the RF component of above function
@@ -129,7 +129,7 @@ class Fire
         $this->power += $tmpshots * $this->attackerShipType->getPower();
         $this->shots += $tmpshots;
     }
-    
+
     /**
      * Fire::getShotsFromOneAttackerShipOfType()
      * This function return the number of shots caused by RF from one ShipType to all defenders
@@ -139,9 +139,16 @@ class Fire
     private function getShotsFromOneAttackerShipOfType(ShipType $shipType_A)
     {
         $p = $this->getProbabilityToShotAgainForAttackerShipOfType($shipType_A);
-        return ($p != 1) ? 1 / (1 - $p) : 0;
+        $meanShots = ($p != 1) ? 1 / (1 - $p) : 0;
+        if (USE_RANDOMIC_RF)
+        {
+            $max = $meanShots * (1 + MAX_RF_BUFF);
+            $min = $meanShots * MAX_RF_NERF;
+            return Gauss::getNextMsBetween($meanShots, GeometricDistribution::getStandardDeviationFromProbability(1-$p), $min, $max);
+        }
+        return $meanShots;
     }
-    
+
     /**
      * Fire::getProbabilityToShotAgainForAttackerShipOfType()
      * This function return the probability of a ShipType to shot thanks RF
@@ -164,14 +171,14 @@ class Fire
         }
         return $p;
     }
-    
+
     /**
      * Fire::getNormalPower()
      * Return the total fire shotted from attacker ShipType to all defenders without RF
      * @return int
      */
     private function getNormalPower()
-    { 
+    {
         return $this->attackerShipType->getCount() * $this->attackerShipType->getPower();
     }
     //------- INCOMING FIRE------------
@@ -238,7 +245,7 @@ class Fire
     }
     public function cloneMe()
     {
-        return new Fire($this->attackerShipType,$this->defenderFleet);
+        return new Fire($this->attackerShipType, $this->defenderFleet);
     }
 
 }

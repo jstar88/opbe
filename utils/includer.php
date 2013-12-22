@@ -28,6 +28,8 @@
 
 define('OPBEPATH', dirname(__DIR__).DIRECTORY_SEPARATOR);
 
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'GeometricDistribution.php');
+require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Gauss.php');
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'DebugManager.php'); 
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Iterable.php');
 require (OPBEPATH.'utils'.DIRECTORY_SEPARATOR.'Math.php');
