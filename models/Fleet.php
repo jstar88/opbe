@@ -91,7 +91,11 @@ class Fleet extends Iterable
     }
     public function getShipType($id)
     {
-        return isset($this->array[$id]) ? $this->array[$id] : false;
+        return $this->array[$id];
+    }
+    public function existShipType($id)
+    {
+        return isset($this->array[$id]);   
     }
     public function getTypeCount($type)
     {

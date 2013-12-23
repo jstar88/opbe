@@ -98,7 +98,11 @@ class Player extends Iterable
     }
     public function getFleet($id)
     {
-        return (isset($this->array[$id])) ? $this->array[$id] : false;
+        return $this->array[$id];
+    }
+    public function existFleet($idFleet)
+    {
+        return isset($this->array[$idFleet]);       
     }
     public function isEmpty()
     {

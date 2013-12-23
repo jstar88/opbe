@@ -154,6 +154,7 @@ class PlayerGroup extends Iterable
         return $amount;
 
     }
+    /*
     public function getFleet($idFleet)
     {
         foreach ($this->array as $idPlayer => $player)
@@ -166,6 +167,7 @@ class PlayerGroup extends Iterable
         }
         return false;
     }
+    */
     public function cloneMe()
     {
         $players = array_values($this->array);

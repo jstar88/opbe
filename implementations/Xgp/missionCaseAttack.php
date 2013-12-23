@@ -389,7 +389,7 @@ function updateFleets($report, $type, $targetPlanet, $resource, $pricelist)
             {
                 foreach ($report->getPresentationDefendersFleetOnRound('START')->getPlayer($idPlayer)->getFleet($idFleet)->getIterator() as $SidShipType => $Sfighters)
                 {
-                    $amount = ($fleet->getShipType($SidShipType) == false) ? 0 : $fleet->getShipType($SidShipType)->getCount();
+                    $amount = !$fleet->existShipType($SidShipType) ? 0 : $fleet->getShipType($SidShipType)->getCount();
                     $fleetArray .= '`' . $resource[$SidShipType] . '`=' . $amount . ', ';
                 }
                 $QryUpdateTarget = "UPDATE {{table}} SET ";

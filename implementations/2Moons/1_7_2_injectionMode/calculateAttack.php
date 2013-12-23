@@ -60,7 +60,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     //null == use default handlers
     $errorHandler = null;
     $exceptionHandler = null;
-    
+
     $CombatCaps = $GLOBALS['CombatCaps'];
     $pricelist = $GLOBALS['pricelist'];
 
@@ -85,7 +85,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $attackerFleetObj = new Fleet($fleetID);
         foreach ($attacker['unit'] as $element => $amount)
         {
-            if (empty($amount)) continue;
+            if (empty($amount))
+                continue;
             $shipType = getShipType($element, $amount);
             $attackerFleetObj->add($shipType);
         }
@@ -105,7 +106,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         $defenderFleetObj = getFleet($fleetID);
         foreach ($defender['unit'] as $element => $amount)
         {
-	        if (empty($amount)) continue;
+            if (empty($amount))
+                continue;
             $shipType = getShipType($element, $amount);
             $defenderFleetObj->add($shipType);
         }
@@ -114,7 +116,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 
     /********** BATTLE ELABORATION **********/
     $opbe = new Battle($attackerGroupObj, $defenderGroupObj);
-    $startBattle = DebugManager::runDebugged(array($opbe,'startBattle'),$errorHandler,$exceptionHandler);
+    $startBattle = DebugManager::runDebugged(array($opbe, 'startBattle'), $errorHandler, $exceptionHandler);
     $startBattle();
     $report = $opbe->getReport();
 
@@ -209,7 +211,7 @@ function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $at
  * OPBE keep the internal array data full to decrease memory size, so a PlayerGroup object don't have data about 
  * empty users(an user is empty when fleets are empty and fleet is empty when the ships count is zero)
  * Instead, the old system require to have also array of zero: to update the array of users, after a round, we must iterate them
- * and check the corrispective OPBE value if empty (functions like "getX()" return "false")  
+ * and check the corrispective OPBE value if empty.  
  * 
  * @param PlayerGroup $playerGroup
  * @param array &$players
@@ -221,32 +223,37 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
     $amountArray = array();
     foreach ($players as $idFleet => $info)
     {
-        $shipInfo = $info['unit'];
-        $player = $playerGroup->getPlayer($info['player']['id']);
-        $fleet = ($player !== false) ? $player->getFleet($idFleet) : false;
-
-        foreach ($shipInfo as $idShipType => $amount)
+        foreach ($info['unit'] as $idShipType => $amount)
         {
-            if ($fleet !== false) //if after battle still there are some ship types in this fleet
+            if ($playerGroup->existPlayer($info['player']['id']))
             {
-                $shipType = $fleet->getShipType($idShipType);
-                if ($shipType !== false) //if there are some ships of this type
+                $player = $playerGroup->getPlayer($info['player']['id']);
+                //used to show techs in the report .Empty player not exist in OPBE's result data
+                $players[$idFleet]['techs'] = array($player->getWeaponsTech(),$player->getArmourTech(),$player->getShieldsTech());
+                if ($player->existFleet($idFleet)) //if after battle still there are some ship types in this fleet
                 {
-                    //used to show life,power and shield of each ships in the report
-                    $plyArray[$idFleet][$idShipType] = array(
-                        'def' => $shipType->getHull(),
-                        'shield' => $shipType->getShield(),
-                        'att' => $shipType->getPower());
-                    $players[$idFleet]['unit'][$idShipType] = $shipType->getCount();
+                    $fleet = $player->getFleet($idFleet);
+                    if ($fleet->existShipType($idShipType)) //if there are some ships of this type
+                    {
+                        $shipType = $fleet->getShipType($idShipType);
+                        //used to show life,power and shield of each ships in the report
+                        $plyArray[$idFleet][$idShipType] = array('def' => $shipType->getHull(),'shield' => $shipType->getShield(),'att' => $shipType->getPower());
+                        $players[$idFleet]['unit'][$idShipType] = $shipType->getCount();
+                    }
+                    else //all ships of this type were destroyed
+                    {
+                        $players[$idFleet]['unit'][$idShipType] = 0;
+                    }
                 }
-                else //all ships of this type were destroyed
+                else //the fleet is empty, so all ships of this type were destroyed
                 {
                     $players[$idFleet]['unit'][$idShipType] = 0;
                 }
             }
-            else //the fleet is empty, so all ships of this type were destroyed
+            else // is empty
             {
                 $players[$idFleet]['unit'][$idShipType] = 0;
+                $players[$idFleet]['techs'] = array(0,0,0);
             }
 
             //initialization
@@ -263,11 +270,6 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
             $amountArray[$idFleet] = $amountArray[$idFleet] + $currentAmount;
             $amountArray['total'] = $amountArray['total'] + $currentAmount;
         }
-        //used to show techs in the report .Empty player not exist in OPBE's result data
-        $players[$idFleet]['techs'] = array(
-            ($player != false) ? $player->getWeaponsTech() : 0,
-            ($player != false) ? $player->getArmourTech() : 0,
-            ($player != false) ? $player->getShieldsTech() : 0);
     }
     return array($plyArray, $amountArray);
 }
