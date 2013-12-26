@@ -283,15 +283,13 @@ function sendMessage($FleetRow, $report, $lang, $resource)
         $style = "red";
     }
 
-
-    $report_string = $report->toString($resource);
-    $rid = md5($report_string) . time();
+    $rid = md5($report) . time();
     $raport = "<a href=\"#\" style=\"color:" . $style . ";\" OnClick=\'f(\"CombatReport.php?raport=" . $rid . "\", \"\");\' >" . $lang['sys_mess_attack_report'] . " [" . $FleetRow['fleet_end_galaxy'] . ":" . $FleetRow['fleet_end_system'] . ":" . $FleetRow['fleet_end_planet'] . "]</a>";
 
     doquery('INSERT INTO {{table}} SET
 				owners = \'' . ($FleetRow['fleet_owner'] . ',' . $FleetRow['fleet_target_owner']) . '\',
 				rid = \'' . $rid . '\',
-				raport = \'' . addslashes($report_string) . '\',
+				raport = \'' . addslashes($report) . '\',
 				a_zestrzelona = 0,
 				time = \'' . time() . '\'', 'rw');
 
