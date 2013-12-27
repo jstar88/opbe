@@ -270,21 +270,13 @@ function updateMoon($FleetRow, $report, $moonName, $targetUserId, $targetPlanet)
 }
 function sendMessage($FleetRow, $report, $lang, $resource)
 {
-    if ($report->attackerHasWin())
-    {
-        $style = "green";
-    }
-    elseif ($report->isAdraw())
-    {
-        $style = "orange";
-    }
-    else
-    {
-        $style = "red";
-    }
+
+    $idAtts = $report->getAttackersId();
+    $idDefs = $report->getDefendersId();
+    $idAll = array_merge($idAtts, $idDefs);
+    $owners = implode(',', $idAll);
 
     $rid = md5($report) . time();
-    $raport = "<a href=\"#\" style=\"color:" . $style . ";\" OnClick=\'f(\"CombatReport.php?raport=" . $rid . "\", \"\");\' >" . $lang['sys_mess_attack_report'] . " [" . $FleetRow['fleet_end_galaxy'] . ":" . $FleetRow['fleet_end_system'] . ":" . $FleetRow['fleet_end_planet'] . "]</a>";
 
     doquery('INSERT INTO {{table}} SET
 				owners = \'' . ($FleetRow['fleet_owner'] . ',' . $FleetRow['fleet_target_owner']) . '\',
@@ -293,8 +285,40 @@ function sendMessage($FleetRow, $report, $lang, $resource)
 				a_zestrzelona = 0,
 				time = \'' . time() . '\'', 'rw');
 
-
-    SendSimpleMessage($FleetRow['fleet_owner'], '', $FleetRow['fleet_start_time'], 3, $lang['sys_mess_tower'], $raport, '');
+    foreach ($idAtts as $id)
+    {
+        if ($report->attackerHasWin())
+        {
+            $style = "green";
+        }
+        elseif ($report->isAdraw())
+        {
+            $style = "orange";
+        }
+        else
+        {
+            $style = "red";
+        }
+        $raport = "<a href=\"#\" style=\"color:" . $style . ";\" OnClick=\'f(\"CombatReport.php?raport=" . $rid . "\", \"\");\' >" . $lang['sys_mess_attack_report'] . " [" . $FleetRow['fleet_end_galaxy'] . ":" . $FleetRow['fleet_end_system'] . ":" . $FleetRow['fleet_end_planet'] . "]</a>";
+        SendSimpleMessage($FleetRow['fleet_owner'], '', $FleetRow['fleet_start_time'], 3, $lang['sys_mess_tower'], $raport, '');
+    }
+    foreach ($idDefs as $id)
+    {
+        if ($report->attackerHasWin())
+        {
+            $style = "red";
+        }
+        elseif ($report->isAdraw())
+        {
+            $style = "orange";
+        }
+        else
+        {
+            $style = "green";
+        }
+        $raport = "<a href=\"#\" style=\"color:" . $style . ";\" OnClick=\'f(\"CombatReport.php?raport=" . $rid . "\", \"\");\' >" . $lang['sys_mess_attack_report'] . " [" . $FleetRow['fleet_end_galaxy'] . ":" . $FleetRow['fleet_end_system'] . ":" . $FleetRow['fleet_end_planet'] . "]</a>";
+        SendSimpleMessage($id, '', $FleetRow['fleet_start_time'], 3, $lang['sys_mess_tower'], $raport, '');
+    }
 
 }
 function getCapacity(PlayerGroup $players, $pricelist)

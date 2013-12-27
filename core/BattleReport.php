@@ -464,4 +464,22 @@ class BattleReport
         }
         return $playersBefore_clone;
     }
+    public function getAttackersId()
+    {
+        $array=array();
+        foreach($this->getPresentationAttackersFleetOnRound('START') as $id => $group)
+        {
+            $array[] = $id;
+        }       
+        return $array;
+    }
+    public function getDefendersId()
+    {
+        $array=array();
+        foreach($this->getPresentationDefendersFleetOnRound('START') as $id => $group)
+        {
+            $array[] = $id;
+        }
+        return $array;
+    }
 }

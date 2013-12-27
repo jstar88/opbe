@@ -135,7 +135,7 @@ class PhysicShot
         $cellsDestroyedInOneShot = $dv->result;
         $bouncedDamageForOneShot = $dv->rest;
 
-        echo "cellsDestroyedInOneShot=$cellsDestroyedInOneShot<br>bouncedDamageForOneShot=$bouncedDamageForOneShot<br>currentCellsCount=$currentCellsCount<br>";
+        echo "cellvalue=".$this->fighters->getShieldCellValue()."<br>cellsDestroyedInOneShot=$cellsDestroyedInOneShot<br>bouncedDamageForOneShot=$bouncedDamageForOneShot<br>currentCellsCount=$currentCellsCount<br>";
         $this->bounce($currentCellsCount, $cellsDestroyedInOneShot, $bouncedDamageForOneShot);
         $this->assorb($currentCellsCount, $cellsDestroyedInOneShot);
         $this->inflict();
