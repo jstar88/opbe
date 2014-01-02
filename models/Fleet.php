@@ -32,10 +32,10 @@ class Fleet extends Iterable
     private $count;
     private $id;
     // added but only used in report templates
-    private $weapons_tech;
-    private $shields_tech;
-    private $armour_tech;
-    public function __construct($id, $shipTypes = array(),$weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
+    private $weapons_tech = 0;
+    private $shields_tech = 0;
+    private $armour_tech = 0;
+    public function __construct($id, $shipTypes = array(),$weapons_tech = null, $shields_tech = null, $armour_tech = null)
     {
         $this->id = $id;
         $this->count = 0;
@@ -49,7 +49,7 @@ class Fleet extends Iterable
     {
         return $this->id;
     }
-    public function setTech($weapons, $shields, $armour)
+    public function setTech($weapons = null, $shields = null, $armour = null)
     {
         foreach ($this->array as $id => $shipType)
         {
@@ -57,9 +57,9 @@ class Fleet extends Iterable
             $shipType->setShieldsTech($shields);
             $shipType->setArmourTech($armour);
         }
-        $this->weapons_tech = $weapons;
-        $this->shields_tech = $shields;
-        $this->armour_tech = $armour;
+        if(is_numeric($weapons)) $this->weapons_tech = intval($weapons);
+        if(is_numeric($shields)) $this->shields_tech = intval($shields);
+        if(is_numeric($armour)) $this->armour_tech = intval($armour);
     }
     public function add(ShipType $shipType)
     {
@@ -198,6 +198,7 @@ class Fleet extends Iterable
     public function cloneMe()
     {
         $types = array_values($this->array);
-        return new Fleet($this->id, $types ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        $class = get_class($this);
+        return new $class($this->id, $types ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
     }
 }

@@ -31,11 +31,11 @@ class Player extends Iterable
     private $id;
     protected $array = array();
 
-    private $weapons_tech;
-    private $shields_tech;
-    private $armour_tech;
+    private $weapons_tech = 0;
+    private $shields_tech = 0;
+    private $armour_tech = 0;
 
-    public function __construct($id, $fleets = array(), $weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
+    public function __construct($id, $fleets = array(), $weapons_tech = null, $shields_tech = null, $armour_tech = null)
     {
         $this->id = $id;
 
@@ -47,18 +47,19 @@ class Player extends Iterable
     }
     public function addFleet(Fleet $fleet)
     {
+        $fleet = $fleet->cloneMe();
         $fleet->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
-        $this->array[$fleet->getId()] = $fleet->cloneMe(); //avoid collateral effects: when the object or array is an argument && it's saved in a structure
+        $this->array[$fleet->getId()] = $fleet; //avoid collateral effects: when the object or array is an argument && it's saved in a structure
     }
-    public function setTech($weapons, $shields, $armour)
+    public function setTech($weapons = null, $shields = null, $armour = null)
     {
         foreach ($this->array as $id => $fleet)
         {
             $fleet->setTech($weapons, $shields, $armour);
         }
-        $this->weapons_tech = $weapons;
-        $this->shields_tech = $shields;
-        $this->armour_tech = $armour;
+        if(is_numeric($weapons)) $this->weapons_tech = intval($weapons);
+        if(is_numeric($shields)) $this->shields_tech = intval($shields);
+        if(is_numeric($armour)) $this->armour_tech = intval($armour);
     }
     public function getId()
     {
@@ -172,12 +173,13 @@ class Player extends Iterable
     }
     public function addDefense(Fleet $fleetDefender) // da fare: controllare ordine 
     {
+        $fleetDefender = $fleetDefender->cloneMe();
         $fleetDefender->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
         $this->order();
         $fl = current($this->array);
         if ($fl === false)
         {
-            $this->array[$fleetDefender->getId()] = $fleetDefender->cloneMe();//avoid collateral effects: when the object or array is an argument && it's saved in a structure
+            $this->array[$fleetDefender->getId()] = $fleetDefender;//avoid collateral effects: when the object or array is an argument && it's saved in a structure
         }
         else
         {

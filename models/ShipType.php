@@ -51,7 +51,7 @@ class ShipType extends Type
     
     private $cost;
 
-    public function __construct($id, $count, $rf, $shield, array $cost, $power, $weapons_tech = 0, $shields_tech = 0, $armour_tech = 0)
+    public function __construct($id, $count, $rf, $shield, array $cost, $power, $weapons_tech = null, $shields_tech = null, $armour_tech = null)
     {
         parent::__construct($id, $count);
 
@@ -75,18 +75,24 @@ class ShipType extends Type
     }
     public function setWeaponsTech($level)
     {
+        if(!is_numeric($level)) return;
+        $level = intval($level);
         $diff = $level - $this->weapons_tech;
         $this->weapons_tech = $level;
         $this->power += WEAPONS_TECH_INCREMENT_FACTOR * $diff * $this->power;
     }
     public function setShieldsTech($level)
     {
+        if(!is_numeric($level)) return;
+        $level = intval($level);
         $diff = $level - $this->shields_tech;
         $this->shields_tech = $level;
         $this->shield += SHIELDS_TECH_INCREMENT_FACTOR * $diff * $this->shield;
     }
     public function setArmourTech($level)
     {
+        if(!is_numeric($level)) return;
+        $level = intval($level);
         $diff = $level - $this->armour_tech;
         $this->armour_tech = $level;
         $this->hull += ARMOUR_TECH_INCREMENT_FACTOR * $diff * $this->hull;
