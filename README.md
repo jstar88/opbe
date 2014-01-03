@@ -4,6 +4,11 @@ OPBE
 **O**game **P**robabilistic **B**attle **E**ngine  
 live: http://opbe.altervista.org
 
+
+<script src="http://www.phpclasses.org/browse/package/8318/format/badge.js">  
+
+</script>
+
 1. [Introduction](#introduction)
 2. [Quick start](#quick-start-installation)
 3. [Accuracy](#accuracy)
