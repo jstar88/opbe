@@ -5,9 +5,7 @@ OPBE
 live: http://opbe.altervista.org
 
 
-<script src="http://www.phpclasses.org/browse/package/8318/format/badge.js">  
-
-</script>
+![http://www.phpclasses.org/package/8318-PHP-Ogame-probabilistic-battle-engine.html](http://www.phpclasses.org/award/innovation/nominee.gif)
 
 1. [Introduction](#introduction)
 2. [Quick start](#quick-start-installation)
