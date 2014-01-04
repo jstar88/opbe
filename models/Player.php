@@ -129,6 +129,7 @@ class Player extends Iterable
         $physicShots = array();
         foreach ($this->array as $idFleet => $fleet)
         {
+            echo "------- firing to fleet with ID = $idFleet -------- <br>";
             $ps = $fleet->inflictDamage($fire);
             $physicShots[$idFleet] = $ps;
         }
@@ -139,6 +140,7 @@ class Player extends Iterable
         $shipsCleaners = array();
         foreach ($this->array as $idFleet => $fleet)
         {
+            echo "------- cleanShips to fleet with ID = $idFleet -------- <br>";
             $sc = $fleet->cleanShips();
             $shipsCleaners[$this->getId()] = $sc;
             if ($fleet->isEmpty())

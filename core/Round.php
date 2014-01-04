@@ -105,7 +105,9 @@ class Round
         //--------------------------------------------------------------------------//
 
         //------------------------- Sending the fire -------------------------------//
+        echo "***** firing to defenders *****<br>";
         $this->physicShotsToDefenders = $this->defenders->inflictDamage($this->fire_a);
+        echo "***** firing to attackers *****<br>";
         $this->physicShotsToAttachers = $this->attackers->inflictDamage($this->fire_d);
         //--------------------------------------------------------------------------//
 
