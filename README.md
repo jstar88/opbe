@@ -4,6 +4,9 @@ OPBE
 **O**game **P**robabilistic **B**attle **E**ngine  
 live: http://opbe.altervista.org
 
+
+![http://www.phpclasses.org/package/8318-PHP-Ogame-probabilistic-battle-engine.html](http://www.phpclasses.org/award/innovation/nominee.gif)
+
 1. [Introduction](#introduction)
 2. [Quick start](#quick-start-installation)
 3. [Accuracy](#accuracy)
