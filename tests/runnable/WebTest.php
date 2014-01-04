@@ -117,12 +117,12 @@ if ($_POST)
         {
             mkdir('errors/reports', 0777, true);
         }
-        $contents = 'comment=' . $_POST['comment'] . PHP_EOL . $_POST['report'];
         require_once 'HTMLPurifier/HTMLPurifier.auto.php';
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
-        $clean_html = $purifier->purify($contents);
-        file_put_contents('errors/reports/' . date('d-m-y_H:i:s') . '.html', $clean_html);
+        $clean_html = $purifier->purify($_POST['report']);
+        $clean_html = 'comment = ' . strip_tags($_POST['comment']) . PHP_EOL .$clean_html ;
+        file_put_contents('errors/reports/' . date('d-m-y__H-i-s') . '.html', $clean_html );
 
         $extra = 'WebTest.php';
         echo 'This battle has been reported.';
@@ -168,6 +168,7 @@ if ($_POST)
     $comment->setAttribute('type', 'text');
     $comment->setAttribute('name', 'comment');
     $comment->setAttribute('value', 'insert a comment here');
+    $comment->setAttribute('size','100');
 
     $fieldset = $dom->createElement('fieldset');
     $fieldset->appendChild($submit);
