@@ -170,6 +170,10 @@ class ShipType extends Type
         $this->lastShipHit += $ps->getHitShips();
         echo "lastShipHit after = $this->lastShipHit<br>";
         echo "lastShots after={$this->lastShots}<br>";
+        if($this->currentLife < 0 || $this->currentShield < 0 || $this->lastShipHit < 0)
+        {
+            throw new Exception('negative count!');
+        }
         return $ps; //for web
     }
     public function cleanShips()
