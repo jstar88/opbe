@@ -450,7 +450,7 @@ function updateDefenders($playerGroupBeforeBattle, $playerGroupAfterBattle, $tar
                     $XshipType = $Xfleet->getShipType($idShipType);
                     $amount = $XshipType->getCount();
                 }
-                $fleetArray .= '`' . $resource[$SidShipType] . '`=' . $amount . ', ';
+                $fleetArray .= '`' . $resource[$idShipType] . '`=' . $amount . ', ';
             }
         }
     }
