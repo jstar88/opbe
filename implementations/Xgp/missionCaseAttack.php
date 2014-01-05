@@ -97,6 +97,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     {
         $player = new Player($TargetUserID, array($homeFleet));
         $player->setTech($targetUser['military_tech'], $targetUser['shield_tech'], $targetUser['defence_tech']);
+        $player->setName($targetUser['name']);
         $defenders->addPlayer($player);
     }
     else
@@ -169,6 +170,7 @@ function getPlayerGroup($fleetRow)
     $player_info = doquery("SELECT * FROM {{table}} WHERE id =$idPlayer", 'users', true);
     $player = new Player($idPlayer, array($fleet));
     $player->setTech($player_info['military_tech'], $player_info['shield_tech'], $player_info['defence_tech']);
+    $player->setName($player_info['name']);
     $playerGroup->addPlayer($player);
     return $playerGroup;
 }
@@ -195,6 +197,7 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
             $player_info = ($targetUser !== false && $targetUser['id'] == $idPlayer) ? $targetUser : doquery("SELECT * FROM {{table}} WHERE id =$idPlayer", 'users', true);
             $player = new Player($idPlayer, array($fleet));
             $player->setTech($player_info['military_tech'], $player_info['shield_tech'], $player_info['defence_tech']);
+            $player->setName($player_info['name']);
             $playerGroup->addPlayer($player);
         }
         else

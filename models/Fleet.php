@@ -35,15 +35,25 @@ class Fleet extends Iterable
     private $weapons_tech = 0;
     private $shields_tech = 0;
     private $armour_tech = 0;
-    public function __construct($id, $shipTypes = array(),$weapons_tech = null, $shields_tech = null, $armour_tech = null)
+    private $name;
+    public function __construct($id, $shipTypes = array(),$weapons_tech = null, $shields_tech = null, $armour_tech = null, $name = "")
     {
         $this->id = $id;
         $this->count = 0;
+        $this->name = $name;
         foreach ($shipTypes as $shipType)
         {
             $this->add($shipType);
         }
         $this->setTech($weapons_tech, $shields_tech, $armour_tech);
+    }
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function setName($name)
+    {
+        $this->name = $name;    
     }
     public function getId()
     {

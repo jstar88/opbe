@@ -34,21 +34,35 @@ class Player extends Iterable
     private $weapons_tech = 0;
     private $shields_tech = 0;
     private $armour_tech = 0;
+    private $name;
 
-    public function __construct($id, $fleets = array(), $weapons_tech = null, $shields_tech = null, $armour_tech = null)
+    public function __construct($id, $fleets = array(), $weapons_tech = null, $shields_tech = null, $armour_tech = null, $name = "")
     {
         $this->id = $id;
-
+        $this->name = $name;
         foreach ($fleets as $fleet)
         {
             $this->addFleet($fleet);
         }
         $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function setName($name)
+    {
+        $this->name = $name;
+        foreach ($this->array as $id => $fleet)
+        {
+            $fleet->setName($name);
+        }
+    }
     public function addFleet(Fleet $fleet)
     {
         $fleet = $fleet->cloneMe();
         $fleet->setTech($this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        $fleet->setName($this->name);
         $this->array[$fleet->getId()] = $fleet; //avoid collateral effects: when the object or array is an argument && it's saved in a structure
     }
     public function setTech($weapons = null, $shields = null, $armour = null)
