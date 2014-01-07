@@ -57,6 +57,7 @@ class Battle
         if(!$debug) ob_start();
         $this->battleStarted = true;
         //only for initial fleets presentation
+        echo $this->attackers.'<br>'.PHP_EOL.$this->defenders; 
         $round = new Round( $this->attackers, $this->defenders,0);
         $this->report->addRound($round);
         for ($i = 1; $i <= ROUNDS; $i++)

@@ -286,32 +286,7 @@ class BattleReport
         $dDebris = $this->getDefenderDebris();
         return array($aDebris[0] + $dDebris[0], $aDebris[1] + $dDebris[1]);
     }
-    public function getAttackersFirePower($round)
-    {
-        return $this->getRound($round)->getAttackersFire()->getAttackerTotalFire();
-    }
-    public function getAttackersFireCount($round)
-    {
-        return $this->getRound($round)->getAttackersFire()->getAttackerTotalShots();
-    }
-    public function getDefendersFirePower($round)
-    {
-        return $this->getRound($round)->getDefendersFire()->getAttackerTotalFire();
-    }
-    public function getDefendersFireCount($round)
-    {
-        return $this->getRound($round)->getDefendersFire()->getAttackerTotalShots();
-    }
-    public function getAttachersAssorbedDamage($round)
-    {
-        $playerGroupPS = $this->getRound($round)->getDefendersPhysicShots();
-        return $this->getPlayersAssorbedDamage($playerGroupPS);
-    }
-    public function getDefendersAssorbedDamage($round)
-    {
-        $playerGroupPS = $this->getRound($round)->getAttachersPhysicShots();
-        return $this->getPlayersAssorbedDamage($playerGroupPS);
-    }
+    
     public function getAttackersTech()
     {
         $techs = array();
@@ -414,24 +389,6 @@ class BattleReport
             }
         }
         return $players;
-    }
-    private function getPlayersAssorbedDamage($playerGroupPS)
-    {
-        $ass = 0;
-        foreach ($playerGroupPS as $idPlayer => $playerPs)
-        {
-            foreach ($playerPs as $idFleet => $fleetPS)
-            {
-                foreach ($fleetPS as $idTypeD => $typeDPS)
-                {
-                    foreach ($typeDPS as $idTypeA => $typeAPS)
-                    {
-                        $ass += $typeAPS->getAssorbedDamage();
-                    }
-                }
-            }
-        }
-        return $ass;
     }
     private function getPlayerRepaired($playersBefore, $playersAfter)
     {
