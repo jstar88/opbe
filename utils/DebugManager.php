@@ -31,7 +31,15 @@ class DebugManager
     private $errorHandler;
     private $exceptionHandler;
     
-
+    public static function intercept($toIntercept,$newFunction)
+    {
+        return function ()use($toIntercept,$newFunction)
+        {
+            $newFunction();
+            return call_user_func_array($toIntercept, func_get_args());
+        }
+        ;
+    }
     /**
      * DebugManager::runDebugged()
      * Return a new function that will run the function given as argument under debug
@@ -86,7 +94,7 @@ class DebugManager
         }
         $error .= "Error on line $errline in file $errfile";
         $error .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")" . PHP_EOL;
-        $this->save($error);
+        DebugManager::save($error);
         /* Don't execute PHP internal error handler */
         return true;
 

@@ -33,17 +33,30 @@ define('SHIP_MAX_ID', 217);
 define('DEFENSE_MIN_ID', 401);
 define('DEFENSE_MAX_ID', 503);
 
-//null == use default handlers
-$errorHandler = null;
-$exceptionHandler = null;
-
 if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
 {
+    //-------------------------- include OPBE ------------------------------- 
     $base = dirname(dirname(__dir__ )) . DIRECTORY_SEPARATOR;
     require ($base . 'utils' . DIRECTORY_SEPARATOR . 'includer.php');
     require ($base . 'implementations' . DIRECTORY_SEPARATOR . 'Xgp' . DIRECTORY_SEPARATOR . 'LangImplementation.php');
+    //-----------------------------------------------------------------------
 
-    $targetPlanet = doquery("SELECT * FROM {{table}} WHERE `galaxy` = " . $FleetRow['fleet_end_galaxy'] . " AND `system` = " . $FleetRow['fleet_end_system'] . " AND `planet_type` = " . $FleetRow['fleet_end_type'] . " AND `planet` = " . $FleetRow['fleet_end_planet'] . ";", 'planets', true);
+    //---------------------------- errors -----------------------------------
+    //default handlers
+    $errorHandler = array('DebugManager', 'myErrorHandler');
+    $exceptionHandler = array('DebugManager', 'save');
+    //then,hack them merging a new function to move back fleets.
+    $myFunc = function ()
+    {
+        global $debug;
+        $debug->error('Check "opbe/errors/" folder for more informations', 'Battle error');
+    }
+    ;
+    $errorHandler = DebugManager::intercept($errorHandler, $myFunc);
+    $exceptionHandler = DebugManager::intercept($exceptionHandler, $myFunc);
+    //-------------------------------------------------------------------------
+    
+    //----------------- turn back fleets also if errors happens ---------------
     if ($FleetRow['fleet_group'] > 0)
     {
         doquery("DELETE FROM {{table}} WHERE id =" . $FleetRow['fleet_group'], 'aks');
@@ -53,10 +66,17 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     {
         doquery("UPDATE {{table}} SET fleet_mess=1 WHERE fleet_id=" . $FleetRow['fleet_id'], 'fleets');
     }
+    //-------------------------------------------------------------------------
+    
+    //-------------------- retriving informations from DB ---------------------
+    $targetPlanet = doquery("SELECT * FROM {{table}} WHERE `galaxy` = " . $FleetRow['fleet_end_galaxy'] . " AND `system` = " . $FleetRow['fleet_end_system'] . " AND `planet_type` = " . $FleetRow['fleet_end_type'] . " AND `planet` = " . $FleetRow['fleet_end_planet'] . ";", 'planets', true);
     $targetUser = doquery('SELECT * FROM {{table}} WHERE id=' . $targetPlanet['id_owner'], 'users', true);
     $TargetUserID = $targetUser['id'];
+    //-------------------------------------------------------------------------
+
     PlanetResourceUpdate($targetUser, $targetPlanet, time());
 
+    //----------------------- prepare players for battle ----------------------
     // attackers fleet sum
     $attackers = new PlayerGroup();
     if ($FleetRow['fleet_group'] != 0)
@@ -104,18 +124,22 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     {
         $defenders->getPlayer($TargetUserID)->addDefense($homeFleet);
     }
-    //start of battle
+    //-------------------------------------------------------------------------
+    
+    //------------------------------ battle -----------------------------------
     $battle = new Battle($attackers, $defenders);
     $startBattle = DebugManager::runDebugged(array($battle, 'startBattle'), $errorHandler, $exceptionHandler);
     $startBattle();
-    //end of battle
+    //-------------------------------------------------------------------------
+    
+    //-------------------------- after battle stuff ---------------------------
     $report = $battle->getReport();
-
     $steal = updateAttackers($report->getPresentationAttackersFleetOnRound('START'), $report->getAfterBattleAttackers(), $targetPlanet, $resource, $pricelist);
     updateDefenders($report->getPresentationDefendersFleetOnRound('START'), $report->getAfterBattleDefenders(), $targetPlanet, $resource, $steal);
     updateDebris($FleetRow, $report);
     updateMoon($FleetRow, $report, '', $TargetUserID, $targetPlanet);
     sendMessage($FleetRow, $report, $lang, $resource);
+    //-------------------------------------------------------------------------
 
 }
 elseif ($FleetRow['fleet_end_time'] <= time())
