@@ -49,7 +49,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     $myFunc = function ()
     {
         global $debug;
-        $debug->error('Check "opbe/errors/" folder for more informations', 'Battle error');
+        $debug->error('Check "opbe/errors/" folder for more informations. '.date('d-m-y__H-i-s'), 'Battle error');
     }
     ;
     $errorHandler = DebugManager::intercept($errorHandler, $myFunc);
