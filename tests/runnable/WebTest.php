@@ -26,7 +26,7 @@
  * @version beta(26-10-2013)
  * @link https://github.com/jstar88/opbe
  */
-require ("../RunnableTest.php");
+require (".." . DIRECTORY_SEPARATOR . "RunnableTest.php");
 
 class WebTest extends RunnableTest
 {
@@ -114,16 +114,17 @@ if ($_POST)
 {
     if (isset($_POST['report']))
     {
-        if (!file_exists('errors/reports'))
+        $path = 'errors' . DIRECTORY_SEPARATOR . 'reports';
+        if (!file_exists($path))
         {
-            mkdir('errors/reports', 0777, true);
+            mkdir($path, 0777, true);
         }
-        require_once 'HTMLPurifier/HTMLPurifier.auto.php';
+        require_once 'HTMLPurifier' . DIRECTORY_SEPARATOR . 'HTMLPurifier.auto.php';
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $clean_html = $purifier->purify($_POST['report']);
-        $clean_html = 'comment = ' . strip_tags($_POST['comment']) . PHP_EOL .$clean_html ;
-        file_put_contents('errors/reports/' . date('d-m-y__H-i-s') . '.html', $clean_html );
+        $clean_html = 'comment = ' . strip_tags($_POST['comment']) . PHP_EOL . $clean_html;
+        file_put_contents($path . DIRECTORY_SEPARATOR . date('d-m-y__H-i-s') . '.html', $clean_html);
 
         $extra = 'WebTest.php';
         echo 'This battle has been reported.';
@@ -169,7 +170,7 @@ if ($_POST)
     $comment->setAttribute('type', 'text');
     $comment->setAttribute('name', 'comment');
     $comment->setAttribute('value', 'insert a comment here');
-    $comment->setAttribute('size','100');
+    $comment->setAttribute('size', '100');
 
     $fieldset = $dom->createElement('fieldset');
     $fieldset->appendChild($submit);

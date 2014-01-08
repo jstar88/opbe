@@ -64,3 +64,5 @@ define('MOON_MAX_FACTOR', 200);
 define('MOON_MAX_HIGHT_TEMP_DIFFERENCE_FROM_PLANET', 30);
 define('MOON_MAX_LOW_TEMP_DIFFERENCE_FROM_PLANET', 10);
 define('DEFAULT_MOON_NAME', 'moon');
+
+define('TIMEZONE','Europe/Vatican');
