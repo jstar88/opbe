@@ -191,11 +191,12 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attInfo, $defInfo)
 {
     // the last round doesn't has next round, so we not ask for fire etc
+    $round = $report->getRound($i);
     return array(
-        'attack' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getAttackersFirePower($i),
-        'defense' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getDefendersFirePower($i),
-        'defShield' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getDefendersAssorbedDamage($i),
-        'attackShield' => ($i > $report->getLastRoundNumber()) ? 0 : $report->getAttachersAssorbedDamage($i),
+        'attack' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getAttackersFirePower(),
+        'defense' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getDefendersFirePower(),
+        'defShield' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getDefendersAssorbedDamage(),
+        'attackShield' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getAttachersAssorbedDamage(),
         'attackers' => $attackers,
         'defenders' => $defenders,
         'attackA' => $attInfo[1],
