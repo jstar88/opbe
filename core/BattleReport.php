@@ -30,7 +30,7 @@ class BattleReport
 {
     private $rounds;
     private $roundsCount;
-
+    private $steal;
     private $attackersLostUnits;
     private $defendersLostUnits;
 
@@ -40,6 +40,7 @@ class BattleReport
     {
         $this->rounds = array();
         $this->roundsCount = 0;
+        $this->steal = 0;
         $this->attackersLostUnits = null;
         $this->defendersLostUnits = null;
     }
@@ -439,4 +440,12 @@ class BattleReport
         }
         return $array;
     }
+    public function setSteal($array)
+    {
+        $this->steal = $array;
+    }
+    public function getSteal()
+    {
+        return $this->steal;
+    }  
 }

@@ -135,6 +135,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
     //-------------------------- after battle stuff ---------------------------
     $report = $battle->getReport();
     $steal = updateAttackers($report->getPresentationAttackersFleetOnRound('START'), $report->getAfterBattleAttackers(), $targetPlanet, $resource, $pricelist);
+    $report->setSteal($steal);
     updateDefenders($report->getPresentationDefendersFleetOnRound('START'), $report->getAfterBattleDefenders(), $targetPlanet, $resource, $steal);
     updateDebris($FleetRow, $report);
     updateMoon($FleetRow, $report, '', $TargetUserID, $targetPlanet);
