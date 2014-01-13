@@ -117,7 +117,7 @@ class DebugManager
         {
             mkdir(OPBEPATH . 'errors', 0777, true);
         }
-        file_put_contents(OPBEPATH . 'errors'.DIRECTORY_SEPARATOR . date('d-m-y__H-i-s') . '.txt', $time . PHP_EOL . $other . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . $output);
+        file_put_contents(OPBEPATH . 'errors'.DIRECTORY_SEPARATOR . date('d-m-y__H-i-s') . '.html', $time . PHP_EOL . $other . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . $output);
         die('An error occurred, we will resolve it soon as possible');
     }
 }

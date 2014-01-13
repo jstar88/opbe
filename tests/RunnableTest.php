@@ -127,7 +127,7 @@ class RunnableTest
         {
             mkdir($path, 0777, true);
         }
-        file_put_contents($path.DIRECTORY_SEPARATOR . date('d-m-y__H-i-s') . '.txt', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
+        file_put_contents($path.DIRECTORY_SEPARATOR . date('d-m-y__H-i-s') . '.html', $time . PHP_EOL . self::br2nl($other) . PHP_EOL . $post . PHP_EOL . $get . PHP_EOL . self::br2nl($output));
         die('An error occurred, we will resolve it soon as possible');
     }
     private static function br2nl($text)
