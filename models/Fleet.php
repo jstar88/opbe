@@ -41,11 +41,14 @@ class Fleet extends Iterable
         $this->id = $id;
         $this->count = 0;
         $this->name = $name;
+        if($this->id != -1)
+        {
+            $this->setTech($weapons_tech, $shields_tech, $armour_tech);
+        }
         foreach ($shipTypes as $shipType)
         {
             $this->add($shipType);
         }
-        $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
     public function getName()
     {
@@ -79,7 +82,14 @@ class Fleet extends Iterable
         }
         else
         {
-            $this->array[$shipType->getId()] = $shipType->cloneMe(); //avoid collateral effects
+            $shipType = $shipType->cloneMe();//avoid collateral effects
+            if($this->id != -1)
+            {
+                $shipType->setWeaponsTech($this->weapons_tech);
+                $shipType->setShieldsTech($this->shields_tech);
+                $shipType->setArmourTech($this->armour_tech);
+            }
+            $this->array[$shipType->getId()] = $shipType; 
         }
         $this->count += $shipType->getCount();
     }

@@ -38,16 +38,16 @@ class ShipType extends Type
     private $hull;
     private $power;
     // at cells and fusion
-    private $currentShield;
+    protected $currentShield;
     // as fusion
-    private $currentLife;
+    protected $currentLife;
 
     private $weapons_tech = 0;
     private $shields_tech = 0;
     private $armour_tech = 0;
 
-    private $lastShots;
-    private $lastShipHit;
+    protected $lastShots;
+    protected $lastShipHit;
     
     private $cost;
 
@@ -78,6 +78,7 @@ class ShipType extends Type
         if(!is_numeric($level)) return;
         $level = intval($level);
         $diff = $level - $this->weapons_tech;
+        if($diff < 0) throw new Exception('trying to decrease tech');
         $this->weapons_tech = $level;
         $this->power += WEAPONS_TECH_INCREMENT_FACTOR * $diff * $this->power;
     }
@@ -86,6 +87,7 @@ class ShipType extends Type
         if(!is_numeric($level)) return;
         $level = intval($level);
         $diff = $level - $this->shields_tech;
+        if($diff < 0) throw new Exception('trying to decrease tech');
         $this->shields_tech = $level;
         $this->shield += SHIELDS_TECH_INCREMENT_FACTOR * $diff * $this->shield;
     }
@@ -94,6 +96,7 @@ class ShipType extends Type
         if(!is_numeric($level)) return;
         $level = intval($level);
         $diff = $level - $this->armour_tech;
+        if($diff < 0) throw new Exception('trying to decrease tech');
         $this->armour_tech = $level;
         $this->hull += ARMOUR_TECH_INCREMENT_FACTOR * $diff * $this->hull;
         $this->currentLife += ARMOUR_TECH_INCREMENT_FACTOR * $diff * $this->currentLife;

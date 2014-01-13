@@ -40,11 +40,11 @@ class Player extends Iterable
     {
         $this->id = $id;
         $this->name = $name;
+        $this->setTech($weapons_tech, $shields_tech, $armour_tech);
         foreach ($fleets as $fleet)
         {
             $this->addFleet($fleet);
         }
-        $this->setTech($weapons_tech, $shields_tech, $armour_tech);
     }
     public function getName()
     {
