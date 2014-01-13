@@ -137,9 +137,8 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     /********** ROUNDS INFOS **********/
 
     $ROUND = array();
-    $i = 0;
     $lastRound = $report->getLastRoundNumber();
-    for (; $i <= $lastRound; $i++)
+    for ($i = 0; $i <= $lastRound; $i++)
     {
         // in case of last round, ask for rebuilt defenses. to change rebuils prob see constants/battle_constants.php
         $attackerGroupObj = ($lastRound == $i) ? $report->getAfterBattleAttackers() : $report->getResultAttackersFleetOnRound($i);
@@ -186,8 +185,13 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
  */
 function roundInfo(BattleReport $report, $attackers, $defenders, PlayerGroup $attackerGroupObj, PlayerGroup $defenderGroupObj, $i, $attInfo, $defInfo)
 {
+    $round = null;
     // the last round doesn't has next round, so we not ask for fire etc
-    $round = $report->getRound($i);
+    if($i <= $report->getLastRoundNumber())
+    {
+        $round = $report->getRound($i);
+    }
+    
     return array(
         'attack' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getAttackersFirePower(),
         'defense' => ($i > $report->getLastRoundNumber()) ? 0 : $round->getDefendersFirePower(),
