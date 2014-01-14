@@ -1,3 +1,9 @@
-The attacker has won the battle<br />
-<?php $steal = $this->getSteal(); ?>
-obtaining <?php echo number_format($steal['metal'],0, ',', ' '); ?> Metal, <?php echo number_format($steal['crystal'],0, ',', ' '); ?> Crystal and <?php echo number_format($steal['deuterium'],0, ',', ' '); ?> Deuterium.<br />
+<?php 
+$lng = LangManager::getInstance();
+$steal = $this->getSteal(); 
+$metal = number_format($steal['metal'],0, ',', ' '); 
+$crystal = number_format($steal['crystal'],0, ',', ' ');
+$deuterium = number_format($steal['deuterium'],0, ',', ' ');
+?>
+<?php echo $lng->getAttackerHasWon(); ?><br />
+<?php echo $lng->getStoleDescr($metal,$crystal,$deuterium); ?>.<br />
