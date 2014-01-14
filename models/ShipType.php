@@ -168,6 +168,13 @@ class ShipType extends Type
         $ps->start();
         $this->currentShield -= $ps->getAssorbedDamage(true);
         $this->currentLife -= $ps->getHullDamage();
+        
+        // strange bug
+        if($this->currentLife < 0 && abs($this->currentLife) < 1e-9)
+        {
+            $this->currentLife = 0;
+        }
+        
         echo "currentShield after= {$this->currentShield}<br>"; 
         echo "currentLife after={$this->currentLife}<br>";
         $this->lastShipHit += $ps->getHitShips();
