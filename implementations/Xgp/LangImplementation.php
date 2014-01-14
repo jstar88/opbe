@@ -47,7 +47,7 @@ class LangImplementation implements Lang
     }
     public function getStoleDescr($metal, $crystal, $deuterium)
     {
-        return $this->lang['sys_stealed_ressources'] . " $metal" . $this->lang['Metal'] . ", $crystal" . $this->lang['Crystal'] . " " . $this->lang['sys_and'] . " $deuterium" . $this->lang['Deuterium'];
+        return $this->lang['sys_stealed_ressources'] . " $metal " . $this->lang['Metal'] . ", $crystal " . $this->lang['Crystal'] . " " . $this->lang['sys_and'] . " $deuterium " . $this->lang['Deuterium'];
     }
     public function getAttackersLostUnits($units)
     {
