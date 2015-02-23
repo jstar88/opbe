@@ -143,7 +143,7 @@ class Fire
         if (USE_RANDOMIC_RF)
         {
             $max = $meanShots * (1 + MAX_RF_BUFF);
-            $min = $meanShots * MAX_RF_NERF;
+            $min = $meanShots * (1 - MAX_RF_NERF);
             return Gauss::getNextMsBetween($meanShots, GeometricDistribution::getStandardDeviationFromProbability(1 - $p), $min, $max);
         }
         return $meanShots;
