@@ -11,7 +11,7 @@ class LangImplementation implements Lang
 
     public function getShipName($id)
     {
-        return isset($this->lang['tech_rc'][$id]) ? $this->lang['tech_rc'][$id] : $id . ' <font color=red>* no lang found</font>';
+        return isset($this->lang['tech'][$id]) ? $this->lang['tech'][$id] : $id . ' <font color=red>* no lang found</font>';
     }
 
     public function getAttackersAttackingDescr($amount, $damage)

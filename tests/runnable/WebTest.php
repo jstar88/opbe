@@ -193,6 +193,7 @@ else
     $count = floor(file_get_contents('count.txt'));
     $list = WebTest::getVarsList();
     $reslist = WebTest::$reslist;
+    $combatCaps = WebTest::$CombatCaps;
     require ('WebTestGui.html');
 
 }

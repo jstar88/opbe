@@ -440,6 +440,8 @@ $lang['tech'] = array(
 213 => "Destroyer",
 214 => "Deathstar",
 215 => "Battlecruiser",
+216 => "SuperNova",
+217 => "SuperCargo",
 
 400 => "Defense",
 401 => "Rocket Launcher",
@@ -450,6 +452,7 @@ $lang['tech'] = array(
 406 => "Plasma Turret",
 407 => "Small Shield Dome",
 408 => "Large Shield Dome",
+409 => "Planet Protector",
 502 => "Anti-Ballistic Missiles",
 503 => "Interplanetary Missiles",
 
