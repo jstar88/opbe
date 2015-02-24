@@ -74,7 +74,7 @@ class Fleet extends Iterable
         if(is_numeric($shields)) $this->shields_tech = intval($shields);
         if(is_numeric($armour)) $this->armour_tech = intval($armour);
     }
-    public function add(ShipType $shipType)
+    public function addShipType(ShipType $shipType)
     {
         if (isset($this->array[$shipType->getId()]))
         {
