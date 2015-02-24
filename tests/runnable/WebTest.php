@@ -194,6 +194,7 @@ else
     $list = WebTest::getVarsList();
     $reslist = WebTest::$reslist;
     $combatCaps = WebTest::$CombatCaps;
+    $pricelist = WebTest::$pricelist;
     require ('WebTestGui.html');
 
 }
