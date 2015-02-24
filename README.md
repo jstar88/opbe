@@ -251,7 +251,7 @@ This time you have to manually choose the right class and HomeFleet should have 
 ```php
     $fleet = new Fleet($idFleet); // $idFleet is a must
     $fleet = new HomeFleet(0); // 0 is a must
-    $fleet->add($shipType);
+    $fleet->addShipType($shipType);
 ```
 
 - Note that you can assign differents techs to each *Fleet*, see functions inside this class.   
@@ -299,7 +299,7 @@ So you can echo it.
 An easy way to display them:
 ```php   
     $fleet = new Fleet($idFleet);
-    $fleet->add($this->getShipType($id, $count));
+    $fleet->addShipType($this->getShipType($id, $count));
     
     $player = new Player($idPlayer);
     $player->addFleet($fleet);

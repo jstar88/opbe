@@ -99,7 +99,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
         {
             if ($targetPlanet[$resource[$i]] != 0)
             {
-                $homeFleet->add(getShipType($i, $targetPlanet[$resource[$i]]));
+                $homeFleet->addShipType(getShipType($i, $targetPlanet[$resource[$i]]));
             }
         }
     }
@@ -109,7 +109,7 @@ if ($FleetRow['fleet_mess'] == 0 && $FleetRow['fleet_start_time'] <= time())
         {
             if ($targetPlanet[$resource[$i]] != 0)
             {
-                $homeFleet->add(getShipType($i, $targetPlanet[$resource[$i]]));
+                $homeFleet->addShipType(getShipType($i, $targetPlanet[$resource[$i]]));
             }
         }
     }
@@ -189,7 +189,7 @@ function getPlayerGroup($fleetRow)
         list($id, $count) = explode(',', $serializedType);
         if ($id != 0 && $count != 0)
         {
-            $fleet->add(getShipType($id, $count));
+            $fleet->addShipType(getShipType($id, $count));
         }
     }
     $player_info = doquery("SELECT * FROM {{table}} WHERE id =$idPlayer", 'users', true);
@@ -213,7 +213,7 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
             list($id, $count) = explode(',', $serializedType);
             if ($id != 0 && $count != 0)
             {
-                $fleet->add(getShipType($id, $count));
+                $fleet->addShipType(getShipType($id, $count));
             }
         }
         //making the player object and add it to playerGroup object

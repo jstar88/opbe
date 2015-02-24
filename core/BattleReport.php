@@ -351,41 +351,25 @@ class BattleReport
     }
     private function getAfterBattlePlayerGroup($players, $playersRepaired)
     {
-        foreach ($playersRepaired->getIterator() as $idPlayer => $player)
+        foreach ($playersRepaired->getIterator() as $idPlayer => $playerRepaired)
         {
             if (!$players->existPlayer($idPlayer)) // player is completely destroyed
             {
-                $endPlayer = $player;
-                $players->addPlayer($endPlayer);
+                $players->addPlayer($playerRepaired);
                 continue;
             }
-            else
-            {
-                $endPlayer = $players->getPlayer($idPlayer);
-            }
-            foreach ($player->getIterator() as $idFleet => $fleet)
+            $endPlayer = $players->getPlayer($idPlayer);
+            foreach ($playerRepaired->getIterator() as $idFleet => $fleetRepaired)
             {
                 if (!$endPlayer->existFleet($idFleet))
                 {
-                    $endFleet = $fleet;
-                    $endPlayer->addFleet($endFleet);
+                    $endPlayer->addFleet($fleetRepaired);
                     continue;
                 }
-                else
+                $endFleet = $endPlayer->getFleet($idFleet);
+                foreach ($fleetRepaired->getIterator() as $idShipType => $shipTypeRepaired)
                 {
-                    $endFleet = $endPlayer->getFleet($idFleet);
-                }
-                foreach ($fleet->getIterator() as $idShipType => $shipType)
-                {
-                    if (!$endFleet->existShipType($idShipType))
-                    {
-                        $endShipType = $shipType;
-                    }
-                    else
-                    {
-                        $endShipType = $endFleet->getShipType($idShipType);
-                        $endShipType->increment($shipType->getCount());
-                    }
+                    $endFleet->addShipType($shipTypeRepaired);
                 }
             }
         }

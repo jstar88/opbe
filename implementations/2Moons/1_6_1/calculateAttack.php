@@ -85,7 +85,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         {
             if (empty($amount)) continue;
             $shipType = getShipType($element, $amount);
-            $attackerFleetObj->add($shipType);
+            $attackerFleetObj->addShipType($shipType);
         }
         $attackerPlayerObj->addFleet($attackerFleetObj);
     }
@@ -105,7 +105,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
         {
             if (empty($amount)) continue;
             $shipType = getShipType($element, $amount);
-            $defenderFleetObj->add($shipType);
+            $defenderFleetObj->addShipType($shipType);
         }
         $defenderPlayerObj->addFleet($defenderFleetObj);
     }

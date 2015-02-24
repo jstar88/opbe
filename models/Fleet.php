@@ -47,7 +47,7 @@ class Fleet extends Iterable
         }
         foreach ($shipTypes as $shipType)
         {
-            $this->add($shipType);
+            $this->addShipType($shipType);
         }
     }
     public function getName()
@@ -106,7 +106,7 @@ class Fleet extends Iterable
     {
         foreach ($other->getIterator() as $idShipType => $shipType)
         {
-            $this->add($shipType);
+            $this->addShipType($shipType);
         }
     }
     public function getShipType($id)

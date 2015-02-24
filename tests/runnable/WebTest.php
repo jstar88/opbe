@@ -53,7 +53,7 @@ class WebTest extends RunnableTest
                 $id = floor($id);
                 if ($count > 0 && $id > 0)
                 {
-                    $fleetObj->add($this->getShipType($id, $count));
+                    $fleetObj->addShipType($this->getShipType($id, $count));
                 }
             }
             if (!$fleetObj->isEmpty())
