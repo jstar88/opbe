@@ -1,26 +1,25 @@
 <?php
 
-class LangImplementation implements Lang
+class XGLangImplementation implements Lang
 {
     private $lang;
-    public function __construct($name)
+    public function __construct()
     {
-        require (OPBEPATH . "tests/runnable/langs/$name.php");
+        require (OPBEPATH . "tests/runnable/langs/XG.php");
         $this->lang = $lang;
     }
 
     public function getShipName($id)
     {
-        return isset($this->lang['tech'][$id]) ? $this->lang['tech'][$id] : $id . ' <font color=red>* no lang found</font>';
+        return $this->lang['tech'][$id];
     }
-
     public function getAttackersAttackingDescr($amount, $damage)
     {
         return $this->lang['fleet_attack_1'] . ' ' . $damage . " " . $this->lang['damage'] . " with $amount shots ";
     }
     public function getDefendersDefendingDescr($damage)
     {
-        return $this->lang['fleet_attack_2'] . $damage . ' ' . $this->lang['damage'];;
+        return $this->lang['fleet_attack_2'] . $damage . ' ' . $this->lang['damage'];
     }
     public function getDefendersAttackingDescr($amount, $damage)
     {

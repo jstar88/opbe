@@ -28,7 +28,8 @@
  */
 
 require (dirname(__DIR__) . DIRECTORY_SEPARATOR ."utils".DIRECTORY_SEPARATOR."includer.php");
-require (OPBEPATH . "tests".DIRECTORY_SEPARATOR."LangImplementation.php");
+require (OPBEPATH . "tests".DIRECTORY_SEPARATOR."runnable".DIRECTORY_SEPARATOR."langs".DIRECTORY_SEPARATOR."MoonsLangImplementation.php");
+require (OPBEPATH . "tests".DIRECTORY_SEPARATOR."runnable".DIRECTORY_SEPARATOR."langs".DIRECTORY_SEPARATOR."XGLangImplementation.php");
 
 class RunnableTest
 {
@@ -45,7 +46,7 @@ class RunnableTest
         }
         if(!LangManager::getInstance()->implementationExist())
         {
-            LangManager::getInstance()->setImplementation(new LangImplementation('XG'));
+            LangManager::getInstance()->setImplementation(new XGLangImplementation());
         }
         $attackers = $this->getAttachers();
         $defenders = $this->getDefenders();

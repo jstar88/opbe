@@ -84,7 +84,13 @@ else
     $selectedVar = 'XG';
 }
 WebTest::includeVars($selectedVar);
-LangManager::getInstance()->setImplementation(new LangImplementation($selectedVar));
+if ($selectedVar == 'XG'){
+    LangManager::getInstance()->setImplementation(new XGLangImplementation());
+}
+else{
+    LangManager::getInstance()->setImplementation(new MoonsLangImplementation());
+}
+
 
 if (isset($_GET['good']))
 {
