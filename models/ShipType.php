@@ -164,7 +164,14 @@ class ShipType extends Type
         $this->lastShots += $colpiSparatiVersoQuestoTipoDiNavi;
         echo "currentShield before= {$this->currentShield}<br>"; 
         echo "currentLife before={$this->currentLife}<br>";
-        $ps = new PhysicShot($this, $damage, $colpiSparatiVersoQuestoTipoDiNavi);
+        if (USE_CLASSES2)
+        {
+            $ps = new PhysicShot2($this, $damage, $colpiSparatiVersoQuestoTipoDiNavi);
+        }
+        else
+        {
+            $ps = new PhysicShot($this, $damage, $colpiSparatiVersoQuestoTipoDiNavi);
+        }
         $ps->start();
         $this->currentShield -= $ps->getAssorbedDamage(true);
         $this->currentLife -= $ps->getHullDamage();
@@ -180,9 +187,17 @@ class ShipType extends Type
         $this->lastShipHit += $ps->getHitShips();
         echo "lastShipHit after = $this->lastShipHit<br>";
         echo "lastShots after={$this->lastShots}<br>";
-        if($this->currentLife < 0 || $this->currentShield < 0 || $this->lastShipHit < 0)
+        if($this->currentLife < 0)
         {
-            throw new Exception('negative count!');
+            throw new Exception('negative currentLife!');
+        }
+        if($this->currentShield < 0)
+        {
+            throw new Exception('negative currentShield!');
+        }
+        if($this->lastShipHit < 0)
+        {
+            throw new Exception('negative lastShipHit!');
         }
         return $ps; //for web
     }

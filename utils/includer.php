@@ -47,6 +47,7 @@ require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'Player.php');
 require (OPBEPATH.'models'.DIRECTORY_SEPARATOR.'PlayerGroup.php');
 require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'Fire.php');
 require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'PhysicShot.php');
+require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'PhysicShot2.php');
 require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'ShipsCleaner.php');
 require (OPBEPATH.'combatObject'.DIRECTORY_SEPARATOR.'FireManager.php');
 require (OPBEPATH.'core'.DIRECTORY_SEPARATOR.'Battle.php');
