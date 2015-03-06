@@ -2,7 +2,7 @@
 
 /**
  *  OPBE
- *  Copyright (C) 2013  Jstar
+ *  Copyright (C) 2015  Jstar
  *
  * This file is part of OPBE.
  * 
@@ -21,9 +21,9 @@
  *
  * @package OPBE
  * @author Jstar <frascafresca@gmail.com>
- * @copyright 2013 Jstar <frascafresca@gmail.com>
+ * @copyright 2015 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version beta(26-10-2013)
+ * @version beta(6-3-2015)
  * @link https://github.com/jstar88/opbe
  */
 class ShipsCleaner
@@ -63,15 +63,15 @@ class ShipsCleaner
 
         //the mean probably to explode based on damage
         $prob = 1 - $this->fighters->getCurrentLife() / ($this->fighters->getHull() * $this->fighters->getCount());
-        echo "prob=$prob<br>";
+        log_var('prob',$prob);
         if ($prob < 0)
         {
-            throw new Exception("negative prob");
+            throw new Exception("Negative prob");
         }
         //if most of ships are hitten,then we can apply the more realistic way
         if (USE_BIEXPLOSION_SYSTEM && $this->lastShipHit >= $this->fighters->getCount() / PROB_TO_REAL_MAGIC)
         {
-            echo "this->lastShipHit >= this->fighters->getCount()/2<br>";
+            log_comment('this->lastShipHit >= this->fighters->getCount()/2');
             if ($prob < MIN_PROB_TO_EXPLODE)
             {
                 $probToExplode = 0;
@@ -84,7 +84,7 @@ class ShipsCleaner
         //otherwise  statistically:
         else
         {
-            echo "this->lastShipHit < this->fighters->getCount()/2<br>";
+            log_comment('this->lastShipHit < this->fighters->getCount()/2<br>');
             $probToExplode = $prob * (1 - MIN_PROB_TO_EXPLODE);
         }
 
@@ -100,10 +100,11 @@ class ShipsCleaner
         /*** calculating the life of destroyed ships ***/
 
         //$this->remainLife = $this->exploded * (1 - $prob) * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
-        $this->remainLife = $this->exploded * ($this->fighters->getCurrentLife() / $this->fighters->getCount());
-        echo "probToExplode = $probToExplode<br>$teoricExploded = teoricExploded<br>";
-        echo "exploded ={$this->exploded}<br>";
-        echo "remainLife = {$this->remainLife}<br>";
+        $this->remainLife = $this->fighters->getCurrentLife() / $this->fighters->getCount();
+        log_var('probToExplode',$probToExplode);
+        log_var('teoricExploded',$teoricExploded);
+        log_var('exploded',$this->exploded);
+        log_var('remainLife',$this->remainLife);
     }
     /**
      * ShipsCleaner::getExplodeShips()

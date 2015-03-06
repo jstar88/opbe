@@ -256,6 +256,7 @@ This time you have to manually choose the right class and HomeFleet should have 
 
 - Note that you can assign differents techs to each *Fleet*, see functions inside this class.   
 - By default, Fleet will give tech levels by its Player container . 
+- HomeFleet work as Fleet, but with the difference that is unique: adding more HomeFleet will result on merging them. Feature implemented just for a better report.
 - Fleet has a __toString method that automatically fill-up the corrispective *views/fleet.html* and return the result html.   
 So you can echo it.
 

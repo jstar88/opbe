@@ -199,7 +199,7 @@ class Player extends Iterable
         }
         else
         {
-            $f->mergeFleet($fleetDefender);
+            $fl->mergeFleet($fleetDefender);
         }
     }
     public function mergePlayerFleets(Player $player)

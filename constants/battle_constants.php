@@ -2,7 +2,7 @@
 
 /**
  *  OPBE
- *  Copyright (C) 2013  Jstar
+ *  Copyright (C) 2015  Jstar
  *
  * This file is part of OPBE.
  * 
@@ -21,9 +21,9 @@
  *
  * @package OPBE
  * @author Jstar <frascafresca@gmail.com>
- * @copyright 2013 Jstar <frascafresca@gmail.com>
+ * @copyright 2015 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version beta(25-02-2015)
+ * @version 6-3-2015
  * @link https://github.com/jstar88/opbe
  */
 
@@ -48,7 +48,6 @@ define('USE_HITSHIP_LIMITATION', true); //this option will limit the number of e
 define('USE_RANDOMIC_RF', false); // enable below system values
 define('MAX_RF_BUFF', 0); // how much the rapid fire can be randomically increased.
 define('MAX_RF_NERF', 0); // how much the rapid fire can be randomically decreased.
-define('USE_CLASSES2', true);// use new classes
 
 /*** Views and optimization options ***/
 define('ONLY_FIRST_AND_LAST_ROUND', false); //This option is usefull to decrease RAM usage, but the battle report will not contain all rounds.
