@@ -146,7 +146,7 @@ class PhysicShot2
         $this->hullDamage = max(0, $hullDamage);
         
         // da sistemare, la suddivisione in celle dello scudo è inutile. 
-        $this->cellDestroyed = min(round($this->assorbedDamage / $s_100),$currentCellsCount);
+        $this->cellDestroyed = ($s_100 == 0)?$currentCellsCount : min(round($this->assorbedDamage / $s_100),$currentCellsCount);
     }
     
     private function clamp($a,$b)
