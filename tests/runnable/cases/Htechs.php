@@ -42,7 +42,7 @@ class Htechs extends RunnableTest
         return new PlayerGroup(array($player));
     }
 }
-new Htechs(true);
+new Htechs();
 
 
 ?>
