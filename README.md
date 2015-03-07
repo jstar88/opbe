@@ -2,7 +2,9 @@ OPBE
 ====
 
 **O**game **P**robabilistic **B**attle **E**ngine  
-live: http://opbe.altervista.org
+live: http://opbe.altervista.org  
+
+Require PHP >= 5.3  
 
 
 ![http://www.phpclasses.org/package/8318-PHP-Ogame-probabilistic-battle-engine.html](http://www.phpclasses.org/award/innovation/nominee.gif)
