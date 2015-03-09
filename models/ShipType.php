@@ -92,9 +92,9 @@ class ShipType extends Type
     
     /**
      * ShipType::setWeaponsTech()
-     * 
+     * Set new weapon techs level.
      * @param int $level
-     * @return null
+     * @return void
      */
     public function setWeaponsTech($level)
     {
@@ -113,9 +113,9 @@ class ShipType extends Type
     
     /**
      * ShipType::setShieldsTech()
-     * 
+     * Set new shield techs level.
      * @param int $level
-     * @return null
+     * @return void
      */
     public function setShieldsTech($level)
     {
@@ -135,9 +135,9 @@ class ShipType extends Type
     
     /**
      * ShipType::setArmourTech()
-     * 
+     * Set new armour techs level
      * @param int $level
-     * @return null
+     * @return void
      */
     public function setArmourTech($level)
     {
@@ -157,11 +157,11 @@ class ShipType extends Type
 
     /**
      * ShipType::increment()
-     * 
-     * @param int $number
-     * @param int $newLife
-     * @param int $newShield
-     * @return null
+     * Increment the amount of ships of this type.
+     * @param int $number : the amount of ships to add.
+     * @param mixed $newLife : the life of new ships added, default = full health
+     * @param mixed $newShield : the shield of new ships added, default = full shield
+     * @return void
      */
     public function increment($number, $newLife = null, $newShield = null)
     {
@@ -185,11 +185,11 @@ class ShipType extends Type
     
     /**
      * ShipType::decrement()
-     * 
-     * @param int $number
-     * @param int $remainLife
-     * @param int $remainShield
-     * @return null
+     * Decrement the amount of ships of this type.
+     * @param int $number : the amount of ships to be removed. 
+     * @param mixed $remainLife : the life of removed ships, default = full health
+     * @param mixed $remainShield : the shield of removed ships, default = full shield
+     * @return void
      */
     public function decrement($number, $remainLife = null, $remainShield = null)
     {
@@ -211,30 +211,33 @@ class ShipType extends Type
     }
     
     
+
     /**
      * ShipType::setCount()
-     * 
-     * @param int $number
-     * @return null
+     * Set the amount of ships of this type.
+     * @param int $number : the amount of ships.
+     * @param mixed $life : the life of ships, default = full health
+     * @param mixed $shield : the life of ships, default = full health
+     * @return void
      */
-    public function setCount($number)
+    public function setCount($number, $life = null, $shield = null)
     {
         parent::setCount($number);
         $diff = $number - $this->getCount();
         if ($diff > 0)
         {
-            $this->increment($diff);
+            $this->increment($diff, $life, $shield);
         }
         elseif ($diff < 0)
         {
-            $this->decrement($diff);
+            $this->decrement($diff, $life, $shield);
         }
     }
 
 
     /**
      * ShipType::getCost()
-     * 
+     * Get the array of cost to build this type of ship.
      * @return array
      */
     public function getCost()
@@ -245,7 +248,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getWeaponsTech()
-     * 
+     * Get the level of current weapon tech.
      * @return int
      */
     public function getWeaponsTech()
@@ -256,7 +259,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getShieldsTech()
-     * 
+     * Get the level of current shield tech.
      * @return int
      */
     public function getShieldsTech()
@@ -267,7 +270,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getArmourTech()
-     * 
+     * Get the level of current armour tech.
      * @return int
      */
     public function getArmourTech()
@@ -278,7 +281,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getRfTo()
-     * 
+     * Get the propability of this shipType to shot again given shipType
      * @param ShipType $other
      * @return int
      */
@@ -290,7 +293,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getRF()
-     * 
+     * Get an array of rapid fire
      * @return array
      */
     public function getRF()
@@ -301,7 +304,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getShield()
-     * 
+     * Get the shield value of a single ship of this type. 
      * @return int
      */
     public function getShield()
@@ -312,7 +315,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getShieldCellValue()
-     * 
+     * Get the shield cell value of a single ship of this type.
      * @return int
      */
     public function getShieldCellValue()
@@ -327,7 +330,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getHull()
-     * 
+     * Get the hull value of a single ship of this type. 
      * @return int
      */
     public function getHull()
@@ -338,7 +341,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getPower()
-     * 
+     * Get the power value of a single ship of this type.
      * @return int
      */
     public function getPower()
@@ -349,7 +352,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getCurrentShield()
-     * 
+     * Get the current shield value of a all ships of this type.
      * @return int
      */
     public function getCurrentShield()
@@ -360,7 +363,7 @@ class ShipType extends Type
     
     /**
      * ShipType::getCurrentLife()
-     * 
+     * Get the current hull value of a all ships of this type.
      * @return int
      */
     public function getCurrentLife()
@@ -371,10 +374,10 @@ class ShipType extends Type
 
     /**
      * ShipType::inflictDamage()
-     * 
+     * Inflict damage to all ships of this type.
      * @param int $damage
      * @param int $shotsToThisShipType
-     * @return null
+     * @return void
      */
     public function inflictDamage($damage, $shotsToThisShipType)
     {
@@ -418,7 +421,7 @@ class ShipType extends Type
     
     /**
      * ShipType::cleanShips()
-     * 
+     * Start the task of explosion system.
      * @return ShipsCleaner
      */
     public function cleanShips()
@@ -439,8 +442,8 @@ class ShipType extends Type
     
     /**
      * ShipType::repairShields()
-     * 
-     * @return null
+     * Repair all shields.
+     * @return void
      */
     public function repairShields()
     {
@@ -463,12 +466,12 @@ class ShipType extends Type
     
     /**
      * ShipType::isShieldDisabled()
-     * 
+     * Return true if the current shield of each ships are almost zero.
      * @return boolean
      */
     public function isShieldDisabled()
     {
-        return $this->currentShield < 0.01;
+        return $this->currentShield / $this->getCount() < 0.01;
     }
     
     
