@@ -370,6 +370,17 @@ class ShipType extends Type
     {
         return $this->currentLife;
     }
+    
+    
+    /**
+     * ShipType::getCurrentPower()
+     * Get the current attack power value of a all ships of this type.
+     * @return int
+     */
+    public function getCurrentPower()
+    {
+        return $this->fullPower;
+    }
 
 
     /**
