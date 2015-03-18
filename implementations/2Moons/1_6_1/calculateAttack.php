@@ -158,7 +158,7 @@ function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
     $debDefMet = $debDef[0];
     $debDefCry = $debDef[1];
     //total
-    $debris = array('att' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'deff' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
+    $debris = array('att' => array(METAL_ID => $debAttMet, CRYSTAL_ID => $debAttCry), 'def' => array(METAL_ID => $debDefMet, CRYSTAL_ID => $debDefCry));
 
     /********** LOST UNITS **********/
     $totalLost = array('att' => $report->getTotalAttackersLostUnits(), 'def' => $report->getTotalDefendersLostUnits());
