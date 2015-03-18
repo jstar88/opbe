@@ -91,10 +91,12 @@ class ShipsCleaner
 
         /*** calculating the amount of exploded ships ***/
 
-        $teoricExploded = $this->fighters->getCount() * $probToExplode;
-        //$this->exploded = round($teoricExploded);
-        //$this->exploded = min(floor($teoricExploded), $this->lastShots);
-        $this->exploded = min(round($teoricExploded), $this->lastShots); //bounded by the total shots fired to simulate a real combat :)
+        $teoricExploded = round($this->fighters->getCount() * $probToExplode);
+        if (USE_EXPLODED_LIMITATION)
+        {
+            $teoricExploded = min($teoricExploded, $this->lastShots);
+        }
+        $this->exploded = $teoricExploded; //bounded by the total shots fired to simulate a real combat :)
 
 
         /*** calculating the life of destroyed ships ***/

@@ -45,6 +45,7 @@ define('MIN_PROB_TO_EXPLODE', 0.3); //minimum probability at one the ships/defen
 define('DEFENSE_REPAIR_PROB', 0.7); //probability to repair defenses. From 0 to 1, 1 means that defenses are always rebuilt.
 define('SHIP_REPAIR_PROB', 0); //same as below but for ships.
 define('USE_HITSHIP_LIMITATION', true); //this option will limit the number of exploding ships to the number of total shots received by all defender's ships.
+define('USE_EXPLODED_LIMITATION',true); //if true the number of exploded ships each round are limited to the damaged ships amount. 
 define('USE_RANDOMIC_RF', false); // enable below system values
 define('MAX_RF_BUFF', 0); // how much the rapid fire can be randomically increased.
 define('MAX_RF_NERF', 0); // how much the rapid fire can be randomically decreased.
