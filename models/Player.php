@@ -215,6 +215,6 @@ class Player extends Iterable
     public function cloneMe()
     {
         $fleets = array_values($this->array);
-        return new Player($this->id, $fleets ,$this->weapons_tech, $this->shields_tech, $this->armour_tech);
+        return new Player($this->id, $fleets ,$this->weapons_tech, $this->shields_tech, $this->armour_tech, $this->name);
     }
 }
