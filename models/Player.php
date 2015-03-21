@@ -171,13 +171,6 @@ class Player extends Iterable
             $fleet->repairShields();
         }
     }
-    public function repairHull()
-    {
-        foreach ($this->array as $idFleet => $fleet)
-        {
-            $fleet->repairHull();
-        }
-    }
     public function getEquivalentFleetContent()
     {
         $merged = new Fleet(-1);

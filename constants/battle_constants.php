@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2015 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version 6-3-2015
+ * @version 21-3-2015
  * @link https://github.com/jstar88/opbe
  */
 
@@ -46,9 +46,10 @@ define('DEFENSE_REPAIR_PROB', 0.7); //probability to repair defenses. From 0 to 
 define('SHIP_REPAIR_PROB', 0); //same as below but for ships.
 define('USE_HITSHIP_LIMITATION', true); //this option will limit the number of exploding ships to the number of total shots received by all defender's ships.
 define('USE_EXPLODED_LIMITATION',true); //if true the number of exploded ships each round are limited to the damaged ships amount. 
+define('USE_RF', true); // enable rapid fire
 define('USE_RANDOMIC_RF', false); // enable below system values
-define('MAX_RF_BUFF', 0); // how much the rapid fire can be randomically increased.
-define('MAX_RF_NERF', 0); // how much the rapid fire can be randomically decreased.
+define('MAX_RF_BUFF', 0.2); // how much the rapid fire can be randomically increased.
+define('MAX_RF_NERF', 0.2); // how much the rapid fire can be randomically decreased.
 
 /*** Views and optimization options ***/
 define('ONLY_FIRST_AND_LAST_ROUND', false); //This option is usefull to decrease RAM usage, but the battle report will not contain all rounds.

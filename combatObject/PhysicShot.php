@@ -23,7 +23,7 @@
  * @author Jstar <frascafresca@gmail.com>
  * @copyright 2015 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version beta(6-03-2015)
+ * @version 6-03-2015
  * @link https://github.com/jstar88/opbe
  */
 

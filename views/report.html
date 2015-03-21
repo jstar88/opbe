@@ -13,7 +13,7 @@
     <br>
     <cite><font color="red"> BATTLE </font></cite><br /><br />
     <?php for ( $_i=1;$_i<=$this->getLastRoundNumber();$_i++){ ?>
-        <?php $_round = $this->getRound($_i); include('round.html'); ?>
+        <?php $_round = $this->getRound($_i);$_roundBefore = $this->getRound($_i - 1); include('round.html'); ?>
     <?php } ?>
     <cite><font color="red"> END OF BATTLE </font></cite><br /><br />
     <?php $_st = 'Attacker'; $_playerGroup =  $this->getResultAttackersFleetOnRound('END'); include('playerGroup.html');?>

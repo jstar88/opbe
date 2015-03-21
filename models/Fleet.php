@@ -185,13 +185,6 @@ class Fleet extends Iterable
             $shipTypeDefender->repairShields();
         }
     }
-    public function repairHull()
-    {
-        foreach ($this->array as $id => $shipTypeDefender)
-        {
-            $shipTypeDefender->repairHull();
-        }
-    }
     public function isEmpty()
     {
         foreach ($this->array as $id => $shipType)
