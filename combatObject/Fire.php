@@ -158,6 +158,9 @@ class Fire
         {
             $max = $meanShots * (1 + MAX_RF_BUFF);
             $min = $meanShots * (1 - MAX_RF_NERF);
+            log_var('$max', $max);
+            log_var('$min', $min);
+            log_var('$mean', $meanShots);
             return Gauss::getNextMsBetween($meanShots, GeometricDistribution::getStandardDeviationFromProbability(1 - $p), $min, $max);
         }
         return $meanShots;
