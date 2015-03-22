@@ -225,7 +225,7 @@ function updatePlayers(PlayerGroup $playerGroup, &$players, $index)
     $amountArray = array();
     foreach ($players as $idFleet => $info)
     {
-        $players[$idFleet]['techs'] = getTechsFromArray($info['user']);        
+        $players[$idFleet]['techs'] = getTechsFromArrayForReport($info['user']);        
         foreach ($info[$index] as $idShipType => $amount)
         {
             if ($playerGroup->existPlayer($info['user']['id']))
@@ -321,6 +321,19 @@ function getTechsFromArray($player)
     $shieldTech = $player['shield_tech'] + $player['factor']['shield'] / SHIELDS_TECH_INCREMENT_FACTOR;
     $defenceTech = $player['defence_tech'] + $player['factor']['defensive'] / ARMOUR_TECH_INCREMENT_FACTOR;
     return array($attTech,$defenceTech,$shieldTech);
+}
+
+function getTechsFromArrayForReport($player)
+{
+    list($attTech, $defenceTech, $shieldTech) = getTechsFromArray($player);
+    $attTech = 1 + $attTech * WEAPONS_TECH_INCREMENT_FACTOR;
+    $defenceTech = 1 + $defenceTech * ARMOUR_TECH_INCREMENT_FACTOR;
+    $shieldTech = 1 + $shieldTech * SHIELDS_TECH_INCREMENT_FACTOR;
+    
+    return array(
+        $attTech,
+        $defenceTech,
+        $shieldTech);
 }
 
 ?>
