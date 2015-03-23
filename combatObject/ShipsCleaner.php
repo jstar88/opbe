@@ -45,9 +45,9 @@ class ShipsCleaner
     public function __construct(ShipType $shipType, $lastShipHit, $lastShots)
     {
         if ($lastShipHit < 0)
-            throw new Exception('negative $lastShipHit');
+            throw new Exception('Negative $lastShipHit');
         if ($lastShots < 0)
-            throw new Exception('negative $lastShots');
+            throw new Exception('Negative $lastShots');
         $this->fighters = $shipType->cloneMe();
         $this->lastShipHit = $lastShipHit;
         $this->lastShots = $lastShots;
@@ -64,6 +64,10 @@ class ShipsCleaner
         //the mean probably to explode based on damage
         $prob = 1 - $this->fighters->getCurrentLife() / ($this->fighters->getHull() * $this->fighters->getCount());
         log_var('prob',$prob);
+        if ($prob < 0 && $prob > -EPSILON)
+        {
+            $prob = 0;
+        }
         if ($prob < 0)
         {
             throw new Exception("Negative prob");
