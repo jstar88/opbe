@@ -58,6 +58,7 @@ class Fire
      */
     public function __construct(ShipType $attackerShipType, Fleet $defenderFleet)
     {
+        log_comment('calculating fire from attacker '.$attackerShipType->getId());
         $this->attackerShipType = $attackerShipType;
         $this->defenderFleet = $defenderFleet;
         $this->calculateTotal();
@@ -106,6 +107,7 @@ class Fire
         {
             $this->calculateRf();
         }
+        log_var('$this->shots',$this->shots);
         /*  old way
         $this->shots = 0;
         $this->power = 0;          
@@ -130,6 +132,7 @@ class Fire
     {
         //rapid fire
         $tmpshots = round($this->getShotsFromOneAttackerShipOfType($this->attackerShipType) * $this->attackerShipType->getCount());
+        log_var('$tmpshots',$tmpshots);
         $this->power += $tmpshots * $this->attackerShipType->getPower();
         $this->shots += $tmpshots;
 
@@ -239,7 +242,9 @@ class Fire
     public function getShotsFiredByAllToOne($real = false)
     {
         $num = new Number($this->getAttackerTotalShots());
+        log_var('$num',$num);
         $denum = new Number($this->defenderFleet->getTotalCount());
+        log_var('return',Math::divide($num, $denum, $real));
         return Math::divide($num, $denum, $real);
     }
     /**

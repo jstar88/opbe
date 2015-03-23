@@ -21,9 +21,9 @@
  *
  * @package OPBE
  * @author Jstar <frascafresca@gmail.com>
- * @copyright 2013 Jstar <frascafresca@gmail.com>
+ * @copyright 2015 Jstar <frascafresca@gmail.com>
  * @license http://www.gnu.org/licenses/ GNU AGPLv3 License
- * @version beta(26-10-2013)
+ * @version 23-3-2015)
  * @link https://github.com/jstar88/opbe
  */
 class Fleet extends Iterable
@@ -139,14 +139,35 @@ class Fleet extends Iterable
         //doesn't matter who shot first, but who receive first the damage
         foreach ($fires->getIterator() as $fire)
         {
+            $tmp = array();
             foreach ($this->getOrderedIterator() as $idShipTypeDefender => $shipTypeDefender)
             {
                 $idShipTypeAttacker = $fire->getId();
-                echo "---- firing from $idShipTypeAttacker to $idShipTypeDefender ---- <br>";
+                log_comment( "---- firing from $idShipTypeAttacker to $idShipTypeDefender ----");
                 $xs = $fire->getShotsFiredByAllToDefenderType($shipTypeDefender, true);
                 $ps = $shipTypeDefender->inflictDamage($fire->getPower(), $xs->result);
+                log_var('$xs',$xs);
+                $tmp[$idShipTypeDefender] = $xs->rest;
                 if ($ps != null)
                     $physicShots[$idShipTypeDefender][] = $ps;
+            }
+            log_var('$tmp',$tmp);
+            // assign the last shot to the more likely shitType
+            $m = 0;
+            $f = 0;
+            foreach ($tmp as $k => $v)
+            {
+                if ($v > $m)
+                {
+                    $m = $v;
+                    $f = $k;
+                }    
+            }
+            if ($f != 0)
+            {
+                log_comment('adding 1 shot');
+                $ps = $this->getShipType($f)->inflictDamage($fire->getPower(), 1);
+                $physicShots[$idShipTypeDefender][] = $ps;
             }
 
         }
@@ -167,7 +188,7 @@ class Fleet extends Iterable
         $shipsCleaners = array();
         foreach ($this->array as $id => $shipType)
         {
-            echo "---- exploding $id ----<br>";
+            log_comment("---- exploding $id ----");
             $sc = $shipType->cleanShips();
             $this->count -= $sc->getExplodedShips();
             if ($shipType->isEmpty())

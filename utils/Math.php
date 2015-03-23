@@ -47,8 +47,8 @@ abstract class Math
     {
         $result = $first->result * $second->result;
         if ($real)
-        {
-            return new Number(round($result));
+        {            
+            return new Number(round($result),$result - round($result));
         }
         return new Number($result);
     }
