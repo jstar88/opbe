@@ -34,6 +34,7 @@ define('BATTLE_DRAW', 0);
 define('SHIELD_CELLS', 100); //how many cells a ship's shield should contain. Carefull to edit: more cells = better accuracy but less bounces in some cases.
 define('USE_BIEXPLOSION_SYSTEM', true); // enable below system value
 define('PROB_TO_REAL_MAGIC', 2); //value used to adapt probability theory to critical cases.
+define('EPSILON', 1.2e-6);
 
 /*** Battle constants, default as Ogame ***/
 define('ROUNDS', 6); //how many rounds a battle have, no limits.

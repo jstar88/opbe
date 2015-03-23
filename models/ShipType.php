@@ -88,8 +88,8 @@ class ShipType extends Type
         $this->setArmourTech($armour_tech);
         $this->setShieldsTech($shields_tech);
     }
-    
-    
+
+
     /**
      * ShipType::setWeaponsTech()
      * Set new weapon techs level.
@@ -109,8 +109,8 @@ class ShipType extends Type
         $this->singlePower *= $incr;
         $this->fullPower *= $incr;
     }
-    
-    
+
+
     /**
      * ShipType::setShieldsTech()
      * Set new shield techs level.
@@ -131,8 +131,8 @@ class ShipType extends Type
         $this->fullShield *= $incr;
         $this->currentShield *= $incr;
     }
-    
-    
+
+
     /**
      * ShipType::setArmourTech()
      * Set new armour techs level
@@ -181,8 +181,8 @@ class ShipType extends Type
         $this->currentLife += $newLife * $number;
         $this->currentShield += $newShield * $number;
     }
-    
-    
+
+
     /**
      * ShipType::decrement()
      * Decrement the amount of ships of this type.
@@ -209,8 +209,7 @@ class ShipType extends Type
         $this->currentLife -= $remainLife * $number;
         $this->currentShield -= $remainShield * $number;
     }
-    
-    
+
 
     /**
      * ShipType::setCount()
@@ -244,8 +243,8 @@ class ShipType extends Type
     {
         return $this->cost;
     }
-    
-    
+
+
     /**
      * ShipType::getWeaponsTech()
      * Get the level of current weapon tech.
@@ -255,8 +254,8 @@ class ShipType extends Type
     {
         return $this->weapons_tech;
     }
-    
-    
+
+
     /**
      * ShipType::getShieldsTech()
      * Get the level of current shield tech.
@@ -266,8 +265,8 @@ class ShipType extends Type
     {
         return $this->shields_tech;
     }
-    
-    
+
+
     /**
      * ShipType::getArmourTech()
      * Get the level of current armour tech.
@@ -277,8 +276,8 @@ class ShipType extends Type
     {
         return $this->armour_tech;
     }
-    
-    
+
+
     /**
      * ShipType::getRfTo()
      * Get the propability of this shipType to shot again given shipType
@@ -289,8 +288,8 @@ class ShipType extends Type
     {
         return (isset($this->rf[$other->getId()])) ? $this->rf[$other->getId()] : 0;
     }
-    
-    
+
+
     /**
      * ShipType::getRF()
      * Get an array of rapid fire
@@ -300,8 +299,8 @@ class ShipType extends Type
     {
         return $this->rf;
     }
-    
-    
+
+
     /**
      * ShipType::getShield()
      * Get the shield value of a single ship of this type. 
@@ -311,8 +310,8 @@ class ShipType extends Type
     {
         return $this->singleShield;
     }
-    
-    
+
+
     /**
      * ShipType::getShieldCellValue()
      * Get the shield cell value of a single ship of this type.
@@ -326,8 +325,8 @@ class ShipType extends Type
         }
         return $this->singleShield / SHIELD_CELLS;
     }
-    
-    
+
+
     /**
      * ShipType::getHull()
      * Get the hull value of a single ship of this type. 
@@ -337,8 +336,8 @@ class ShipType extends Type
     {
         return $this->singleLife;
     }
-    
-    
+
+
     /**
      * ShipType::getPower()
      * Get the power value of a single ship of this type.
@@ -348,8 +347,8 @@ class ShipType extends Type
     {
         return $this->singlePower;
     }
-    
-    
+
+
     /**
      * ShipType::getCurrentShield()
      * Get the current shield value of a all ships of this type.
@@ -359,8 +358,8 @@ class ShipType extends Type
     {
         return $this->currentShield;
     }
-    
-    
+
+
     /**
      * ShipType::getCurrentLife()
      * Get the current hull value of a all ships of this type.
@@ -370,8 +369,8 @@ class ShipType extends Type
     {
         return $this->currentLife;
     }
-    
-    
+
+
     /**
      * ShipType::getCurrentPower()
      * Get the current attack power value of a all ships of this type.
@@ -405,9 +404,19 @@ class ShipType extends Type
         $this->lastShots += $shotsToThisShipType;
         $ps = new PhysicShot($this, $damage, $shotsToThisShipType);
         $ps->start();
+        log_var('$ps->getAssorbedDamage()', $ps->getAssorbedDamage());
         $this->currentShield -= $ps->getAssorbedDamage();
+        if ($this->currentShield < 0 && $this->currentShield > -EPSILON)
+        {
+            log_comment('fixing double number currentshield');
+            $this->currentShield = 0;
+        }
         $this->currentLife -= $ps->getHullDamage();
-
+        if ($this->currentLife < 0 && $this->currentLife > -EPSILON)
+        {
+            log_comment('fixing double number currentlife');
+            $this->currentLife = 0;
+        }
         log_var('currentShield after', $this->currentShield);
         log_var('currentLife after', $this->currentLife);
         $this->lastShipHit += $ps->getHitShips();
@@ -428,8 +437,8 @@ class ShipType extends Type
         }
         return $ps; //for web
     }
-    
-    
+
+
     /**
      * ShipType::cleanShips()
      * Start the task of explosion system.
@@ -449,8 +458,8 @@ class ShipType extends Type
         log_var('currentLife after', $this->currentLife);
         return $sc;
     }
-    
-    
+
+
     /**
      * ShipType::repairShields()
      * Repair all shields.
@@ -460,8 +469,8 @@ class ShipType extends Type
     {
         $this->currentShield = $this->fullShield;
     }
-    
-    
+
+
     /**
      * ShipType::__toString()
      * 
@@ -473,8 +482,8 @@ class ShipType extends Type
         //$return .= "hull:" . $this->hull . "<br>Shield:" . $this->shield . "<br>CurrentLife:" . $this->currentLife . "<br>CurrentShield:" . $this->currentShield;
         return $return;
     }
-    
-    
+
+
     /**
      * ShipType::isShieldDisabled()
      * Return true if the current shield of each ships are almost zero.
@@ -484,8 +493,8 @@ class ShipType extends Type
     {
         return $this->currentShield / $this->getCount() < 0.01;
     }
-    
-    
+
+
     /**
      * ShipType::cloneMe()
      * 
