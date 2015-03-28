@@ -23,7 +23,7 @@ class LangImplementation implements Lang
     }
     public function getDefendersDefendingDescr($damage)
     {
-        return $this->lang['fleet_attack_2'] . $damage . ' ' . $this->lang['damage'];
+        return $this->lang['fleet_attack_2'] .' '. $damage . ' ' . $this->lang['damage'];
     }
     public function getDefendersAttackingDescr($amount, $damage)
     {
@@ -31,7 +31,7 @@ class LangImplementation implements Lang
     }
     public function getAttackersDefendingDescr($damage)
     {
-        return $this->lang['fleet_defs_2'] . $damage . ' ' . $this->lang['damage'];
+        return $this->lang['fleet_defs_2']. ' ' . $damage . ' ' . $this->lang['damage'];
     }
     public function getAttackerHasWon()
     {
