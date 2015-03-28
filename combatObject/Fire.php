@@ -242,9 +242,7 @@ class Fire
     public function getShotsFiredByAllToOne($real = false)
     {
         $num = new Number($this->getAttackerTotalShots());
-        log_var('$num',$num);
         $denum = new Number($this->defenderFleet->getTotalCount());
-        log_var('return',Math::divide($num, $denum, $real));
         return Math::divide($num, $denum, $real);
     }
     /**

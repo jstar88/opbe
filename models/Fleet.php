@@ -167,7 +167,7 @@ class Fleet extends Iterable
             {
                 log_comment('adding 1 shot');
                 $ps = $this->getShipType($f)->inflictDamage($fire->getPower(), 1);
-                $physicShots[$idShipTypeDefender][] = $ps;
+                $physicShots[$f][] = $ps;
             }
 
         }

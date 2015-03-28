@@ -6,24 +6,23 @@ class Fazi extends RunnableTest
     public function getAttachers()
     {
         $ships = array();
-        $ships[] = $this->getShipType(204, 3000);
+        $ships[] = $this->getShipType(205, 20);
+        $ships[] = $this->getShipType(211, 30);
         $fleet = new Fleet(1, $ships);
-        $player = new Player(1, array($fleet));
+        $player = new Player(1, array($fleet),7,6,6);
         return new PlayerGroup(array($player));
     }
     public function getDefenders()
     {
         $ships = array();
-        $ships[] = $this->getShipType(203, 351);
-        $ships[] = $this->getShipType(204, 388);
-        $ships[] = $this->getShipType(205, 139);
-        $ships[] = $this->getShipType(206, 745);
-        $ships[] = $this->getShipType(207, 634);
-        $ships[] = $this->getShipType(209, 106);
-        $ships[] = $this->getShipType(210, 200);
+        $ships[] = $this->getShipType(401, 1);
+        $ships[] = $this->getShipType(402, 2);
+        $ships[] = $this->getShipType(403, 1);
+        $ships[] = $this->getShipType(407, 1);
+        $ships[] = $this->getShipType(408, 1);
         $fleet = new Fleet(2, $ships);
-        $player = new Player(2, array($fleet),1,1,1);
+        $player = new Player(2, array($fleet),5,5,5);
         return new PlayerGroup(array($player));
     }
 }
-new Fazi();
+new Fazi(false);
