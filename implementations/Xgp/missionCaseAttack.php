@@ -328,7 +328,7 @@ function sendMessage($FleetRow, $report, $lang, $resource)
             $style = "red";
         }
         $raport = "<a href=\"#\" style=\"color:" . $style . ";\" OnClick=\'f(\"CombatReport.php?raport=" . $rid . "\", \"\");\' >" . $lang['sys_mess_attack_report'] . " [" . $FleetRow['fleet_end_galaxy'] . ":" . $FleetRow['fleet_end_system'] . ":" . $FleetRow['fleet_end_planet'] . "]</a>";
-        SendSimpleMessage($FleetRow['fleet_owner'], '', $FleetRow['fleet_start_time'], 3, $lang['sys_mess_tower'], $raport, '');
+        SendSimpleMessage($id, '', $FleetRow['fleet_start_time'], 3, $lang['sys_mess_tower'], $raport, '');
     }
     foreach ($idDefs as $id)
     {
