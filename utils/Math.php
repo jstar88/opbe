@@ -80,7 +80,7 @@ abstract class Math
         {
             throw new Exception();
         }
-        if (mt_rand(0, 99) <= $probability)
+        if (mt_rand(0, 99) < $probability)
             return call_user_func($callback, $callbackParam);
         return false;
     }
