@@ -245,7 +245,7 @@ class BattleReport
     }
     public function getMoonProb()
     {
-        return min(round(array_sum($this->getDebris()) / MOON_UNIT_PROB), MAX_MOON_PROB);
+        return min(floor(array_sum($this->getDebris()) / MOON_UNIT_PROB), MAX_MOON_PROB);
     }
     public function getAttackerDebris()
     {
