@@ -184,19 +184,19 @@ class BattleReport
     {
         return Math::recursive_sum($this->getDefendersLostUnits());
     }
-    public function getAttackersLostUnits()
+    public function getAttackersLostUnits($repair = True)
     {
         $attackersBefore = $this->getRound('START')->getAfterBattleAttackers();
         $attackersAfter = $this->getRound('END')->getAfterBattleAttackers();
-        return $this->getPlayersLostUnits($attackersBefore, $attackersAfter);
+        return $this->getPlayersLostUnits($attackersBefore, $attackersAfter, $repair);
     }
-    public function getDefendersLostUnits()
+    public function getDefendersLostUnits($repair = True)
     {
         $defendersBefore = $this->getRound('START')->getAfterBattleDefenders();
         $defendersAfter = $this->getRound('END')->getAfterBattleDefenders();
-        return $this->getPlayersLostUnits($defendersBefore, $defendersAfter);
+        return $this->getPlayersLostUnits($defendersBefore, $defendersAfter, $repair);
     }
-    private function getPlayersLostUnits(PlayerGroup $playersBefore, PlayerGroup $playersAfter)
+    private function getPlayersLostUnits(PlayerGroup $playersBefore, PlayerGroup $playersAfter, $repair = True)
     {
         $lostShips = $this->getPlayersLostShips($playersBefore, $playersAfter);
         $defRepaired = $this->getPlayerRepaired($playersBefore, $playersAfter);
@@ -209,7 +209,7 @@ class BattleReport
                 {
                     $cost = $shipType->getCost();
                     $repairedAmount = 0;
-                    if ($defRepaired->existPlayer($idPlayer) && $defRepaired->getPlayer($idPlayer)->existFleet($idFleet) && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->existShipType($idShipType))
+                    if ($repair && $defRepaired->existPlayer($idPlayer) && $defRepaired->getPlayer($idPlayer)->existFleet($idFleet) && $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->existShipType($idShipType))
                     {
                         $repairedAmount = $defRepaired->getPlayer($idPlayer)->getFleet($idFleet)->getShipType($idShipType)->getCount();
                     }
@@ -241,7 +241,7 @@ class BattleReport
     {
         $metal = 0;
         $crystal = 0;
-        foreach ($this->getAttackersLostUnits() as $idPlayer => $player)
+        foreach ($this->getAttackersLostUnits(!REPAIRED_DO_DEBRIS) as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)
             {
@@ -264,7 +264,7 @@ class BattleReport
     {
         $metal = 0;
         $crystal = 0;
-        foreach ($this->getDefendersLostUnits() as $idPlayer => $player)
+        foreach ($this->getDefendersLostUnits(!REPAIRED_DO_DEBRIS) as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)
             {
