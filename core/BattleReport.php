@@ -41,8 +41,6 @@ class BattleReport
         $this->rounds = array();
         $this->roundsCount = 0;
         $this->steal = 0;
-        $this->attackersLostUnits = null;
-        $this->defendersLostUnits = null;
     }
 
     /**
@@ -188,20 +186,12 @@ class BattleReport
     }
     public function getAttackersLostUnits()
     {
-        if ($this->attackersLostUnits !== null)
-        {
-            return $this->attackersLostUnits;
-        }
         $attackersBefore = $this->getRound('START')->getAfterBattleAttackers();
         $attackersAfter = $this->getRound('END')->getAfterBattleAttackers();
         return $this->getPlayersLostUnits($attackersBefore, $attackersAfter);
     }
     public function getDefendersLostUnits()
     {
-        if ($this->defendersLostUnits !== null)
-        {
-            return $this->defendersLostUnits;
-        }
         $defendersBefore = $this->getRound('START')->getAfterBattleDefenders();
         $defendersAfter = $this->getRound('END')->getAfterBattleDefenders();
         return $this->getPlayersLostUnits($defendersBefore, $defendersAfter);
@@ -226,7 +216,7 @@ class BattleReport
                     $count = $shipType->getCount() - $repairedAmount;
                     if ($count > 0)
                     {
-                        $return[$idPlayer][$idFleet][$idShipType] = array($cost[0] * $count, $cost[1] * $count);
+                        $return[$idPlayer][$idFleet][get_class($shipType)][$idShipType] = array($cost[0] * $count, $cost[1] * $count);
                     }
                     elseif ($count < 0)
                     {
@@ -255,14 +245,20 @@ class BattleReport
         {
             foreach ($player as $idFleet => $fleet)
             {
-                foreach ($fleet as $idShipType => $lost)
+                foreach($fleet as $role => $values)
                 {
-                    $metal += $lost[0];
-                    $crystal += $lost[1];
+                    foreach ($values as $idShipType => $lost)
+                    {
+                        $metal += $lost[0];
+                        $crystal += $lost[1];      
+                    }
+                    $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
+                    $metal *= $factor;
+                    $crystal *= $factor;
                 }
             }
         }
-        return array($metal * DEBRIS_FACTOR, $crystal * DEBRIS_FACTOR);
+        return array($metal, $crystal);
     }
     public function getDefenderDebris()
     {
@@ -272,14 +268,20 @@ class BattleReport
         {
             foreach ($player as $idFleet => $fleet)
             {
-                foreach ($fleet as $idShipType => $lost)
+                foreach($fleet as $role => $values)
                 {
-                    $metal += $lost[0];
-                    $crystal += $lost[1];
+                    foreach ($values as $idShipType => $lost)
+                    {
+                        $metal += $lost[0];
+                        $crystal += $lost[1];      
+                    }
+                    $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
+                    $metal *= $factor;
+                    $crystal *= $factor;
                 }
             }
         }
-        return array($metal * DEBRIS_FACTOR, $crystal * DEBRIS_FACTOR);
+        return array($metal, $crystal);
     }
     public function getDebris()
     {

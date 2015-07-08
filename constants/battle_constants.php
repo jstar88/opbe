@@ -56,7 +56,8 @@ define('MAX_RF_NERF', 0.2); // how much the rapid fire can be randomically decre
 define('ONLY_FIRST_AND_LAST_ROUND', false); //This option is usefull to decrease RAM usage, but the battle report will not contain all rounds.
 
 /*** After-battle constants, default as Ogame ***/
-define('DEBRIS_FACTOR', 0.3); //Percentage of debris generated from destroyed resources.
+define('SHIP_DEBRIS_FACTOR', 0.3); //Percentage of debris generated from destroyed defenses.
+define('DEFENSE_DEBRIS_FACTOR', 0.3); //Percentage of debris generated from destroyed ships.
 define('POINT_UNIT', 1000); //Ogame point = 1000 resources.
 define('MOON_UNIT_PROB', 100000);
 define('MAX_MOON_PROB', 20); //max probability to moon creation.
