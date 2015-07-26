@@ -25,7 +25,7 @@
  * @version 1.3 (2011-01-21)
  * @link http://code.google.com/p/2moons/
  */
-require_once( ROOT_PATH . 'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'opbe'.DIRECTORY_SEPARATOR.'implementations'.DIRECTORY_SEPARATOR.'2Moons'.DIRECTORY_SEPARATOR.'1_3_injectionmode'.DIRECTORY_SEPARATOR.'calculateAttack.php' );
+require_once( ROOT_PATH . 'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'opbe'.DIRECTORY_SEPARATOR.'implementations'.DIRECTORY_SEPARATOR.'2Moons'.DIRECTORY_SEPARATOR.'1_3_injectionMode'.DIRECTORY_SEPARATOR.'calculateAttack.php' );
 
 /* ----------- original calculateAttack ----------------
 function calculateAttack(&$attackers, &$defenders, $FleetTF, $DefTF)
