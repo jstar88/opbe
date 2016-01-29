@@ -413,5 +413,5 @@ I'm happy to deliver this software giving others the possibility to have a good 
 On the other hand, it's a pleasure to see people using my OPBE.  
 Send me an email to put your game logo here!  [frascafresca@gmail.com](mailto:frascafresca@gmail.com)
 
-![xgproyect](http://www.xgproyect.net/images/misc/xg-logo.png)
+![xgproyect](http://www.xgproyect.org/images/misc/xg-logo.png)
 
