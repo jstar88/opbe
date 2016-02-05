@@ -220,10 +220,27 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
         if (!$playerGroup->existPlayer($idPlayer))
         {
             $player_info = ($targetUser !== false && $targetUser['id'] == $idPlayer) ? $targetUser : doquery("SELECT * FROM {{table}} WHERE id =$idPlayer", 'users', true);
+            
+            // bug fix Vitaliy K.:  fleet and defense from the planet , copied to the first fleet to hold
+	    if($targetUser['id'] == $idPlayer)
+	    {
+		$fleetSouther = new Fleet();
+		$player = new Player($idPlayer, array($fleetSouther));
+	    }
+	    else
+	    {
+		$player = new Player($idPlayer, array($fleet));
+	    }
+            
             $player = new Player($idPlayer, array($fleet));
             $player->setTech($player_info['military_tech'], $player_info['shield_tech'], $player_info['defence_tech']);
             $player->setName($player_info['name']);
             $playerGroup->addPlayer($player);
+            
+            if($targetUser['id'] == $idPlayer)
+	    {
+	    	$playerGroup->getPlayer($idPlayer)->addFleet($fleet);	
+	    }
         }
         else
         {
