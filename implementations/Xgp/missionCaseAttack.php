@@ -232,7 +232,6 @@ function getPlayerGroupFromQuery($result, $targetUser = false)
 		$player = new Player($idPlayer, array($fleet));
 	    }
             
-            $player = new Player($idPlayer, array($fleet));
             $player->setTech($player_info['military_tech'], $player_info['shield_tech'], $player_info['defence_tech']);
             $player->setName($player_info['name']);
             $playerGroup->addPlayer($player);
