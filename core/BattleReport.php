@@ -255,8 +255,8 @@ class BattleReport
                         $crystal += $lost[1];      
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                    $sendMetal *= $metal * $factor;
-                    $sendCrystal *= $crystal * $factor;
+                    $sendMetal += $metal * $factor;
+                    $sendCrystal += $crystal * $factor;
                 }
             }
         }
@@ -280,8 +280,8 @@ class BattleReport
                         $crystal += $lost[1];      
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                    $sendMetal *= $metal * $factor;
-                    $sendCrystal *= $crystal * $factor;
+                    $sendMetal += $metal * $factor;
+                    $sendCrystal += $crystal * $factor;
                 }
             }
         }
