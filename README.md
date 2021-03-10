@@ -411,7 +411,7 @@ You should replace any PHP native mathematical with [BC math](http://php.net/man
 
 I'm happy to deliver this software giving others the possibility to have a good battle engine.  
 On the other hand, it's a pleasure to see people using my OPBE.  
-Send me an email to put your game logo here!  [frascafresca@gmail.com](mailto:frascafresca@gmail.com)
+[update] Please do not send email, instead use github's private messages
 
 ![xgproyect](http://www.xgproyect.org/images/misc/xg-logo.png)
 
