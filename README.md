@@ -2,8 +2,6 @@ OPBE
 ====
 
 **O**game **P**robabilistic **B**attle **E**ngine  
-live: http://opbe.altervista.org  
-2moons running opbe: http://testopbe.altervista.org
 
 Require PHP >= 5.3  
 
