@@ -239,49 +239,53 @@ class BattleReport
     }
     public function getAttackerDebris()
     {
-        $metal = 0;
-        $crystal = 0;
+        $sendMetal = 0;
+        $sendCrystal = 0;
         foreach ($this->getAttackersLostUnits(!REPAIRED_DO_DEBRIS) as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)
             {
                 foreach($fleet as $role => $values)
                 {
+					$metal = 0;
+					$crystal = 0;
                     foreach ($values as $idShipType => $lost)
                     {
                         $metal += $lost[0];
                         $crystal += $lost[1];      
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                    $metal *= $factor;
-                    $crystal *= $factor;
+                    $sendMetal += $metal * $factor;
+                    $sendCrystal += $crystal * $factor;
                 }
             }
         }
-        return array($metal, $crystal);
+        return array($sendMetal, $sendCrystal);
     }
     public function getDefenderDebris()
     {
-        $metal = 0;
-        $crystal = 0;
+        $sendMetal = 0;
+        $sendCrystal = 0;
         foreach ($this->getDefendersLostUnits(!REPAIRED_DO_DEBRIS) as $idPlayer => $player)
         {
             foreach ($player as $idFleet => $fleet)
             {
                 foreach($fleet as $role => $values)
                 {
+					$metal = 0;
+					$crystal = 0;
                     foreach ($values as $idShipType => $lost)
                     {
                         $metal += $lost[0];
                         $crystal += $lost[1];      
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                    $metal *= $factor;
-                    $crystal *= $factor;
+                    $sendMetal += $metal * $factor;
+                    $sendCrystal += $crystal * $factor;
                 }
             }
         }
-        return array($metal, $crystal);
+        return array($sendMetal, $sendCrystal);
     }
     public function getDebris()
     {
