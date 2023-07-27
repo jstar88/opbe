@@ -289,9 +289,9 @@ function getShipType($id, $count)
     $CombatCaps = $GLOBALS['CombatCaps'];
     $pricelist = $GLOBALS['pricelist'];
     $rf = isset($CombatCaps[$id]['sd']) ? $CombatCaps[$id]['sd'] : 0;
-    $shield = $CombatCaps[$id]['shield'];
-    $cost = array($pricelist[$id]['cost'][METAL_ID], $pricelist[$id]['cost'][CRYSTAL_ID]);
-    $power = $CombatCaps[$id]['attack'];
+    $shield = $CombatCaps[$id]['shield'] * $count;
+    $cost = array($count * ($pricelist[$id]['cost'][METAL_ID] + $pricelist[$id]['cost'][CRYSTAL_ID]));
+    $power = $CombatCaps[$id]['attack'] * $count;
     if ($id > ID_MIN_SHIPS && $id < ID_MAX_SHIPS)
     {
         return new Ship($id, $count, $rf, $shield, $cost, $power);
