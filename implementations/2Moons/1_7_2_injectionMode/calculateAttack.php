@@ -226,7 +226,7 @@ function updatePlayers(PlayerGroup $playerGroup, &$players)
     $amountArray = array();
     foreach ($players as $idFleet => $info)
     {
-        $players[$idFleet]['techs'] = getTechsFromArrayForReport($info['user']);
+        $players[$idFleet]['techs'] = getTechsFromArrayForReport($info['player']);
         foreach ($info['unit'] as $idShipType => $amount)
         {
             if ($playerGroup->existPlayer($info['player']['id']))
